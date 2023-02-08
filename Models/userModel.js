@@ -11,16 +11,14 @@ const userSchema = new mongoose.Schema({
         type:String
       },
 
-    email: {
-        type:String,
-        required:[true,"please add the email"] ,
-        unique : true , 
-        validate(value)
-        {
-           if(!validator.isEmail(value))
-           {
-              throw new Error("Invalid Email") ;
-           }
+      email: {
+        type: String,
+        required: [true, "Please add an email"],
+        unique: [true,"duplicated insert of email"],
+        validate(value) {
+          if (!validator.isEmail(value)) {
+            throw new Error("Invalid Email");
+          }
         }
       },
       org : [
