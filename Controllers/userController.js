@@ -1,6 +1,6 @@
 const users = require('../Models/userModel')
 
-const userService = require("../Services/userDbService")
+const userService = require("../Db_Services/userDbService")
 
 const getAllUsers = async (req, res) => {
    try {
@@ -12,7 +12,6 @@ const getAllUsers = async (req, res) => {
  }
 
  const createUser =  async (req, res) => {
-    console.log("start");
     try {
       const user = new users(req?.body);
       await userService.saveUser(user)
@@ -52,7 +51,6 @@ const getAllUsers = async (req, res) => {
      
          res.send({ message: 'User updated successfully' ,user});
        } catch (error) {
-         console.error(error);
          res.status(500).send({ error: 'Failed to update user' });
        }
    }
@@ -62,7 +60,6 @@ const getAllUsers = async (req, res) => {
          
          const id = req?.params?.id
          const user = await userService.deleteUserById(id)
-         console.log("hariom "+user);
          if(!user){
            return res.status(404).send({error:"user not found with id "+id})
          }
@@ -72,4 +69,18 @@ const getAllUsers = async (req, res) => {
       }
    }
 
-  module.exports = {getAllUsers,createUser,getUserById,updateUser,deleteUser}
+   const findUserByEmail = async(req,res)=>{
+      try {
+         const email = req.params.email
+         console.log(email);
+         const user = await userService.getUserByEmail(email)
+         if(!user){
+            return res.status(404).send({message:"user is not found"})
+         } 
+         res.send(user)
+      } catch (error) {
+         res.status(400).send(error)
+      }
+   }
+
+  module.exports = {getAllUsers,createUser,getUserById,updateUser,deleteUser,findUserByEmail}

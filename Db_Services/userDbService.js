@@ -25,4 +25,9 @@ async function deleteUserById(id){
     return await User.findByIdAndDelete(id)
 }
 
-module.exports={getAllUser,getUserById,saveUser,updateUser,deleteUserById}
+async function getUserByEmail(email) {
+    const user= await User.findOne({email: email});
+    return user;
+}
+
+module.exports={getAllUser,getUserById,saveUser,updateUser,deleteUserById,getUserByEmail}
