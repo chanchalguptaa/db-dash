@@ -20,12 +20,9 @@ const userSchema = new mongoose.Schema({
       }
     },
     db :
-    {
-        db_id:{
-          type : mongoose.Schema.Types.ObjectId,
-          ref: 'db'
-        },  
-    }
+   [ 
+       {type:Object}
+      ]
   }
 );
 
