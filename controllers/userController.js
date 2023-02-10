@@ -1,4 +1,4 @@
-const users = require('../Models/userModel')
+const users = require('../models/userModel')
 
 const userService = require("../Db_Services/userDbService")
 
