@@ -1,7 +1,6 @@
 const Org = require('../Models/organizationModel')
 
 const orgService = require("../Db_Services/organizationDbService");
-const { ifError } = require('assert');
 
 const getAllOrgs = async (req, res) => {
    try {
