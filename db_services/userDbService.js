@@ -12,10 +12,19 @@ async function saveUser(user){
     await user.save()
 }
 
-async function updateUser(id,user){
+async function updateUser(first_name,last_name,id,dbs){ 
 
     try {
-        return await User.findByIdAndUpdate(id,user)
+        return await User.updateOne({
+            _id:id
+        },
+        {
+            $set:{
+                first_name,
+                last_name,
+                dbs
+            }
+        })
     } catch (error) {
         console.log(error);
     }
