@@ -22,8 +22,9 @@ async function updateUser(first_name,last_name,id,dbs){
             $set:{
                 first_name,
                 last_name,
-                dbs
-            }
+            
+            },
+            $push:{dbs:db}
         })
     } catch (error) {
         console.log(error);

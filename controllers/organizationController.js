@@ -1,5 +1,4 @@
-// const Org = require('../Models/organizationModel')
-
+const Org = require('../models/organizationModel')
 const orgService = require("../Db_Services/organizationDbService");
 
 const getAllOrgs = async (req, res) => {
