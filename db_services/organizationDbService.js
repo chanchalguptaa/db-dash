@@ -11,11 +11,10 @@ async function getOrgById(id){
 async function saveOrg(org){
     await org.save()
 }
-
-async function updateOrg(id,org){
-
+async function updateOrgTitle(id,org){
+    const options = { new: true };
     try {
-        return await Org.findByIdAndUpdate(id,org)
+        return await Org.findByIdAndUpdate(id,org,options)
     } catch (error) {
         console.log(error);
     }
@@ -25,4 +24,4 @@ async function deleteOrgById(id){
     return await Org.findByIdAndDelete(id)
 }
 
-module.exports={getAllOrgs,getOrgById,saveOrg,updateOrg,deleteOrgById}
+module.exports={getAllOrgs,getOrgById,saveOrg,updateOrgTitle,deleteOrgById}

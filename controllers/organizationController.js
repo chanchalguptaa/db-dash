@@ -1,6 +1,7 @@
 const Org = require('../Models/organizationModel')
 
-const orgService = require("../Db_Services/organizationDbService")
+const orgService = require("../Db_Services/organizationDbService");
+const { ifError } = require('assert');
 
 const getAllOrgs = async (req, res) => {
    try {
@@ -39,18 +40,13 @@ const getAllOrgs = async (req, res) => {
       try {
          const id = req?.params?.id;
          const orgData = req?.body;
-
-         const org = await orgService.getOrgById(id)
-     
-         if (!org) {
-           return res.status(404).send({ error: 'Org not found' });
-         }
-     
-         Object.assign(org, orgData);
-         await orgService.saveOrg(org)
-     
-         res.send({ message: 'Org updated successfully' ,org});
+         const data = await orgService.updateOrgTitle(id,orgData);
+         if(data)
+            return res.status(200).send({ message: 'Org updated successfully' ,data});
+         else
+            return res.status(404).send({ message: 'id doesnot exixts' ,});
        } catch (error) {
+         console.log(error);
          res.status(500).send({ error: 'Failed to update org' });
        }
    }
