@@ -5,9 +5,7 @@ const User = require("./userModel") ;
 const organizationSchema = new mongoose.Schema({
     name : String, 
     users :[
-        {type:Object},
          {
-        
              user_id:{
                  type : mongoose.Schema.Types.ObjectId ,
                  ref : 'User' 

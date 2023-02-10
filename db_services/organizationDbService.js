@@ -1,11 +1,10 @@
 const Org = require("../Models/organizationModel")
-
 async function getAllOrgs(){
     return await Org.find();
 }
 
 async function getOrgById(id){
-    return await Org.findById(id)
+    return await Org.findById(id);
 }
 
 async function saveOrg(org){
@@ -24,11 +23,10 @@ async function deleteOrgById(id){
     return await Org.findByIdAndDelete(id)
 }
 async function addUserInOrg(org_id,user){
-    return await Org.update(
+    return await Org.updateOne(
         { _id:org_id},
         { $push: { users: user} }
      )
-    return await Org.findByIdAndUpdate(org_id,user);
 }
 
 module.exports={getAllOrgs,getOrgById,saveOrg,updateOrgTitle,deleteOrgById,addUserInOrg}

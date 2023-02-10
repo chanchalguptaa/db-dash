@@ -18,9 +18,10 @@ const getAllOrgs = async (req, res) => {
          return res.status(404).json({error:"userId not found"});
     const user_type = "user";
     try{
-       const data  =  await orgService.addUserInOrg(org_id,{user_id,user_type});
-        return res.status(200).json({message:"successfully user added" ,data});
+        await orgService.addUserInOrg(org_id,{user_id,user_type});
+        return res.status(200).json({message:"successfully user added" });
     }catch(err){
+      console.log(err);
         return res.status(403).json({error:"some error on server"});
     }
 
@@ -46,6 +47,7 @@ const getAllOrgs = async (req, res) => {
          }
          res.send(org)
       } catch (error) {
+         console.log(error)
          res.status(400).send(error)
       }
    }
