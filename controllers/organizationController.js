@@ -7,8 +7,23 @@ const getAllOrgs = async (req, res) => {
       const org = await orgService.getAllOrgs()
       res.send(org);
    } catch (error) {
-      res.status(401).send(error)
+      res.status(401).send(error,"Unauthorized user");
    }
+ }
+ const addUserInOrg = async (req,res) =>{
+   
+   const org_id = req?.params?.id;
+   const user_id = req?.body?.user_id;
+     if(!user_id)
+         return res.status(404).json({error:"userId not found"});
+    const user_type = "user";
+    try{
+       const data  =  await orgService.addUserInOrg(org_id,{user_id,user_type});
+        return res.status(200).json({message:"successfully user added" ,data});
+    }catch(err){
+        return res.status(403).json({error:"some error on server"});
+    }
+
  }
 
  const createOrg =  async (req, res) => {
@@ -69,4 +84,4 @@ const getAllOrgs = async (req, res) => {
       }
    }
 
-  module.exports = {getAllOrgs,createOrg,getOrgById,updateOrg,deleteOrg}
+  module.exports = {getAllOrgs,createOrg,getOrgById,updateOrg,deleteOrg,addUserInOrg}

@@ -12,6 +12,7 @@ async function saveOrg(org){
     await org.save()
 }
 
+
 async function updateOrg(id,org){
 
     try {
@@ -24,5 +25,12 @@ async function updateOrg(id,org){
 async function deleteOrgById(id){
     return await Org.findByIdAndDelete(id)
 }
+async function addUserInOrg(org_id,user){
+    return await Org.update(
+        { _id:org_id},
+        { $push: { users: user} }
+     )
+    return await Org.findByIdAndUpdate(org_id,user);
+}
 
-module.exports={getAllOrgs,getOrgById,saveOrg,updateOrg,deleteOrgById}
+module.exports={getAllOrgs,getOrgById,saveOrg,updateOrg,deleteOrgById,addUserInOrg}
