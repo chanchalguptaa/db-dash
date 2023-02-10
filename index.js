@@ -26,7 +26,7 @@ connectDB();
 //   // })
 //   //  const data= await orgSchema.create({
     
-//   //   org_name :"walkover",
+//   //   name :"walkover",
 //   //   users :[
 //   //   {
 //   //     user_id:"63e4e4bf133b16041f8eb79b",

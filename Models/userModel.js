@@ -19,10 +19,10 @@ const userSchema = new mongoose.Schema({
         }
       }
     },
-    db :
-   [ 
+    dbs :
+    [ 
        {type:Object}
-      ]
+    ]
   }
 );
 
