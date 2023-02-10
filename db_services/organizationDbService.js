@@ -1,4 +1,4 @@
-const Org = require("../Models/organizationModel")
+const Org = require("../models/organizationModel")
 
 async function getAllOrgs(){
     return await Org.find();
