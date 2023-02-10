@@ -9,7 +9,7 @@ async function getUserById(id){
 }
 
 async function saveUser(user){
-    await user.save()
+    await User.save()
 }
 
 async function updateUser(first_name,last_name,id,dbs){ 
