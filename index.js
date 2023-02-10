@@ -2,7 +2,9 @@ const express = require('express')
 const mongoose = require('mongoose')
 const dotenv = require('dotenv').config()
 const connectDB = require("./services/mongodbService.js")
-
+const  dbSchema = require("./Models/dbModel");
+const  orgSchema = require("./Models/organizationModel");
+const  userModel = require("./Models/userModel");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -11,7 +13,7 @@ app.use(express.json());
 
 //connect mongodb
 connectDB();
- 
+
 app.use('/api/user',require("./Routers/userRoute"))
 
 if (process.env.NODE_ENV === 'production') {
