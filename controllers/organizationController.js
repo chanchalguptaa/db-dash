@@ -42,14 +42,15 @@ const getAllOrgs = async (req, res) => {
 
          const org = await orgService.getOrgById(id)
      
-         if (!org) {
-           return res.status(404).send({ error: 'Org not found' });
-         }
+        //  if (!org) {
+        //    return res.status(404).send({ error: 'Org not found' });
+        //  }
      
-         Object.assign(org, orgData);
-         await orgService.saveOrg(org)
+        //  Object.assign(org, orgData);
+        //  await orgService.saveOrg(org)
+        await orgService.updateOrg(id,orgData);
      
-         res.send({ message: 'Org updated successfully' ,org});
+         res.send({ message: 'Org updated successfully' ,orgData}); 
        } catch (error) {
          res.status(500).send({ error: 'Failed to update org' });
        }

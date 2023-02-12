@@ -1,0 +1,25 @@
+const db = require("../models/dbModel")
+
+async function saveDb(dbData){
+    return await dbData.save()
+}
+
+async function getDbs(){
+    return await db.find()
+}
+
+async function getById(id){
+    return await db.findById(id)
+}
+
+async function deleteDb(id){
+    return await db.findByIdAndDelete(id)
+}
+
+async function renameDb(id,newDb){
+    return await db.findByIdAndUpdate(id,newDb)
+}
+
+
+
+module.exports = {saveDb,getDbs,deleteDb,renameDb,getById}
