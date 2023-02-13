@@ -14,13 +14,14 @@ const getAllOrgs = async (req, res) => {
 const addUserInOrg = async (req, res) => {
    const org_id = req?.params?.id;
    const user_id = req?.body?.user_id;
-   if (!user_id)
-      return res.status(404).json(prepareErrorResponse({ message: "userId not found", data: { error } }));
-   const user_type = "user";
-   try {
-      const user = await orgService.addUserInOrg(org_id, { user_id, user_type });
-      return res.status(200).json(prepareSuccessResponse({ data: user, message: "successfully user added" }));
-   } catch (err) {
+     if(!user_id)
+         return res.status(404).json({error:"userId not found"});
+    const user_type = "user";
+    try{
+        const response = await orgService.addUserInOrg(org_id,{user_id,user_type});
+      
+        return res.status(200).json({message:"successfully user added" });
+    }catch(err){
       console.log(err);
       return res.status(403).json(prepareErrorResponse({ message: "some error on server", data: { error } }));
    }
@@ -82,6 +83,7 @@ const deleteOrg = async (req, res) => {
       }
       return res.status(200).json(prepareSuccessResponse({ data: org, message: "Org deleted successfully" }));
 
+<<<<<<< Updated upstream
    } catch (error) {
       return res.status(400).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
 
@@ -89,3 +91,6 @@ const deleteOrg = async (req, res) => {
 }
 
 module.exports = { getAllOrgs, createOrg, getOrgById, updateOrg, deleteOrg, addUserInOrg }
+=======
+  module.exports = {getAllOrgs,createOrg,getOrgById,updateOrg,deleteOrg,addUserInOrg,removeUserInOrg}
+>>>>>>> Stashed changes

@@ -28,5 +28,15 @@ async function addUserInOrg(org_id,user){
         { $push: { users: user} }
      )
 }
+async function removeUserInOrg(org_id,user){
+    console.log("fdbdb",org_id,user)
 
-module.exports={getAllOrgs,getOrgById,saveOrg,updateOrgTitle,deleteOrgById,addUserInOrg}
+    return await Org.updateOne(
+        { _id:org_id},
+        // { $pull: { users: user} }
+        { $pull: { "users" : { user_id: user } } },
+     )
+     
+}
+
+module.exports={getAllOrgs,getOrgById,saveOrg,updateOrgTitle,deleteOrgById,addUserInOrg,removeUserInOrg}
