@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const {createDb,getAllDb,deleteDb,renameDb,getDbByOrgId} = require("../controllers/dbController")
-const { createTable } = require("../sql_db_services/tableService")
+const { createTable } = require("../controllers/tableController")
 
 router.route('/').get(getAllDb)
 router.route('/').post(createDb)
