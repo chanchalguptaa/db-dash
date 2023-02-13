@@ -1,4 +1,4 @@
-const dbService = require("../db_services/dbDbService")
+const dbService = require("../db_services/masterDbService")
 const { prepareErrorResponse, prepareSuccessResponse } = require("../services/utilityService.js");
 const sqlDbService = require("../sql_db_services/databaseService") 
 
