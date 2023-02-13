@@ -2,9 +2,9 @@ const express = require('express')
 const mongoose = require('mongoose')
 const dotenv = require('dotenv').config()
 const connectDB = require("./services/mongodbService.js")
-const  dbSchema = require("./Models/dbModel");
-const  orgSchema = require("./Models/organizationModel");
-const  userModel = require("./Models/userModel");
+const  dbSchema = require("./models/dbModel");
+const  orgSchema = require("./models/organizationModel");
+const  userModel = require("./models/userModel");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -27,6 +27,8 @@ if (process.env.NODE_ENV === 'production') {
     res.send("Api working");      
   })
 }
+
+
     
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
