@@ -23,14 +23,7 @@ async function addTable(id,table){
     console.log("in add table = ",id,table)
     return await db.updateOne(
         { _id:id},
-        {
-            tables: { 
-                $set : table
-                }
-    }
-
-      
-        
+        { $set: { "tables" :   table  } }    
      )
 }
 
