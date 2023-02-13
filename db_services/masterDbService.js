@@ -19,8 +19,22 @@ async function getById(id){
 async function deleteDb(id){
     return await db.findByIdAndDelete(id)
 }
+async function addTable(id,table){
+    console.log("in add table = ",id,table)
+    return await db.updateOne(
+        { _id:id},
+        {
+            tables: { 
+                $set : table
+                }
+    }
+
+      
+        
+     )
+}
 
 async function renameDb(id,newDb){
     return await db.findByIdAndUpdate(id,newDb)
 }
-module.exports = {saveDb,getDbs,deleteDb,renameDb,getById,getDbByOrgId}
+module.exports = {saveDb,getDbs,deleteDb,renameDb,getById,getDbByOrgId,addTable}
