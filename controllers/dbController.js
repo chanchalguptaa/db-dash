@@ -37,6 +37,16 @@ const getAllDb = async (req,res)=>{
     }
 }
 
+const getDbByOrgId = async (req,res)=>{
+    try {
+        const org_id = req.params.org_id;
+        const db = await dbService.getDbByOrgId(org_id);
+        return res.status(201).json(prepareSuccessResponse({ data: db, message: "Successfully get db" }));
+    } catch (error) {
+        return res.status(401).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
+    }
+}
+
 const deleteDb = async (req,res)=>{
     try {
          
@@ -78,4 +88,4 @@ const renameDb = async (req,res) =>{
     }
 }
 
-module.exports = {createDb,getAllDb,deleteDb,renameDb}
+module.exports = {createDb,getAllDb,deleteDb,renameDb,getDbByOrgId}
