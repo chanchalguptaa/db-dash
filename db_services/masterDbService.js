@@ -8,6 +8,10 @@ async function getDbs(){
     return await db.find()
 }
 
+async function getDbByOrgId(org_id){
+    return await db.find({ org_id:org_id })
+}
+
 async function getById(id){
     return await db.findById(id)
 }
@@ -19,7 +23,4 @@ async function deleteDb(id){
 async function renameDb(id,newDb){
     return await db.findByIdAndUpdate(id,newDb)
 }
-
-
-
-module.exports = {saveDb,getDbs,deleteDb,renameDb,getById}
+module.exports = {saveDb,getDbs,deleteDb,renameDb,getById,getDbByOrgId}

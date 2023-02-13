@@ -8,8 +8,9 @@ const createDb = async (req,res)=>{
     try {
         const db = new Db(req?.body) 
         const sqlDbName = db?.name+"_"+db?.org_id
+        console.log(sqlDbName);
+        const conUrl=await sqlDbService.createDatabase(sqlDbName)
         try {
-            const conUrl=await sqlDbService.createDatabase(sqlDbName)
             db.con_url=conUrl
             await dbService.saveDb(db)
             return res.status(201).json(prepareSuccessResponse({ data: db, message: "Successfully create db" }));
@@ -33,6 +34,16 @@ const getAllDb = async (req,res)=>{
     } catch (error) {
         return res.status(401).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
 
+    }
+}
+
+const getDbByOrgId = async (req,res)=>{
+    try {
+        const org_id = req.params.org_id;
+        const db = await dbService.getDbByOrgId(org_id);
+        return res.status(201).json(prepareSuccessResponse({ data: db, message: "Successfully get db" }));
+    } catch (error) {
+        return res.status(401).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
     }
 }
 
@@ -77,4 +88,4 @@ const renameDb = async (req,res) =>{
     }
 }
 
-module.exports = {createDb,getAllDb,deleteDb,renameDb}
+module.exports = {createDb,getAllDb,deleteDb,renameDb,getDbByOrgId}
