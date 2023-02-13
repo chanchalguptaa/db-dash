@@ -73,6 +73,22 @@ const updateOrg = async (req, res) => {
    }
 }
 
+const removeUserInOrg = async (req,res) =>{
+   
+   const org_id = req?.params?.id;
+   const user_id = req?.body?.user_id;
+     if(!user_id)
+         return res.status(404).json({error:"userId not found"});
+    try{
+        const reponse = await orgService.removeUserInOrg(org_id,user_id);
+        console.log(reponse );
+        return res.status(200).json({message:"successfully user removed" });
+    }catch(err){
+      console.log(err);
+        return res.status(403).json({error:"some error on server"});
+    }
+ }
+
 const deleteOrg = async (req, res) => {
    try {
 
@@ -83,14 +99,10 @@ const deleteOrg = async (req, res) => {
       }
       return res.status(200).json(prepareSuccessResponse({ data: org, message: "Org deleted successfully" }));
 
-<<<<<<< Updated upstream
    } catch (error) {
       return res.status(400).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
 
    }
 }
 
-module.exports = { getAllOrgs, createOrg, getOrgById, updateOrg, deleteOrg, addUserInOrg }
-=======
-  module.exports = {getAllOrgs,createOrg,getOrgById,updateOrg,deleteOrg,addUserInOrg,removeUserInOrg}
->>>>>>> Stashed changes
+module.exports = { getAllOrgs, createOrg, getOrgById, updateOrg, deleteOrg, addUserInOrg,removeUserInOrg }

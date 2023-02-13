@@ -4,7 +4,7 @@ async function getAllOrgs(){
 }
 
 async function getOrgById(id){
-    return await Org.findById(id).populate("users");
+    return await Org.findById(id)
 }
 
 async function saveOrg(org){
@@ -29,11 +29,8 @@ async function addUserInOrg(org_id,user){
      )
 }
 async function removeUserInOrg(org_id,user){
-    console.log("fdbdb",org_id,user)
-
     return await Org.updateOne(
         { _id:org_id},
-        // { $pull: { users: user} }
         { $pull: { "users" : { user_id: user } } },
      )
      
