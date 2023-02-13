@@ -9,10 +9,10 @@ async function getUserById(id){
 }
 
 async function saveUser(user){
-    await User.save()
+    await user.save()
 }
 
-async function updateUser(first_name,last_name,id,dbs){ 
+async function updateUser(first_name,last_name,id,db){ 
 
     try {
         return await User.updateOne({

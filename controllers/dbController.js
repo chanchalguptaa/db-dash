@@ -1,4 +1,5 @@
 const dbService = require("../db_services/dbDbService")
+const { prepareErrorResponse, prepareSuccessResponse } = require("../services/utilityService.js");
 const sqlDbService = require("../sql_db_services/databaseService") 
 
 const Db = require("../models/dbModel")
@@ -12,24 +13,27 @@ const createDb = async (req,res)=>{
         try {
             db.con_url=conUrl
             await dbService.saveDb(db)
-            res.send(db)
+            return res.status(201).json(prepareSuccessResponse({ data: db, message: "Successfully create db" }));
+
         } catch (error) {
-            console.log("HARIOM "+error);
             await sqlDbService.dropDatabase(sqlDbName)
-            res.status(400).send(error)
+            return res.status(400).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
+
     }
     } catch (error) {
-        console.log("ASHISH "+error);
-        res.status(400).send(error)
+        return res.status(400).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
+
     }
 }
 
 const getAllDb = async (req,res)=>{
     try {
         const db = await dbService.getDbs()
-        res.send(db)
+        return res.status(201).json(prepareSuccessResponse({ data: db, message: "Successfully get db" }));
+
     } catch (error) {
-        res.status(401).send(error)
+        return res.status(401).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
+
     }
 }
 
@@ -39,13 +43,15 @@ const deleteDb = async (req,res)=>{
         const id = req?.params?.id
         const db = await dbService.deleteDb(id)
         if(!db){
-          return res.status(404).send({error:"db not found with id "+id})
+            return res.status(404).json(prepareErrorResponse({ message: "db not found with id", data: { error } }));
+
         }
         const sqlDbName = db?.name+"_"+db?.org_id
         await sqlDbService.dropDatabase(sqlDbName)
-        res.send({message:"delete done !",db})
+        return res.status(201).json(prepareSuccessResponse({ data: db, message: "Successfully delete db" }));
+
      } catch (error) {
-        res.status(400).send(error)
+        return res.status(400).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));    
      }
 }
 
@@ -55,7 +61,8 @@ const renameDb = async (req,res) =>{
         const newDB = req?.body
         const db = await dbService.getById(id)
         if(!db){
-            return res.status(404).send("db not found with id "+id)
+            return res.status(404).json(prepareErrorResponse({ message: "rename cancelled", data: { error } }));
+
         }
         const newDbName = newDB?.name+"_"+db?.org_id
         const oldDbName = db?.name+"_"+db?.org_id;
@@ -63,10 +70,11 @@ const renameDb = async (req,res) =>{
         const conUrl=await sqlDbService.renameDatabase(oldDbName,newDbName);
         db.con_url=conUrl;
         await dbService.saveDb(db)
-        res.send({message:"success",db})
+        return res.status(201).json(prepareSuccessResponse({ data: db, message: "Successfully rename db" }));
+
     } catch (error) {
-        console.error(error);
-        res.status(400).send({message:"re operation failed",error})
+        return res.status(404).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
+
     }
 }
 
