@@ -6,7 +6,7 @@ router.route('/').get(getAllDb)
 router.route('/').post(createDb)
 router.route('/:id').delete(deleteDb)
 router.route('/rename/:id').patch(renameDb)
-
+router.route('/:id').patch()
 module.exports = router;
 
 
