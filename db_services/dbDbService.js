@@ -19,7 +19,4 @@ async function deleteDb(id){
 async function renameDb(id,newDb){
     return await db.findByIdAndUpdate(id,newDb)
 }
-
-
-
 module.exports = {saveDb,getDbs,deleteDb,renameDb,getById}

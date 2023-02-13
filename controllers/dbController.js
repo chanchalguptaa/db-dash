@@ -8,8 +8,8 @@ const createDb = async (req,res)=>{
         const db = new Db(req?.body) 
         const sqlDbName = db?.name+"_"+db?.org_id
         console.log(sqlDbName);
+        const conUrl=await sqlDbService.createDatabase(sqlDbName)
         try {
-            const conUrl=await sqlDbService.createDatabase(sqlDbName)
             db.con_url=conUrl
             await dbService.saveDb(db)
             res.send(db)
@@ -66,7 +66,7 @@ const renameDb = async (req,res) =>{
         res.send({message:"success",db})
     } catch (error) {
         console.error(error);
-        res.status(400).send({message:"rename operation failed",error})
+        res.status(400).send({message:"re operation failed",error})
     }
 }
 
