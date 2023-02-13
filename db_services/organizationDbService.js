@@ -4,7 +4,7 @@ async function getAllOrgs(){
 }
 
 async function getOrgById(id){
-    return await Org.findById(id);
+    return await Org.findById(id).populate("users");
 }
 
 async function saveOrg(org){
