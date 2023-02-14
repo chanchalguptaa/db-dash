@@ -20,7 +20,6 @@ async function deleteDb(id){
     return await db.findByIdAndDelete(id)
 }
 async function addTable(id,table){
-    console.log("in add table = ",id,table)
     return await db.updateOne(
         { _id:id},
         { $set: { "tables" :   table  } }    

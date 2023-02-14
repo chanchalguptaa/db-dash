@@ -7,11 +7,10 @@ const createTable = async (req,res)=>{
     try{
          const db_id = req?.body?.id;
          const tableName = req?.body?.tableName;
-         console.log("temp");
          const data = await getById(db_id);
-         console.log("data in create table ",data);
-         const ans = tableService.createTable(tableName,data)
+         const ans = await tableService.createTableService(tableName,data)
          try {
+            
             const data = await addTable(db_id,{"1234":{tableName:tableName}})
              return res.status(200).json(prepareSuccessResponse({ message: `Table '${tableName}' created successfully`}))
          }

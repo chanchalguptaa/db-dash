@@ -9,20 +9,18 @@ const createClient = (data) => {
   });
 };
 
-const createTable = async (tableName,data)=>{
+const createTableService = async (tableName,data)=>{
     try {
-        console.log("data",data);
     const client = createClient(data);
     await client.connect();
-    console.log('Connected!');
     const ans = await client.query(`CREATE TABLE ${tableName} (id SERIAL PRIMARY KEY)`);
     await client.end();
     return ans;
 }
-catch (e)
+catch (err)
 {
-    throw e ;
+    throw err ;
 }
 }
 
-module.exports = {createTable}
+module.exports = {createTableService}
