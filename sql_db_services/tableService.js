@@ -26,15 +26,21 @@ catch (err)
 
 const updateTableService = async (tableName,newTableName,data)=>{
   try {
+    console.log("first")
   const client = createClient(data);
+  console.log("second")
   await client.connect();
-  const ans = await client.query(`ALTER TABLE ${tableName} RENAME TO ${newTableName} (id SERIAL PRIMARY KEY)`);
+  console.log("third")
+  const ans = await client.query(`ALTER TABLE ${tableName} RENAME TO ${newTableName}`);
+  console.log(ans)
   await client.end();
   return ans;
 }
 catch (err)
 {
+  console.log(err.messege)
   throw err ;
+  
 }
 }
 
