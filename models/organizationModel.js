@@ -3,7 +3,10 @@ const validator = require('validator')
 const User = require("./userModel") ;
 
 const organizationSchema = new mongoose.Schema({
-    name : String, 
+    name : {
+        type:String,
+        unique:true
+    }, 
     users :[
          {
              user_id:{

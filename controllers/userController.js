@@ -38,7 +38,7 @@ const getUserById = async (req, res) => {
    }
 }
 
-const updateUserById = async (req, res) => {
+const updateUser = async (req, res) => {
    try {
       const id = req?.params?.id;
       const first_name = req?.body.first_name;
@@ -82,4 +82,4 @@ const findUserByEmail = async (req, res) => {
    }
 }
 
-module.exports = { getAllUsers, createUser, getUserById, updateUserById, deleteUser, findUserByEmail }
+module.exports = { getAllUsers, createUser, getUserById, updateUser, deleteUser, findUserByEmail }

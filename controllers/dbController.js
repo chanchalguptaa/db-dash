@@ -10,8 +10,6 @@ const createDb = async (req,res)=>{
         const org_id = req?.params?.orgId
         const sqlDbName = db?.name+"_"+org_id
         db.org_id =  req.params.orgId
-        console.log(req.params.orgId);
-        console.log(sqlDbName);
         const conUrl=await sqlDbService.createDatabase(sqlDbName)
         try {
             db.con_url=conUrl

@@ -16,7 +16,7 @@ connectDB();
 
 app.use('/users',require("./routers/userRoute"))
 app.use('/orgs',require("./routers/organizationRoute"))
-app.use('/organization',require("./routers/dbRoute"))
+app.use('/orgs',require("./routers/dbRoute"))
 app.use('/dbs',require("./routers/tableRoute"))
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '/frontend/build')))
