@@ -8,6 +8,13 @@ async function getDbs(){
     return await db.find()
 }
 
+async function getDbById(id)
+{
+    return await db.find({
+        _id:id
+    })
+}
+
 async function getDbByOrgId(org_id){
     return await db.find({ org_id:org_id })
 }
@@ -32,4 +39,4 @@ async function addTable(id,tableName){
 async function renameDb(id,newDb){
     return await db.findByIdAndUpdate(id,newDb)
 }
-module.exports = {saveDb,getDbs,deleteDb,renameDb,getById,getDbByOrgId,addTable}
+module.exports = {saveDb,getDbs,deleteDb,renameDb,getById,getDbByOrgId,addTable,getDbById}
