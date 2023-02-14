@@ -14,9 +14,9 @@ app.use(express.json());
 //connect mongodb
 connectDB();
 
-app.use('/api/user',require("./routers/userRoute"))
-app.use('/api/org',require("./routers/organizationRoute"))
-app.use('/api/db',require("./routers/dbRoute"))
+app.use('/users',require("./routers/userRoute"))
+app.use('/orgs',require("./routers/organizationRoute"))
+app.use('/organization',require("./routers/dbRoute"))
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '/frontend/build')))
   app.get('*', (req, res) =>
