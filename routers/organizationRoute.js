@@ -8,8 +8,8 @@ router.route('/').post(createOrg);
 router.route('/:id').get(getOrgById);
 router.route('/:id').patch(updateOrg);
 router.route('/:id').delete(deleteOrg);
-router.route('/adduser/:id').patch(addUserInOrg);
-router.route('/removeuser/:id').patch(removeUserInOrg)
+router.route('/:id/adduser').patch(addUserInOrg);
+router.route('/:id/removeuser').patch(removeUserInOrg)
 
 
 

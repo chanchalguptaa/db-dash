@@ -1,8 +1,10 @@
 const { prepareErrorResponse, prepareSuccessResponse } = require("../services/utilityService.js");
 const {addTable,getById} = require("../db_services/masterDbService");
 const tableService = require("../sql_db_services/tableService.js") 
-
 const createTable = async (req,res)=>{
+    const db_id = req?.params?.dbId;
+    const tableName = req?.body?.tableName;
+
     try{
          const db_id = req?.body?.id;
          const tableName = req?.body?.tableName;

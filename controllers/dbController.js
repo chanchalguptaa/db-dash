@@ -7,8 +7,9 @@ const Db = require("../models/dbModel")
 const createDb = async (req,res)=>{
     try {
         const db = new Db(req?.body) 
-        const sqlDbName = db?.name+"_"+db?.org_id
-        // console.log(sqlDbName);
+        const org_id = req?.params?.orgId
+        const sqlDbName = db?.name+"_"+org_id
+        db.org_id =  req.params.orgId
         const conUrl=await sqlDbService.createDatabase(sqlDbName)
         try {
             db.con_url=conUrl
@@ -29,6 +30,18 @@ const createDb = async (req,res)=>{
 const getAllDb = async (req,res)=>{
     try {
         const db = await dbService.getDbs()
+        return res.status(201).json(prepareSuccessResponse({ data: db, message: "Successfully get db" }));
+
+    } catch (error) {
+        return res.status(401).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
+
+    }
+}
+
+const getDbById = async(req,res)=>{
+    try {
+        const dbId = req.params.dbId
+        const db = await dbService.getDbById(dbId)
         return res.status(201).json(prepareSuccessResponse({ data: db, message: "Successfully get db" }));
 
     } catch (error) {
@@ -88,4 +101,4 @@ const renameDb = async (req,res) =>{
     }
 }
 
-module.exports = {createDb,getAllDb,deleteDb,renameDb,getDbByOrgId}
+module.exports = {createDb,getAllDb,deleteDb,renameDb,getDbByOrgId,getDbById}
