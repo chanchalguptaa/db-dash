@@ -8,7 +8,7 @@ const createDb = async (req,res)=>{
     try {
         const db = new Db(req?.body) 
         const sqlDbName = db?.name+"_"+db?.org_id
-        console.log(sqlDbName);
+        // console.log(sqlDbName);
         const conUrl=await sqlDbService.createDatabase(sqlDbName)
         try {
             db.con_url=conUrl
