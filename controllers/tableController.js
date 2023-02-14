@@ -3,14 +3,7 @@ const sqlDbService = require("../sql_db_services/databaseService")
 const {addTable,getById} = require("../db_services/masterDbService");
 const tableService = require("../sql_db_services/tableService.js") 
 const { Client } = require('pg');
-const 
-
-
-
-
-
-
-
+const tableService = require("../sql_db_services/tableService")
 
 createTable = async (req,res)=>{
     const db_id = req?.body?.id;
@@ -19,7 +12,7 @@ createTable = async (req,res)=>{
     try{
          const data = await getById(db_id);
          console.log("data in create table ",data);
-         const ans = await tableService.createTable(tableName,data)
+         const ans = await tableService.createTableService(tableName,data)
          try {
             
             const data = await addTable(db_id,{"1234":{tableName:tableName}})
