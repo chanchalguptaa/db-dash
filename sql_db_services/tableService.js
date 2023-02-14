@@ -11,7 +11,7 @@ const createClient = (data) => {
 
 const createTable = async (tableName,data)=>{
     try {
-        console.log("data",data);
+    console.log("data",data);
     const client = createClient(data);
     await client.connect();
     console.log('Connected!');
@@ -21,7 +21,7 @@ const createTable = async (tableName,data)=>{
 }
 catch (e)
 {
-    throw e ;
+    throw new Error(e);
 }
 }
 
