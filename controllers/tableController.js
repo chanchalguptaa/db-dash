@@ -5,7 +5,7 @@ const tableService = require("../sql_db_services/tableService.js")
 const { Client } = require('pg');
 
 const createTable = async (req,res)=>{
-    const db_id = req?.body?.id;
+    const db_id = req?.params?.dbId;
     const tableName = req?.body?.tableName;
 
     try{
