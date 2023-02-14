@@ -27,7 +27,6 @@ const getUserById = async (req, res) => {
    try {
       const id = req?.params?.id;
       const user = await userService.getUserById(id);
-      console.log(user);
       if (!user) {
          return res.status(400).json(prepareErrorResponse({ message: "user not found", data: { error } }));
       }
@@ -44,11 +43,9 @@ const updateUserById = async (req, res) => {
       const id = req?.params?.id;
       const first_name = req?.body.first_name;
       const last_name = req?.body.last_name;
-      console.log(id, first_name, last_name)
       const db = req?.body.dbs;
 
       const user = await userService.updateUser(first_name, last_name, id, db)
-      console.log(user)
       return res.status(201).json(prepareSuccessResponse({ data: user, message: "User updated successfully" }));
    } catch (error) {
       console.log(error);
@@ -74,7 +71,6 @@ const deleteUser = async (req, res) => {
 const findUserByEmail = async (req, res) => {
    try {
       const email = req.params.email
-      console.log(email);
       const user = await userService.getUserByEmail(email)
       if (!user) {
          return res.status(404).json(prepareErrorResponse({ message: "user not found", data: { error } }));

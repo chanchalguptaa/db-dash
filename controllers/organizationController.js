@@ -81,7 +81,6 @@ const removeUserInOrg = async (req,res) =>{
          return res.status(404).json({error:"userId not found"});
     try{
         const reponse = await orgService.removeUserInOrg(org_id,user_id);
-        console.log(reponse );
         return res.status(200).json({message:"successfully user removed" });
     }catch(err){
       console.log(err);

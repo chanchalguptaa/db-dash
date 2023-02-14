@@ -19,12 +19,14 @@ async function getById(id){
 async function deleteDb(id){
     return await db.findByIdAndDelete(id)
 }
-async function addTable(id,table){
-    console.log("in add table = ",id,table)
-    return await db.updateOne(
+async function addTable(id,tableName){
+    const data =  await db.findOneAndUpdate (
         { _id:id},
-        { $set: { "tables" :   table  } }    
-     )
+        {
+         $set: { [`tables.${tableName}`] : {}} ,
+        }
+    )
+        return data;
 }
 
 async function renameDb(id,newDb){

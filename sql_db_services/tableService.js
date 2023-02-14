@@ -9,20 +9,47 @@ const createClient = (data) => {
   });
 };
 
-const createTable = async (tableName,data)=>{
+const createTableService = async (tableName,data)=>{
     try {
-        console.log("data",data);
     const client = createClient(data);
     await client.connect();
-    console.log('Connected!');
     const ans = await client.query(`CREATE TABLE ${tableName} (id SERIAL PRIMARY KEY)`);
     await client.end();
     return ans;
 }
-catch (e)
+catch (err)
 {
-    throw e ;
+    throw err ;
 }
 }
 
-module.exports = {createTable}
+
+const updateTableService = async (tableName,newTableName,data)=>{
+  try {
+  const client = createClient(data);
+  await client.connect();
+  const ans = await client.query(`ALTER TABLE ${tableName} RENAME TO ${newTableName} (id SERIAL PRIMARY KEY)`);
+  await client.end();
+  return ans;
+}
+catch (err)
+{
+  throw err ;
+}
+}
+
+const deleteTableService = async (tableName,data)=>{
+  try {
+  const client = createClient(data);
+  await client.connect();
+  const ans = await client.query(`DROP TABLE ${tableName} (id SERIAL PRIMARY KEY)`);
+  await client.end();
+  return ans;
+}
+catch (err)
+{
+  throw err ;
+}
+}
+
+module.exports = {createTableService,updateTableService}
