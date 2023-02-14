@@ -3,10 +3,7 @@ const validator = require('validator')
 const User = require("./userModel") ;
 
 const organizationSchema = new mongoose.Schema({
-    name : {
-        type:String,
-        unique:true
-    }, 
+    name : String,
     users :[
          {
              user_id:{
@@ -21,4 +18,6 @@ const organizationSchema = new mongoose.Schema({
     ]
 })
 
+
 module.exports = mongoose.models.Organization || mongoose.model('Organization' , organizationSchema) ;
+
