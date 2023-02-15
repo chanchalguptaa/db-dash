@@ -32,7 +32,7 @@ const createOrg = async (req, res) => {
    try {
       const org = new Org(req?.body);
       console.log("res",req.body.name)
-      if (!(req?.body?.name) ||req?.body?.name?.length<2 )
+      if (!(req?.body?.name) ||req?.body?.name?.length<2)
       {
          return res.status(404).json(prepareErrorResponse({ message: "invalid orgname " }));
       }
