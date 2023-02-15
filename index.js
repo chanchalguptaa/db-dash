@@ -18,12 +18,9 @@ app.use('/users',require("./routers/userRoute"))
 app.use('/orgs',require("./routers/organizationRoute"))
 app.use('/orgs',require("./routers/dbRoute"))
 app.use('/dbs',require("./routers/tableRoute"))
-<<<<<<< HEAD
 app.use('/dbs',require("./routers/fieldRoute"))
-=======
 app.use('/dbs',require("./routers/filterRoute"))
 
->>>>>>> b2a46f871f5557287929f98d3c67e2851a01bd02
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '/frontend/build')))
   app.get('*', (req, res) =>
