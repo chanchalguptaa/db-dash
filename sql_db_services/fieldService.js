@@ -23,4 +23,36 @@ catch (err)
 }
 }
 
-module.exports = { createFieldService }
+
+const deleteFieldService = async (tableName,fieldName,data)=>{
+    try {
+    const client = createClient(data);
+    await client.connect();
+    const ans = await client.query(`ALTER TABLE ${tableName} DROP COLUMN ${fieldName};`);
+    await client.end();
+    return ans;
+}
+catch (err)
+{
+    throw err ;
+}
+}
+
+
+const updateFieldService = async (tableName,oldFieldName,newFieldName,newFieldType,data)=>{
+    try {
+    const client = createClient(data);
+    await client.connect();
+    console.log('first')
+    const ans = await client.query(`ALTER TABLE ${tableName} RENAME COLUMN ${oldFieldName} TO ${newFieldName};`);
+    console.log('second')
+    await client.end();
+    return ans;
+}
+catch (err)
+{
+    throw err ;
+}
+}
+
+module.exports = { createFieldService,deleteFieldService,updateFieldService }

@@ -1,5 +1,5 @@
 const { prepareErrorResponse, prepareSuccessResponse } = require("../services/utilityService.js");
-const { addTable, getById } = require("../db_services/masterDbService");
+const { addTable, getById ,updateTableInDb} = require("../db_services/masterDbService");
 const tableService = require("../sql_db_services/tableService.js")
 const createTable = async (req, res) => {
      const db_id = req?.params?.dbId;
@@ -29,9 +29,9 @@ const updateTable = async (req, res) => {
      const tableName = req?.body?.tableName;
      try {
           const data = await getById(db_id);
-          const ans = await tableService.updateTableService(tableName,newTableName, data)
-           try {
-          //     const data1 = await addTable(db_id,tableName)
+          try {
+               const ans = await tableService.updateTableService(tableName,newTableName, data);
+               await updateTableInDb(db_id,newTableName,tableName) ;
                return res.status(200).json(prepareSuccessResponse({ message: `Table '${tableName}' updated successfully`}))
            }
            catch (err) {

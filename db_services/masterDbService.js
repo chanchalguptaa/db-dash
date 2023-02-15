@@ -35,10 +35,14 @@ async function addTable(id,tableName){
     )
         return data;
 }
-
-
-
+async function updateTableInDb(id,newTableName,oldTableName){
+    return await  db.findOneAndUpdate (
+        { _id:id},
+        { $rename: { [`tables.${oldTableName}`] : `tables.${newTableName}` } 
+        }
+    )
+}
 async function renameDb(id,newDb){
     return await db.findByIdAndUpdate(id,newDb)
 }
-module.exports = {saveDb,getDbs,deleteDb,renameDb,getById,getDbByOrgId,addTable,getDbById}
+module.exports = {saveDb,getDbs,deleteDb,renameDb,getById,getDbByOrgId,addTable,getDbById,updateTableInDb}
