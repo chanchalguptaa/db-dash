@@ -19,11 +19,9 @@ const dbSchema = new mongoose.Schema({
     },
     tables : {
       type:Object
-    //   table_id:{
-    //     table_name: String,
+    //   table_name:{
     //     fields:{
-    //         field_id:{
-    //             field_name: String,
+    //         field_name:{
     //             field_type: String
     //         }
     //     },
@@ -31,15 +29,13 @@ const dbSchema = new mongoose.Schema({
     //         view_id: String,
     //         view_name: String,
     //         table_id:{
-    //             field_id:{
-    //                 field_name:String,
-    //                 field_type:String
+    //             field_name:{
+    //                field_type:String
     //             }
     //         },
     //     },
     //     filter:{
-    //         filter_id:{
-    //             filter_name: String,
+    //         filter_name:{
     //             query:String
     //         }
     //     },
