@@ -1,6 +1,7 @@
 const Org = require('../models/organizationModel')
 const { prepareErrorResponse, prepareSuccessResponse } = require("../services/utilityService.js");
 const orgService = require("../Db_Services/organizationDbService");
+const userService = require("../db_services/userDbService")
 const { isEmpty } = require('lodash');
 
 const getAllOrgs = async (req, res) => {
@@ -15,14 +16,19 @@ const getAllOrgs = async (req, res) => {
 const addUserInOrg = async (req, res) => {
    try{
       const org_id = req?.params?.id;
-   const user_id = req?.body?.user_id;
-     if(!user_id)
-     return res.status(403).json(prepareErrorResponse({ message: "user not found", data: { error } }));
-
+      const user_id = req?.body?.user_id;
     const user_type = "user";
     try{
-        const response = await orgService.addUserInOrg(org_id,{user_id,user_type});
-      return res.status(200).json(prepareSuccessResponse({ data: org, message: "successfully add user" }));
+      const ifUser = await userService.getUserById(user_id);
+      if(ifUser != null)
+      {
+         const response = await orgService.addUserInOrg(org_id,{user_id,user_type});
+         return res.status(200).json(prepareSuccessResponse({ data: response, message: "successfully add user" }));
+      }
+      else
+      {
+         return res.status(403).json(prepareErrorResponse({ message: "some error on server"}));
+      }
     }catch(error){
       return res.status(403).json(prepareErrorResponse({ message: "some error on server", data: { error } }));
    }
@@ -37,7 +43,6 @@ const addUserInOrg = async (req, res) => {
 const createOrg = async (req, res) => {
    try {
       const org = new Org(req?.body);
-      console.log("res",req.body.name)
       if (!(req?.body?.name) ||req?.body?.name?.length<2)
       {
          return res.status(404).json(prepareErrorResponse({ message: "invalid orgname " }));
