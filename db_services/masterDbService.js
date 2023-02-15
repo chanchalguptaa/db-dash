@@ -45,4 +45,16 @@ async function updateTableInDb(id,newTableName,oldTableName){
 async function renameDb(id,newDb){
     return await db.findByIdAndUpdate(id,newDb)
 }
-module.exports = {saveDb,getDbs,deleteDb,renameDb,getById,getDbByOrgId,addTable,getDbById,updateTableInDb}
+
+async function addQuery(id,query,filterName,tableName){
+    const data =  await db.findOneAndUpdate (
+        { _id:id},
+        {
+         $set: { [`tables.${tableName}.filters.${filterName}.query`] : query} ,
+        }
+    )
+        return data;
+}
+
+
+module.exports = {saveDb,getDbs,deleteDb,renameDb,getById,getDbByOrgId,addTable,getDbById,updateTableInDb,addQuery}

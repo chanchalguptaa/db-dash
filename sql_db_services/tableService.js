@@ -35,7 +35,6 @@ const updateTableService = async (tableName,newTableName,data)=>{
 catch (err)
 {
   throw err ;
-  
 }
 }
 
