@@ -60,7 +60,7 @@ const getDbByOrgId = async (req,res)=>{
     }
 }
 
-const deleteDb = async (req,res)=>{
+      const deleteDb = async (req,res)=>{
     try {
          
         const id = req?.params?.id

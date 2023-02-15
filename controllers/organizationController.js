@@ -1,6 +1,7 @@
 const Org = require('../models/organizationModel')
 const { prepareErrorResponse, prepareSuccessResponse } = require("../services/utilityService.js");
 const orgService = require("../Db_Services/organizationDbService");
+const { isEmpty } = require('lodash');
 
 const getAllOrgs = async (req, res) => {
    try {
@@ -30,10 +31,18 @@ const addUserInOrg = async (req, res) => {
 const createOrg = async (req, res) => {
    try {
       const org = new Org(req?.body);
+      console.log("res",req.body.name)
+      if (!(req?.body?.name) ||req?.body?.name?.length<2 )
+      {
+         return res.status(404).json(prepareErrorResponse({ message: "invalid orgname " }));
+      }
+
       await orgService.saveOrg(org)
       return res.status(200).json(prepareSuccessResponse({ data: org, message: "successfully create org" }));
 
-   } catch (error) {
+   }
+   
+    catch (error) {
       return res.status(404).json(prepareErrorResponse({ message: "some error on server", data: { error } }));
 
    }
