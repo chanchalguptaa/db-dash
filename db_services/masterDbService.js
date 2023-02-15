@@ -42,7 +42,14 @@ async function updateTableInDb(id,newTableName,oldTableName){
         }
     )
 }
+async function deleteTableInDb(id,tableName){
+    return await  db.findOneAndUpdate (
+        { _id:id},
+        { $unset: { [`tables.${tableName}`] : "" } 
+        }
+    )
+}
 async function renameDb(id,newDb){
     return await db.findByIdAndUpdate(id,newDb)
 }
-module.exports = {saveDb,getDbs,deleteDb,renameDb,getById,getDbByOrgId,addTable,getDbById,updateTableInDb}
+module.exports = {saveDb,getDbs,deleteDb,renameDb,getById,getDbByOrgId,addTable,getDbById,updateTableInDb,deleteTableInDb}
