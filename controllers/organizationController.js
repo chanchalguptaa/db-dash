@@ -34,7 +34,6 @@ const addUserInOrg = async (req, res) => {
    }
    }catch(error){
       return res.status(403).json(prepareErrorResponse({ message: "some error on server", data: { error } }));
-
    }
    
 
