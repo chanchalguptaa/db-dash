@@ -22,7 +22,6 @@ const addUserInOrg = async (req, res) => {
       
         return res.status(200).json({message:"successfully user added" });
     }catch(err){
-      console.log(err);
       return res.status(403).json(prepareErrorResponse({ message: "some error on server", data: { error } }));
    }
 
@@ -35,7 +34,6 @@ const createOrg = async (req, res) => {
       return res.status(200).json(prepareSuccessResponse({ data: org, message: "successfully create org" }));
 
    } catch (error) {
-      console.log(error);
       return res.status(404).json(prepareErrorResponse({ message: "some error on server", data: { error } }));
 
    }
@@ -51,7 +49,6 @@ const getOrgById = async (req, res) => {
       return res.status(200).json(prepareSuccessResponse({ data: org, message: "successfully get org" }));
 
    } catch (error) {
-      console.log(error)
       return res.status(400).json(prepareErrorResponse({ message: "some error on server", data: { error } }));
 
    }
@@ -68,7 +65,6 @@ const updateOrg = async (req, res) => {
          return res.status(404).json(prepareErrorResponse({ message: "id does not exixts", data: { error } }));
 
    } catch (error) {
-      console.log(error);
       res.status(500).send({ error: 'Failed to update org' });
    }
 }
@@ -83,7 +79,6 @@ const removeUserInOrg = async (req,res) =>{
         const reponse = await orgService.removeUserInOrg(org_id,user_id);
         return res.status(200).json({message:"successfully user removed" });
     }catch(err){
-      console.log(err);
         return res.status(403).json({error:"some error on server"});
     }
  }

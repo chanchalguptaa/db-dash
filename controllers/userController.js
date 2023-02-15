@@ -48,7 +48,6 @@ const updateUser = async (req, res) => {
       const user = await userService.updateUser(first_name, last_name, id, db)
       return res.status(201).json(prepareSuccessResponse({ data: user, message: "User updated successfully" }));
    } catch (error) {
-      console.log(error);
       return res.status(400).json(prepareErrorResponse({ message: "Failed to update user", data: { error } }));
    }
 }
