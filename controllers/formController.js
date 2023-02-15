@@ -11,9 +11,20 @@ const createform= async (req,res)=>{
 
         try 
         {  
+
             const form = new Form(req?.body);
-            console.log(form)
-            await formService.saveForm(form)
+            form.db_id=db_id;
+            form.table_name=table_name;
+            const formData = await formService.saveForm(form);
+            const data= await formService.createFormInDb(db_id,table_name,formData._id);
+            if(!(data.modifiedCount >=1 ))
+            {
+                
+                    const deletedid = await formService.deleteDbById(formData._id)
+                    return res.status(404).json(prepareErrorResponse({ message: "Incorrect Db Id" }));
+                    
+            }
+            console.log(data.modifiedCount);
            return res.status(200).json(prepareSuccessResponse({ data: form, message: "successfully create form" }));
      
         }
