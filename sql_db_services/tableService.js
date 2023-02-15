@@ -24,6 +24,20 @@ catch (err)
 }
 
 
+const getTableService = async (tableName,data)=>{
+  try {
+  const client = createClient(data);
+  await client.connect();
+  const ans = await client.query(`SELECT * FROM ${tableName}`);
+  await client.end();
+  return ans;
+}
+catch (err)
+{
+  throw err ;
+}
+}
+
 const updateTableService = async (tableName,newTableName,data)=>{
   try {
   const client = createClient(data);
@@ -52,4 +66,4 @@ catch (err)
 }
 }
 
-module.exports = {createTableService,updateTableService,deleteTableService}
+module.exports = {createTableService,getTableService,updateTableService,deleteTableService}

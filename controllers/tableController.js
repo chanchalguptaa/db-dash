@@ -21,6 +21,28 @@ const createTable = async (req, res) => {
      }
 
 }
+const getTable = async (req, res) => {
+     const db_id = req?.params?.dbId
+     const tableName = req?.params?.tableName;
+     try {
+
+          const data = await getById(db_id);
+          
+           try {              
+               const ans = await tableService.getTableService(tableName,data);
+               console.log(ans)
+               return res.status(200).json(prepareSuccessResponse({ message: `Table '${tableName}' get successfully`}))
+           }
+           catch (err) {
+               return res.status(400).json(prepareErrorResponse({ message: `Error geting table ${err.message}` }));
+           }
+     }
+     catch (err) {
+          return res.status(400).json(prepareErrorResponse({ message: `Error geting table ${err.message}` }));
+     }
+
+}
+
 const updateTable = async (req, res) => {
      const db_id = req?.params?.dbId
      const newTableName = req?.body?.newTableName;
@@ -63,4 +85,4 @@ const deleteTable = async (req, res) => {
 
 }
 
-module.exports = { createTable, updateTable,deleteTable }
+module.exports = { createTable,getTable, updateTable,deleteTable }
