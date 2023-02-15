@@ -13,18 +13,24 @@ const getAllOrgs = async (req, res) => {
    }
 }
 const addUserInOrg = async (req, res) => {
-   const org_id = req?.params?.id;
+   try{
+      const org_id = req?.params?.id;
    const user_id = req?.body?.user_id;
      if(!user_id)
-         return res.status(404).json({error:"userId not found"});
+     return res.status(403).json(prepareErrorResponse({ message: "user not found", data: { error } }));
+
     const user_type = "user";
     try{
         const response = await orgService.addUserInOrg(org_id,{user_id,user_type});
-      
-        return res.status(200).json({message:"successfully user added" });
-    }catch(err){
+      return res.status(200).json(prepareSuccessResponse({ data: org, message: "successfully add user" }));
+    }catch(error){
       return res.status(403).json(prepareErrorResponse({ message: "some error on server", data: { error } }));
    }
+   }catch(error){
+      return res.status(403).json(prepareErrorResponse({ message: "some error on server", data: { error } }));
+
+   }
+   
 
 }
 
@@ -79,17 +85,21 @@ const updateOrg = async (req, res) => {
 }
 
 const removeUserInOrg = async (req,res) =>{
-   
-   const org_id = req?.params?.id;
+   try{
+      const org_id = req?.params?.id;
    const user_id = req?.body?.user_id;
      if(!user_id)
-         return res.status(404).json({error:"userId not found"});
+     return res.status(404).json(prepareErrorResponse({ message: "User not found", data: { error } }));
     try{
         const reponse = await orgService.removeUserInOrg(org_id,user_id);
-        return res.status(200).json({message:"successfully user removed" });
+        return res.status(200).json(prepareSuccessResponse({ data: org, message: "Remove user successfully" }));
     }catch(err){
-        return res.status(403).json({error:"some error on server"});
+      return res.status(404).json(prepareErrorResponse({ message: "some error on server", data: { error } }));
     }
+   }catch(error){
+      return res.status(404).json(prepareErrorResponse({ message: "some error on server", data: { error } }));
+   }
+   
  }
 
 const deleteOrg = async (req, res) => {

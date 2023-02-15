@@ -43,9 +43,7 @@ const updateFieldService = async (tableName,oldFieldName,newFieldName,newFieldTy
     try {
     const client = createClient(data);
     await client.connect();
-    console.log('first')
     const ans = await client.query(`ALTER TABLE ${tableName} RENAME COLUMN ${oldFieldName} TO ${newFieldName};`);
-    console.log('second')
     await client.end();
     return ans;
 }
