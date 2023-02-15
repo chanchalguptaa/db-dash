@@ -36,6 +36,8 @@ async function addTable(id,tableName){
         return data;
 }
 
+
+
 async function renameDb(id,newDb){
     return await db.findByIdAndUpdate(id,newDb)
 }

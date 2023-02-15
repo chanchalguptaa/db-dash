@@ -53,7 +53,7 @@ const deleteTable = async (req, res) => {
           const data = await getById(db_id);
           const ans = await tableService.deleteTableService(tableName,data)
            try {
-          //     const data1 = await addTable(db_id,tableName)
+          //     const data1 = await deleteTable(db_id,tableName)
                return res.status(200).json(prepareSuccessResponse({ message: `Table '${tableName}' delete successfully`}))
            }
            catch (err) {
