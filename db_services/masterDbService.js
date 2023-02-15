@@ -39,4 +39,23 @@ async function addTable(id,tableName){
 async function renameDb(id,newDb){
     return await db.findByIdAndUpdate(id,newDb)
 }
-module.exports = {saveDb,getDbs,deleteDb,renameDb,getById,getDbByOrgId,addTable,getDbById}
+
+async function saveView(id,tableName,view){
+    return await db.findByIdAndUpdate(
+        {_id:id},
+        {
+            $set: {
+                [`tables.${tableName}.view`]:view
+              }
+        }
+    )
+}  
+
+async function getField(id,fieldData) {
+    return await db.find(
+        {_id:id},
+        { [`tables.${fieldData.table_name}.fields.${fieldData.field_name}`] : 1 }
+    )
+}
+
+module.exports = {saveDb,getDbs,deleteDb,renameDb,getById,getDbByOrgId,addTable,getDbById,saveView,getField}
