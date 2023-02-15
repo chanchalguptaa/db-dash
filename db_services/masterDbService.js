@@ -43,11 +43,31 @@ async function updateTableInDb(id,newTableName,oldTableName){
     )
 }
 
+async function updateQuery(id,filterName,tableName,query){
+    return await  db.findOneAndUpdate (
+        { _id:id},
+        {
+            $set: { [`tables.${tableName}.filters.${filterName}.query`] : query} 
+        }
+    )
+}
+
 async function updateFilterNameInDb(id,oldFilterName,filterName,tableName){
    return await  db.findOneAndUpdate (
         { _id:id},
         { 
             $rename: { [`tables.${tableName}.filters.${oldFilterName}`] : `tables.${tableName}.filters.${filterName}` } 
+        }
+    )
+}
+
+async function deleteFilterNameInDb(id,filterName,tableName){
+    return await db.findOneAndUpdate(
+        {
+            _id:id
+        },
+        {
+            $unset:{[`tables.${tableName}.filters.${filterName}`]:""}
         }
     )
 }
@@ -74,4 +94,4 @@ async function addQuery(id,query,filterName,tableName){
 }
 
 // const function updateFilterNameInDb
-module.exports = {saveDb,getDbs,deleteDb,renameDb,getById,getDbByOrgId,addTable,getDbById,updateTableInDb,addQuery,updateFilterNameInDb}
+module.exports = {saveDb,getDbs,deleteDb,renameDb,getById,getDbByOrgId,addTable,updateQuery,getDbById,updateTableInDb,addQuery,updateFilterNameInDb,deleteFilterNameInDb}
