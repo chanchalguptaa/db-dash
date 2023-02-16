@@ -35,7 +35,50 @@ async function addTable(id,tableName){
     )
         return data;
 }
+async function updateTableInDb(id,newTableName,oldTableName){
+    return await  db.findOneAndUpdate (
+        { _id:id},
+        { $rename: { [`tables.${oldTableName}`] : `tables.${newTableName}` } 
+        }
+    )
+}
 
+async function updateQuery(id,filterName,tableName,query){
+    return await  db.findOneAndUpdate (
+        { _id:id},
+        {
+            $set: { [`tables.${tableName}.filters.${filterName}.query`] : query} 
+        }
+    )
+}
+
+async function updateFilterNameInDb(id,oldFilterName,filterName,tableName){
+   return await  db.findOneAndUpdate (
+        { _id:id},
+        { 
+            $rename: { [`tables.${tableName}.filters.${oldFilterName}`] : `tables.${tableName}.filters.${filterName}` } 
+        }
+    )
+}
+
+async function deleteFilterNameInDb(id,filterName,tableName){
+    return await db.findOneAndUpdate(
+        {
+            _id:id
+        },
+        {
+            $unset:{[`tables.${tableName}.filters.${filterName}`]:""}
+        }
+    )
+}
+
+async function deleteTableInDb(id,tableName){
+    return await  db.findOneAndUpdate (
+        { _id:id},
+        { $unset: { [`tables.${tableName}`] : "" } 
+        }
+    )
+}
 async function renameDb(id,newDb){
     return await db.findByIdAndUpdate(id,newDb)
 }
@@ -72,3 +115,15 @@ async function getField(id,fieldData) {
 }
 
 module.exports = {saveDb,getDbs,deleteDb,renameDb,getById,getDbByOrgId,addTable,getDbById,saveView,getField,deleteView}
+async function addQuery(id,query,filterName,tableName){
+    const data =  await db.findOneAndUpdate (
+        { _id:id},
+        {
+         $set: { [`tables.${tableName}.filters.${filterName}.query`] : query} ,
+        }
+    )
+        return data;
+}
+
+// const function updateFilterNameInDb
+module.exports = {saveDb,getDbs,deleteDb,renameDb,getById,getDbByOrgId,addTable,updateQuery,getDbById,updateTableInDb,addQuery,updateFilterNameInDb,deleteFilterNameInDb}
