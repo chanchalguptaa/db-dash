@@ -16,7 +16,7 @@ connectDB();
 
 app.use('/users',require("./routers/userRoute"))
 app.use('/orgs',require("./routers/organizationRoute"))
-app.use('/orgs',require("./routers/dbRoute"))
+app.use('/dbs',require("./routers/dbRoute"))
 app.use('/dbs',require("./routers/tableRoute"))
 app.use('/dbs',require("./routers/viewRoute"))
 app.use('/dbs',require("./routers/formRoute"))
