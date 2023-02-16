@@ -39,15 +39,19 @@ catch (err)
 }
 
 
-const updateFieldService = async (tableName,oldFieldName,newFieldName,newFieldType,data)=>{
+const updateFieldService = async (tableName,fieldName,newFieldName,newFieldType,data)=>{
     try {
     const client = createClient(data);
     await client.connect();
-    console.log('first')
-    const ans = await client.query(`ALTER TABLE ${tableName} RENAME COLUMN ${oldFieldName} TO ${newFieldName};`);
-    console.log('second')
+    if(newFieldType) {
+        const ans = await client.query(`ALTER TABLE ${tableName} ALTER COLUMN ${fieldName} TYPE ${newFieldType};`);
+    }
+    if(newFieldName){
+        const ans = await client.query(`ALTER TABLE ${tableName} RENAME COLUMN ${fieldName} TO ${newFieldName};`);
+   
+    }
     await client.end();
-    return ans;
+    return ;    
 }
 catch (err)
 {

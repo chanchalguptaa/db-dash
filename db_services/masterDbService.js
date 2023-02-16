@@ -97,3 +97,56 @@ async function deletefield(id,tableName,fieldName)
 
 
 module.exports = { saveDb, getDbs, deleteDb, renameDb, getById, getDbByOrgId, addTable, getDbById, updateTableInDb, addField,deletefield,updatefield }
+
+async function updateQuery(id,filterName,tableName,query){
+    return await  db.findOneAndUpdate (
+        { _id:id},
+        {
+            $set: { [`tables.${tableName}.filters.${filterName}.query`] : query} 
+        }
+    )
+}
+
+async function updateFilterNameInDb(id,oldFilterName,filterName,tableName){
+   return await  db.findOneAndUpdate (
+        { _id:id},
+        { 
+            $rename: { [`tables.${tableName}.filters.${oldFilterName}`] : `tables.${tableName}.filters.${filterName}` } 
+        }
+    )
+}
+
+async function deleteFilterNameInDb(id,filterName,tableName){
+    return await db.findOneAndUpdate(
+        {
+            _id:id
+        },
+        {
+            $unset:{[`tables.${tableName}.filters.${filterName}`]:""}
+        }
+    )
+}
+
+async function deleteTableInDb(id,tableName){
+    return await  db.findOneAndUpdate (
+        { _id:id},
+        { $unset: { [`tables.${tableName}`] : "" } 
+        }
+    )
+}
+async function renameDb(id,newDb){
+    return await db.findByIdAndUpdate(id,newDb)
+}
+
+async function addQuery(id,query,filterName,tableName){
+    const data =  await db.findOneAndUpdate (
+        { _id:id},
+        {
+         $set: { [`tables.${tableName}.filters.${filterName}.query`] : query} ,
+        }
+    )
+        return data;
+}
+
+// const function updateFilterNameInDb
+module.exports = {saveDb,getDbs,deleteDb,renameDb,getById,getDbByOrgId,addTable,updateQuery,getDbById,updateTableInDb,addQuery,updateFilterNameInDb,deleteFilterNameInDb}

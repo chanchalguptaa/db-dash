@@ -5,7 +5,7 @@ const db=require("../models/dbModel")
 
 const createField = async (req, res) => {
     const db_id = req?.params?.dbId;
-    const tableName = req?.body?.tableName;
+    const tableName = req?.params?.tableName;
     const fieldName = req?.body?.fieldName;
     const fieldType = req?.body?.fieldType;
     try {
@@ -36,7 +36,7 @@ const createField = async (req, res) => {
 
 const deleteField = async (req, res) => {
     const db_id = req?.params?.dbId;
-    const tableName = req?.body?.tableName;
+    const tableName = req?.params?.tableName;
     const fieldName = req?.body?.fieldName;
     const fieldType=req?.body?.fieldType;
     try { 
@@ -66,25 +66,18 @@ const deleteField = async (req, res) => {
 
 const updateField = async (req, res) => {
     const db_id = req?.params?.dbId;
-    const tableName = req?.body?.tableName;
-    const oldFieldName = req?.body?.oldFieldName;
+    const tableName = req?.params?.tableName;
+    const fieldName = req?.body?.fieldName;
     const newFieldName = req?.body?.newFieldName;
     const newFieldType = req?.body?.newFieldType;
     try {
          const data = await getById(db_id);
          console.log("data in create table ", data);
          const ans = await fieldService.updateFieldService(tableName, oldFieldName,newFieldName,newFieldType,data)
+         console.log('third')
          try {
-            // update in monog
-            const tmp=data?.tables?.[tableName].fields?.[oldFieldName]||null;
-            if(tmp)  
-            {  const data1=await updatefield(db_id,tableName,oldFieldName,newFieldName,newFieldType);
-            }  
-          else
-           {
-          return res.status(404).json(prepareErrorResponse({ message: `Field ${fieldName}  not exits in  table ${tableName}` }))
-           }     
-           return res.status(200).json(prepareSuccessResponse({ message: `Field '${oldFieldName}' updated successfully` }))
+            //   const data1 = await addTable(db_id, tableName)
+              return res.status(200).json(prepareSuccessResponse({ message: `Field '${oldFieldName}' updated successfully` }))
          }
          catch (err) {
               return res.status(400).json(prepareErrorResponse({ message: `Error updating field ${err.message}` }));
