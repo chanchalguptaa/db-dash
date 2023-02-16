@@ -94,4 +94,4 @@ async function addQuery(id,query,filterName,tableName){
 }
 
 // const function updateFilterNameInDb
-module.exports = {saveDb,getDbs,deleteDb,renameDb,getById,getDbByOrgId,addTable,updateQuery,getDbById,updateTableInDb,addQuery,updateFilterNameInDb,deleteFilterNameInDb}
+module.exports = {saveDb,getDbs,deleteDb,renameDb,getById,deleteTableInDb,getDbByOrgId,addTable,updateQuery,getDbById,updateTableInDb,addQuery,updateFilterNameInDb,deleteFilterNameInDb}
