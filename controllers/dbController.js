@@ -5,11 +5,13 @@ const Db = require("../models/dbModel")
 
 const createDb = async (req,res)=>{
     try {
-        const db = new Db(req?.body) 
+        if(!Object.keys(req.body.name).length) return res.send("Name can't empty");
+         const db = new Db(req?.body) 
         const org_id = req?.params?.orgId
         const sqlDbName = db?.name+"_"+org_id
         db.org_id =  req.params.orgId
         const conUrl=await sqlDbService.createDatabase(sqlDbName)
+        console.log("in create db = ", conUrl);
         try {
             db.con_url=conUrl
             await dbService.saveDb(db)
