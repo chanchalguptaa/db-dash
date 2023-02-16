@@ -5,17 +5,21 @@ const Form = require('../models/formModel')
 const formService = require("../Db_Services/formDbService");
 
 
-const createform= async (req,res)=>{
+const createForm= async (req,res)=>{
         try 
         {  
             const db_id = req?.params?.dbId  
             const table_name = req?.params?.tablename;
+            const name = req?.body?.userName;
+            const fields = req?.body?.fieldName;
             const form = new Form(req?.body);
             form.db_id=db_id;
             form.table_name=table_name;
+            form.fields=fields;
+            form.name=name;
             try{
                 const formData = await formService.saveForm(form);
-                const data= await formService.createFormInDb(db_id,table_name,formData._id);
+                const data= await formService.createFormInDb(db_id,table_name,formData._id,fields,name);
                 if(!(data.modifiedCount >=1 ))
                 {
                     
@@ -40,6 +44,26 @@ const createform= async (req,res)=>{
      
         }
      }
+     const deleteForm = async (req,res)=>{
+        try {
+             
+            const db_id = req?.params?.dbId
+            console.log("db_id",db_id)
+
+            const db = await formService.deleteFormByDbId(db_id)
+            
+            if(!db_id){
+                return res.status(404).json(prepareErrorResponse({ message: "form not found with db_id", data: { error } }));
+    
+            }
+            
+            return res.status(201).json(prepareSuccessResponse({ data: db, message: "Successfully delete form" }));
+    
+         } catch (error) {
+            console.log(error)
+            return res.status(400).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));    
+         }
+    }
            
    
    
@@ -47,4 +71,4 @@ const createform= async (req,res)=>{
 
        
 
-module.exports={createform}
+module.exports={createForm,deleteForm}
