@@ -21,7 +21,16 @@ const userSchema = new mongoose.Schema({
     },
     dbs :
     [ 
-       {type:Object}
+        {
+         type : mongoose.Schema.Types.ObjectId ,
+          ref : 'db'
+        } 
+    ],
+    orgs:[
+      {
+        type : mongoose.Schema.Types.ObjectId ,
+         ref : 'Organization'
+       }
     ]
   }
 );

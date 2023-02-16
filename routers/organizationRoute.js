@@ -10,7 +10,4 @@ router.route('/:id').patch(updateOrg);
 router.route('/:id').delete(deleteOrg);
 router.route('/:id/adduser').patch(addUserInOrg);
 router.route('/:id/removeuser').patch(removeUserInOrg)
-
-
-
 module.exports = router;
