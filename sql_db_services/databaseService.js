@@ -16,7 +16,7 @@ async function createDatabase(dbName) {
     await client.end();
     return `postgres://${client.user}:${client.password}@${client.host}/${dbName}`;
   } catch (error) {
-    console.log("error : 19",error);
+    // console.log("error : 19",error);
   }
  
 }

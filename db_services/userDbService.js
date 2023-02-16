@@ -31,6 +31,19 @@ async function updateUser(first_name,last_name,id,db){
     }
 }
 
+async function addDbIdInUSerSchema(user_id,dbId){
+    try {
+        return await User.updateOne({
+            _id:user_id
+        },
+        {
+            $push:{dbs:dbId}
+        })
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 async function addOrgIdInUser(org_id,id,orgName){
     try {
         return await User.updateOne({
@@ -53,4 +66,4 @@ async function getUserByEmail(email) {
     return user;
 }
 
-module.exports={getAllUser,getUserById,saveUser,updateUser,deleteUserById,getUserByEmail,addOrgIdInUser}
+module.exports={getAllUser,getUserById,saveUser,updateUser,deleteUserById,getUserByEmail,addOrgIdInUser,addDbIdInUSerSchema}
