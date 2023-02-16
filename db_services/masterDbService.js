@@ -40,12 +40,12 @@ async function renameDb(id,newDb){
     return await db.findByIdAndUpdate(id,newDb)
 }
 
-async function saveView(id,tableName,view){
-    return await db.findByIdAndUpdate(
+async function saveView(id,tableName,view,tableData){
+    return await db.updateOne(
         {_id:id},
         {
             $set: {
-                [`tables.${tableName}.view`]:view
+                [`tables.${tableName}.view.${tableData}`]:view
               }
         }
     )
