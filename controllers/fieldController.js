@@ -74,9 +74,17 @@ const updateField = async (req, res) => {
          const data = await getById(db_id);
          console.log("data in create table ", data);
          const ans = await fieldService.updateFieldService(tableName, oldFieldName,newFieldName,newFieldType,data)
-         console.log('third')
          try {
-            //   const data1 = await addTable(db_id, tableName)
+            // update field into mongo
+            const tmp=data?.tables?.[tableName].fields?.[fieldName]||null;
+            if(tmp)  
+               { 
+                    const data1=await updatefield(db_id,tableName,fieldName,newFieldName,newFieldType);
+               }
+             else
+             return res.status(404).json(prepareErrorResponse({ message: `Field ${fieldName}  not exits in  table ${tableName}` }))
+
+
               return res.status(200).json(prepareSuccessResponse({ message: `Field '${oldFieldName}' updated successfully` }))
          }
          catch (err) {

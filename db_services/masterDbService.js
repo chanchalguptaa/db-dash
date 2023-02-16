@@ -48,7 +48,7 @@ async function renameDb(id, newDb) {
     return await db.findByIdAndUpdate(id, newDb)
 }
 
-// field operation
+// field operation  
 
 async function addField(id, tableName, fieldName, fieldType) {
     const obj = await db.findOneAndUpdate(
@@ -96,7 +96,6 @@ async function deletefield(id,tableName,fieldName)
 
 
 
-module.exports = { saveDb, getDbs, deleteDb, renameDb, getById, getDbByOrgId, addTable, getDbById, updateTableInDb, addField,deletefield,updatefield }
 
 async function updateQuery(id,filterName,tableName,query){
     return await  db.findOneAndUpdate (
@@ -148,5 +147,5 @@ async function addQuery(id,query,filterName,tableName){
         return data;
 }
 
-// const function updateFilterNameInDb
-module.exports = {saveDb,getDbs,deleteDb,renameDb,getById,getDbByOrgId,addTable,updateQuery,getDbById,updateTableInDb,addQuery,updateFilterNameInDb,deleteFilterNameInDb}
+
+module.exports = {saveDb,getDbs,deleteDb,renameDb,getById,getDbByOrgId,addTable,updateQuery,getDbById,updateTableInDb,addQuery,addField,deletefield,updatefield,updateFilterNameInDb,deleteFilterNameInDb}
