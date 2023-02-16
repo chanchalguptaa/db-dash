@@ -8,12 +8,17 @@ const createClient = () => {
 };
 
 async function createDatabase(dbName) {
-  const client = createClient();
-  await client.connect();
-  const sql = `CREATE DATABASE ${dbName}`;
-  await client.query(sql);
-  await client.end();
-  return `postgres://${client.user}:${client.password}@${client.host}/${dbName}`;
+  try {
+    const client = createClient();
+    await client.connect();
+    const sql = `CREATE DATABASE ${dbName}`;
+    await client.query(sql);
+    await client.end();
+    return `postgres://${client.user}:${client.password}@${client.host}/${dbName}`;
+  } catch (error) {
+    // console.log("error : 19",error);
+  }
+ 
 }
 
 async function dropDatabase(dbName){

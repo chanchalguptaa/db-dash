@@ -14,5 +14,8 @@ async function createFormInDb(id,tableName,formId){
 async function deleteDbById(db_id){
     return await form.findByIdAndDelete(db_id)
 }
-
-module.exports = {saveForm,createFormInDb,deleteDbById}
+async function deleteFormByDbId(id){
+      { _id:id }
+    return await form.findByIdAndDelete(id)
+}
+module.exports = {saveForm,createFormInDb,deleteDbById,deleteFormByDbId}

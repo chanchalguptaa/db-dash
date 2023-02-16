@@ -9,7 +9,7 @@ const dbSchema = new mongoose.Schema({
     org_id : {
         type : mongoose.Schema.Types.ObjectId , 
         ref : 'Organization',
-        required:true
+        //required:true
     },
     users : {
       type:Object,
@@ -19,23 +19,28 @@ const dbSchema = new mongoose.Schema({
     },
     tables : {
       type:Object
-    //   table_name:{
-    //     fields:{
-    //         field_name:{
-    //             field_type: String
-    //         }
-    //     },
+      // table_id:{
+      //   table_name: String,
+      //   fields:{
+      //       field_id:{
+      //           field_name: String,
+      //           field_type: String
+      //       }
+      //   }
+      // }
     //     view:{
     //         view_id: String,
     //         view_name: String,
     //         table_id:{
-    //             field_name:{
-    //                field_type:String
+    //             field_id:{
+    //                 field_name:String,
+    //                 field_type:String
     //             }
     //         },
     //     },
     //     filter:{
-    //         filter_name:{
+    //         filter_id:{
+    //             filter_name: String,
     //             query:String
     //         }
     //     },

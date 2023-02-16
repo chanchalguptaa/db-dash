@@ -13,6 +13,11 @@ const  formSchema  = new mongoose.Schema({
      fields : {
         type:Object
     },
+    fields:[
+        {
+          type: String
+        }
+    ],
     
 })
 module.exports = mongoose.models.Form || mongoose.model('form' , formSchema);
