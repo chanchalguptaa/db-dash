@@ -15,7 +15,7 @@ const  formSchema  = new mongoose.Schema({
     },
     fields:[
         {
-            field_name : String
+          type: String
         }
     ],
     
