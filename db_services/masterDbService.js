@@ -91,13 +91,6 @@ async function deletefield(id,tableName,fieldName)
         return ;
  }
 
-
-
-
-
-
-module.exports = { saveDb, getDbs, deleteDb, renameDb, getById, getDbByOrgId, addTable, getDbById, updateTableInDb, addField,deletefield,updatefield }
-
 async function updateQuery(id,filterName,tableName,query){
     return await  db.findOneAndUpdate (
         { _id:id},
@@ -149,4 +142,5 @@ async function addQuery(id,query,filterName,tableName){
 }
 
 // const function updateFilterNameInDb
-module.exports = {saveDb,getDbs,deleteDb,renameDb,getById,deleteTableInDb,getDbByOrgId,addTable,updateQuery,getDbById,updateTableInDb,addQuery,updateFilterNameInDb,deleteFilterNameInDb}
+
+module.exports = {saveDb,getDbs,deleteDb,renameDb,getById,deleteTableInDb,getDbByOrgId,addTable,updateQuery,getDbById,updateTableInDb,addQuery,updateFilterNameInDb,deleteFilterNameInDb,addField,deletefield,updatefield}
