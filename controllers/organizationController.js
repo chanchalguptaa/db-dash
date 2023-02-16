@@ -19,17 +19,10 @@ const addUserInOrg = async (req, res) => {
       const user_id = req?.body?.user_id;
       const user_type = "user";
     try{
-      const ifUser = await userService.getUserById(user_id);
-      if(ifUser != null)
-      {
-         const response = await orgService.addUserInOrg(org_id,{user_id,user_type});
-         return res.status(200).json(prepareSuccessResponse({ data: response, message: "successfully add user" }));
-      }
-      else
-      {
-         return res.status(403).json(prepareErrorResponse({ message: "some error on server"}));
-      }
-   }catch(err){
+        const response = await orgService.addUserInOrg(org_id,{user_id,user_type});
+      
+        return res.status(200).json(prepareErrorResponse({message:"successfully user added" }));
+    }catch(err){
       return res.status(403).json(prepareErrorResponse({ message: "some error on server", data: { error } }));
    }
    }catch(error){

@@ -4,10 +4,10 @@ const db = require("../models/dbModel")
 async function saveForm(form){
    return await form.save()
 }
-async function createFormInDb(id,tableName,formId,){
+async function createFormInDb(id,tableName,formId){
     const data =  await db.updateOne(
         { _id:id},
-        { $push: {  [`tables.${tableName}`]: formId } }
+        { $push: {  [`tables.${tableName}.forms`]: formId } }
     )
         return data;
 }
