@@ -1,3 +1,4 @@
+const { create } = require("lodash");
 const Org = require("../models/organizationModel")
 async function getAllOrgs(){
     return await Org.find();
@@ -7,8 +8,11 @@ async function getOrgById(id){
     return await Org.findById(id).populate("users.user_id")
 }
 
-async function saveOrg(org){
-    await org.save()
+async function saveOrg(orgname,user_id){
+   return  await Org.create({
+            name:orgname,
+           users: { user_id:user_id,user_type:"user"}
+    });
 }
 async function updateOrgTitle(id,org){
     const options = { new: true };

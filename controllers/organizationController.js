@@ -17,12 +17,19 @@ const addUserInOrg = async (req, res) => {
    try{
       const org_id = req?.params?.id;
       const user_id = req?.body?.user_id;
-    const user_type = "user";
+      const user_type = "user";
     try{
-        const response = await orgService.addUserInOrg(org_id,{user_id,user_type});
-      
-        return res.status(200).json(prepareErrorResponse({message:"successfully user added" }));
-    }catch(err){
+      const ifUser = await userService.getUserById(user_id);
+      if(ifUser != null)
+      {
+         const response = await orgService.addUserInOrg(org_id,{user_id,user_type});
+         return res.status(200).json(prepareSuccessResponse({ data: response, message: "successfully add user" }));
+      }
+      else
+      {
+         return res.status(403).json(prepareErrorResponse({ message: "some error on server"}));
+      }
+   }catch(err){
       return res.status(403).json(prepareErrorResponse({ message: "some error on server", data: { error } }));
    }
    }catch(error){
@@ -33,14 +40,17 @@ const addUserInOrg = async (req, res) => {
 }
 
 const createOrg = async (req, res) => {
+   console.log("in create org ");
    try {
-      const org = new Org(req?.body);
+      const org = req?.body?.name;
+      const user_id = req?.body?.user_id;
+      //check id sahi hai 
       if (!(req?.body?.name) ||req?.body?.name?.length<2)
       {
          return res.status(404).json(prepareErrorResponse({ message: "invalid orgname " }));
       }
 
-      await orgService.saveOrg(org)
+      await orgService.saveOrg(org,user_id)
       return res.status(200).json(prepareSuccessResponse({ data: org, message: "successfully create org" }));
 
    }
