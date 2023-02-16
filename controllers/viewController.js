@@ -20,4 +20,19 @@ const createView = async (req , res )=>{
     }
 }
 
-module.exports = {createView}
+const deleteView = async (req , res )=>{
+
+    try {
+        const id = req?.params?.dbId
+        const viewName = req?.body?.view_name
+        const tableName = req?.params?.tableName
+        const reData = await viewService.deleteView(id,tableName,viewName)
+        return res.status(201).json(prepareSuccessResponse({ data: reData, message: "View Deleted" }));
+    } catch (error) {
+        console.log(error);
+       return res.status(400).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
+ 
+    }
+}
+
+module.exports = {createView,deleteView}

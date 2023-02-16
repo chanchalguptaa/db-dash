@@ -51,6 +51,19 @@ async function saveView(id,tableName,view,tableData){
     )
 }  
 
+async function deleteView(id,tableName,viewName){
+    // { _id: ObjectId("63ecb964841ba3176db83a9e") },  // filter by _id
+    // { $unset: { "tables.teacher.view.hod": 1 } }   // remove hod view from teacher
+    return await db.updateOne(
+        {_id:id},
+        {
+            $unset: {
+                [`tables.${tableName}.view.${viewName}`]:1
+              }
+        }
+    )
+}
+
 async function getField(id,fieldData) {
     return await db.find(
         {_id:id},
@@ -58,4 +71,4 @@ async function getField(id,fieldData) {
     )
 }
 
-module.exports = {saveDb,getDbs,deleteDb,renameDb,getById,getDbByOrgId,addTable,getDbById,saveView,getField}
+module.exports = {saveDb,getDbs,deleteDb,renameDb,getById,getDbByOrgId,addTable,getDbById,saveView,getField,deleteView}
