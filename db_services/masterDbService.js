@@ -83,20 +83,18 @@ async function renameDb(id,newDb){
     return await db.findByIdAndUpdate(id,newDb)
 }
 
-async function saveView(id,tableName,view,tableData){
+async function saveView(id,tableName,view,fieldData){
     return await db.updateOne(
         {_id:id},
         {
             $set: {
-                [`tables.${tableName}.view.${tableData}`]:view
+                [`tables.${tableName}.view.${fieldData.table_name}.fields.${fieldData.field_name}`]:view
               }
         }
     )
 }  
 
 async function deleteView(id,tableName,viewName){
-    // { _id: ObjectId("63ecb964841ba3176db83a9e") },  // filter by _id
-    // { $unset: { "tables.teacher.view.hod": 1 } }   // remove hod view from teacher
     return await db.updateOne(
         {_id:id},
         {
@@ -113,8 +111,6 @@ async function getField(id,fieldData) {
         { [`tables.${fieldData.table_name}.fields.${fieldData.field_name}`] : 1 }
     )
 }
-
-module.exports = {saveDb,getDbs,deleteDb,renameDb,getById,getDbByOrgId,addTable,getDbById,saveView,getField,deleteView}
 async function addQuery(id,query,filterName,tableName){
     const data =  await db.findOneAndUpdate (
         { _id:id},
@@ -125,5 +121,17 @@ async function addQuery(id,query,filterName,tableName){
         return data;
 }
 
+async function deleteFieldInView(id,tableName,viewData){
+
+    return await db.updateOne(
+        {_id:id},
+        {
+            $unset: {
+                [`tables.${tableName}.view.${viewData.view_name}.fields.${viewData.field_name}`]:1
+              }
+        }
+    )
+}
+
 // const function updateFilterNameInDb
-module.exports = {saveDb,getDbs,deleteDb,renameDb,getById,getDbByOrgId,addTable,updateQuery,getDbById,updateTableInDb,addQuery,updateFilterNameInDb,deleteFilterNameInDb}
+module.exports = {saveDb,getDbs,deleteDb,renameDb,getById,getDbByOrgId,addTable,updateQuery,getDbById,updateTableInDb,addQuery,updateFilterNameInDb,deleteFilterNameInDb,saveView,getField,deleteView,deleteFieldInView}
