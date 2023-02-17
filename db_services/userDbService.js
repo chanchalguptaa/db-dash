@@ -44,18 +44,6 @@ async function addDbIdInUSerSchema(user_id,dbId){
     }
 }
 
-async function addOrgIdInUser(org_id,id,orgName){
-    try {
-        return await User.updateOne({
-            _id:id
-        },
-        {
-            $push:{orgs:{org_id:org_id,org_name:orgName}}
-        })
-    } catch (error) {
-        console.log(error);
-    }
-}
 
 async function deleteUserById(id){
     return await User.findByIdAndDelete(id)
@@ -66,4 +54,4 @@ async function getUserByEmail(email) {
     return user;
 }
 
-module.exports={getAllUser,getUserById,saveUser,updateUser,deleteUserById,getUserByEmail,addOrgIdInUser,addDbIdInUSerSchema}
+module.exports={getAllUser,getUserById,saveUser,updateUser,deleteUserById,getUserByEmail,addDbIdInUSerSchema}

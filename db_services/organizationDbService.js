@@ -40,4 +40,5 @@ async function removeUserInOrg(org_id,user){
      
 }
 
+
 module.exports={getAllOrgs,getOrgById,saveOrg,updateOrgTitle,deleteOrgById,addUserInOrg,removeUserInOrg}
