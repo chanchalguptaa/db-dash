@@ -1,5 +1,5 @@
 const { prepareErrorResponse, prepareSuccessResponse } = require("../services/utilityService.js");
-const { addTable, getById ,updateTableInDb,deleteTableInDb} = require("../db_services/masterDbService");
+const {addTable,updateTableInDb,deleteTableInDb} = require("../db_services/tableDbService");
 const tableService = require("../sql_db_services/tableService.js")
 const createTable = async (req, res) => {
      const db_id = req?.params?.dbId;
