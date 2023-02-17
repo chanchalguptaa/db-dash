@@ -4,5 +4,5 @@ const { createField,deleteField,updateField } = require("../controllers/fieldCon
 
 router.route('/:dbId/:tableName/field').post(createField)
 router.route('/:dbId/:tableName/updatefield').patch(updateField)
-router.route('/:dbId/:tableName/deletefield').delete(deleteField)
+//router.route('/:dbId/:tableName/deletefield').delete(deleteField)
 module.exports = router;

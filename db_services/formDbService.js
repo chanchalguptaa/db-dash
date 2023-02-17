@@ -17,5 +17,23 @@ async function deleteDbById(db_id){
 async function deleteFormByDbId(id){
       { _id:id }
     return await form.findByIdAndDelete(id)
+
 }
-module.exports = {saveForm,createFormInDb,deleteDbById,deleteFormByDbId}
+async function addFieldInForm(field_name,id) {
+    console.log(field_name,id)
+    const addField = await form.updateOne(
+        { _id:id },
+            { $push:  {fields:field_name}  }        
+    )
+   
+}
+async function removeFieldInForm(field_name,id){
+    const removeFiedld = await form.updateOne(
+               {_id:id},
+               {
+                 $pull:  {fields:field_name} 
+               }
+        
+    )
+}
+module.exports = {saveForm,createFormInDb,deleteDbById,deleteFormByDbId,addFieldInForm,removeFieldInForm}

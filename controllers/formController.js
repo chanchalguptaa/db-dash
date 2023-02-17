@@ -8,7 +8,7 @@ const formService = require("../Db_Services/formDbService");
 const createForm= async (req,res)=>{
         try 
         {  
-            // const name 
+ 
             const db_id = req?.params?.dbId ;
             const table_name = req?.params?.tablename;
             const form = new Form(req?.body);
@@ -16,6 +16,7 @@ const createForm= async (req,res)=>{
             form.table_name=table_name;
             try{
                   const dataOfDb = await getById(db_id);
+                 
                   if(!dataOfDb?.tables[table_name])
                       return res.status(404).json(prepareErrorResponse({ message: "Incorrect Db id or Table Name" }));    
                   const fields = dataOfDb?.tables[table_name]?.fields;
@@ -39,12 +40,49 @@ const createForm= async (req,res)=>{
      
         }
      }
+        const addField = async (req, res) => {
+        const form_id = req?.body?.form_id
+        const db_id = req?.params?.db_id;
+        const table_name = req?.params?.table_name;
+        const field_name = req?.body?.field_name;
+        try{    
+        const data= await formService.addFieldInForm(field_name,form_id);
+          const dataOfDb = await getById(db_id); 
+         // const fieldName = Object.keys(dataOfDb.fields)
+                //    if(!dataOfDb?.tables[table_name].fields.fielName)
+                //   // if(!fielName)
+                //        return res.status(404).json(prepareErrorResponse({ message: "Incorrect  Table Name" }));    
+        
+         return res.status(200).json(prepareSuccessResponse({  message: "successfully addField in form" }));
+        }
+        
+        catch(error){
+            console.log(error)
+        return res.status(403).json(prepareErrorResponse({ message: "some error on serverrrr"}));
+        }
+  }
+  const removeField = async (req, res) => {
+    const form_id = req?.body?.form_id
+    const db_id = req?.params?.db_id;
+    //const table_name = req?.params?.table_name;
+    const field_name = req?.body?.field_name;
+try{
+    const data= await formService.removeFieldInForm(field_name,form_id);
     
-           
+     return res.status(200).json(prepareSuccessResponse({  message: "successfully removeField in form" }));
+    }
+    
+    catch(error){
+        console.log(error)
+    return res.status(403).json(prepareErrorResponse({ message: "some error on serverrrr"}));
+    }
+}
+
+        
    
    
 
 
        
 
-module.exports={createForm}
+module.exports={createForm,addField,removeField}
