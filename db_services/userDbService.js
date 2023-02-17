@@ -44,13 +44,13 @@ async function addDbIdInUSerSchema(user_id,dbId){
     }
 }
 
-async function addOrgIdInUser(org_id,id,orgName){
+async function addOrgIdInUser(org_id,id){
     try {
         return await User.updateOne({
             _id:id
         },
         {
-            $push:{orgs:{org_id:org_id,org_name:orgName}}
+            $push:{orgs:org_id}
         })
     } catch (error) {
         console.log(error);

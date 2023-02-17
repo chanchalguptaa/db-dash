@@ -7,6 +7,7 @@ const getAllUsers = async (req, res) => {
       const user = await userService.getAllUser()
       return res.status(201).json(prepareSuccessResponse({ data: user, message: "Successfully get user" }));
    } catch (error) {
+      console.log(error)
       return res.status(400).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
    }
 }

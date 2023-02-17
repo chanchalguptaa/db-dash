@@ -28,16 +28,9 @@ const userSchema = new mongoose.Schema({
     ],
     orgs:[
       {
-        org_id:{
             type : mongoose.Schema.Types.ObjectId ,
             ref : 'Organization' 
-        },
-        org_name: { 
-            type: String,
-            required: [true, "Please add org name"],
-        }
-        
-    }
+      }
     ]
   }
 );
