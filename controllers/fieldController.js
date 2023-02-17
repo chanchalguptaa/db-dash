@@ -1,5 +1,5 @@
 const { prepareErrorResponse, prepareSuccessResponse } = require("../services/utilityService.js");
-const { getById ,addField,deletefield,updatefield} = require("../db_services/masterDbService");
+const {addField,deletefield} = require("../db_services/fieldDbService")
 const fieldService = require("../sql_db_services/fieldService.js")
 const db=require("../models/dbModel")
 

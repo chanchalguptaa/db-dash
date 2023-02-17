@@ -1,4 +1,4 @@
-const viewService = require("../db_services/masterDbService")
+const viewService = require("../db_services/viewDbService")
 const { prepareErrorResponse, prepareSuccessResponse } = require("../services/utilityService.js");
 
 const { v4: uuidv4 } = require('uuid');
