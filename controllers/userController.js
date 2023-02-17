@@ -75,6 +75,7 @@ const findUserByEmail = async (req, res) => {
       if (!user) {
          return res.status(404).json(prepareErrorResponse({ message: "user not found", data: { error } }));
       }
+      
       return res.status(201).json(prepareSuccessResponse({ data: user, message: "User find successfully" }));
 
    } catch (error) {

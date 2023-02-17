@@ -25,12 +25,6 @@ const userSchema = new mongoose.Schema({
          type : mongoose.Schema.Types.ObjectId ,
           ref : 'db'
         } 
-    ],
-    orgs:[
-      {
-            type : mongoose.Schema.Types.ObjectId ,
-            ref : 'Organization' 
-      }
     ]
   }
 );

@@ -49,8 +49,6 @@ const createOrg = async (req, res) => {
          if(ifUser != null)
          {
            const orgData =  await orgService.saveOrg(org,user_id);
-           const org_id = orgData._id+"";
-           const ans = await userService.addOrgIdInUser(org_id,user_id);
             return res.status(200).json(prepareSuccessResponse({ data: orgData, message: "successfully add user" }));
          }
          else
@@ -133,4 +131,6 @@ const deleteOrg = async (req, res) => {
    }
 }
 
-module.exports = { getAllOrgs, createOrg, getOrgById, updateOrg, deleteOrg, addUserInOrg,removeUserInOrg }
+
+
+module.exports = { getAllOrgs, createOrg,getOrgById, updateOrg, deleteOrg, addUserInOrg,removeUserInOrg }
