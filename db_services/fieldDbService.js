@@ -34,7 +34,7 @@ async function updatefield(id, tableName, oldFieldName, newFieldName, newFieldTy
             { $set: { [`tables.${tableName}.fields.${oldFieldName}.fieldType`]: { "fieldType": newFieldType } } 
         }
     );
-
+    
     }
 
     if (newFieldName) {
