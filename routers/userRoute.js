@@ -9,4 +9,5 @@ router.route('/:id').get(getUserById);
 router.route('/:id').patch(updateUser);
 router.route('/:id').delete(deleteUser);
 router.route('/email/:email').get(findUserByEmail)
+
 module.exports = router; 
