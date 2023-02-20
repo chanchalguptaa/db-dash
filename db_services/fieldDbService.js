@@ -10,6 +10,7 @@ async function addField(id, tableName, fieldName, fieldType) {
         }
 
     )
+    return obj
 }
 
 
@@ -24,6 +25,18 @@ async function deletefield(id, tableName, fieldName) {
 }
 
 async function updatefield(id, tableName, oldFieldName, newFieldName, newFieldType) {
+
+    console.log("inside updatefield in view db service");
+
+    if (newFieldType) {
+        const obj = await db.findOneAndUpdate(
+            { _id: id },
+            { $set: { [`tables.${tableName}.fields.${oldFieldName}.fieldType`]: { "fieldType": newFieldType } } 
+        }
+    );
+    
+    }
+
     if (newFieldName) {
         const obj = await db.findOneAndUpdate(
             { _id: id }
@@ -31,12 +44,13 @@ async function updatefield(id, tableName, oldFieldName, newFieldName, newFieldTy
                 $rename: { [`tables.${tableName}.fields.${oldFieldName}`]: `tables.${tableName}.fields.${newFieldName}` }
             }
         );
+        return obj;
 
     }
-    if (newFieldType) {
-        const obj = await db.findOneAndUpdate({ _id: id }, { $set: { [`tables.${tableName}.fields.${oldFieldName}.fieldType`]: { "fieldType": newFieldType } } });
-    }
-    return;
+   
+    
 }
+
+
 
 module.exports = {addField,deletefield,updatefield}

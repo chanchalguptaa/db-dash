@@ -43,5 +43,36 @@ async function saveView(id, tableName, view, fieldData) {
     )
 }
 
+  
+  async function updateView(id, tableName, fieldName, newFieldName, newFieldType,view){
 
-module.exports = {getField,deleteView,deleteFieldInView,saveView}
+    if(newFieldType){
+        console.log("newFieldType");
+        await db.updateOne(
+            { _id: id },
+            {
+                $set: {
+                    [`tables.${view}.view.${tableName}.fields.${fieldName}.fieldType`]:newFieldType
+                }
+            }
+        )
+    }
+
+    if(newFieldName){
+        console.log("newFieldName");
+        console.log(`tables.${view}.view.${tableName}.fields.${fieldName}`);
+        await db.updateOne(
+            { _id: id, [`tables.${view}.view.${tableName}.fields.${fieldName}`]: { $exists: true }},
+            {
+                $rename: {
+                    [`tables.${view}.view.${tableName}.fields.${fieldName}`]:`tables.${view}.view.${tableName}.fields.${newFieldName}`
+                }
+            }
+        )
+    }
+
+  }
+  
+
+
+module.exports = {getField,deleteView,deleteFieldInView,saveView,updateView}

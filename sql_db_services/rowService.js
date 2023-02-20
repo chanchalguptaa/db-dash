@@ -13,16 +13,12 @@ const inserRowService = async (tableName,columnAndData,data)=>{
     try {
     const client = createClient(data);
     const s = data?.tables?.[tableName]?.fields;
-    // console.log("s",s);
-    console.log("columnAndData",columnAndData);
-    // var keyss = Object.keys(columnAndData)
+  
     var columnStr="";
     var valuesStr="";
     for (const key of Object.keys(columnAndData)) {
-
         if(s[key].fieldType !== "integer")
         { 
-          // console.log("columnAndData.key",columnAndData[key])
           columnAndData[key] = "'" + columnAndData?.[key] +"'"
           valuesStr = valuesStr+ columnAndData[key] +","
         }
@@ -30,27 +26,68 @@ const inserRowService = async (tableName,columnAndData,data)=>{
           valuesStr = valuesStr+ columnAndData[key] +","
         }
         columnStr = columnStr+ key +","
-        
-        // console.log(s[key].fieldType);
     }
-    // columnStr.split()
     columnStr = columnStr.substr(0,columnStr.length-1);
     valuesStr = valuesStr.substr(0,valuesStr.length-1);
-    console.log(" new columnAndData",columnAndData);
-    console.log("columnStr",columnStr)
-    console.log("valuestr",valuesStr)
-    await client.connect();
-    // console.log('first')
+  
+    await client.connect(); 
     const ans = await client.query(`INSERT INTO ${tableName}(${columnStr}) VALUES(${valuesStr});`);
-    // console.log('second')
     await client.end();
     return ans;
 }
 catch (err)
 {
-    console.log(err)
     throw err ;
 }
 }
 
-module.exports = {inserRowService}
+
+const deleteRowService = async (tableName,row_id,data)=>{
+  try {
+  const client = createClient(data);
+  await client.connect();
+  const ans = await client.query(`DELETE FROM ${tableName} WHERE id = ${row_id};`);
+  await client.end();
+  return ans;
+}
+catch (err)
+{
+  console.log(err)
+  throw err ;
+}
+}
+
+
+const updateRowService = async (tableName,row_id,columnAndData,data)=>{
+  try {
+  const client = createClient(data);
+  const s = data?.tables?.[tableName]?.fields;
+  var columnStr="";
+  var valuesStr="";
+  for (const key of Object.keys(columnAndData)) {
+
+      if(s[key].fieldType !== "integer")
+      { 
+        columnAndData[key] = "'" + columnAndData?.[key] +"'"
+        valuesStr = valuesStr+ columnAndData[key] +","
+      }
+      else{
+        valuesStr = valuesStr+ columnAndData[key] +","
+      }
+      columnStr = columnStr+ key +","
+      
+  }
+  columnStr = columnStr.substr(0,columnStr.length-1);
+  valuesStr = valuesStr.substr(0,valuesStr.length-1);
+  await client.connect();
+  const ans = await client.query( `UPDATE ${tableName} SET ${columnStr}=${valuesStr} WHERE id = ${row_id};`);
+  await client.end();
+  return ans;
+}
+catch (err)
+{
+  throw err ;
+}
+}
+
+module.exports = {inserRowService,deleteRowService,updateRowService}

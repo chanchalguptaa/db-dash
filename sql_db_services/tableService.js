@@ -30,7 +30,7 @@ const getTableService = async (tableName,data)=>{
   await client.connect();
   const ans = await client.query(`SELECT * FROM ${tableName}`);
   await client.end();
-  return ans;
+  return ans.rows;
 }
 catch (err)
 {

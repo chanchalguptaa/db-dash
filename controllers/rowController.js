@@ -6,19 +6,13 @@ const insertRow = async (req, res) => {
     const db_id = req?.params?.dbId;
     const tableName = req?.params?.tableName;
     const columAndData = req?.body;
-//     const value4 = req?.body?.value4;
     
-    console.log(tableName,columAndData)
     try {
          const data = await getById(db_id);
          console.log(data);
          
-        //  const dataType=data?.tables?.[tableName]?.fields?.[fieldName]||null;
-        //  console.log("data in create table ", dataType);
          const ans = await rowService.inserRowService(tableName,columAndData,data)
-         console.log('third')
          try {
-            //   const data1 = await addTable(db_id, tableName)
               return res.status(200).json(prepareSuccessResponse({ message: `'${tableName}'row created successfully` }))
          }
          catch (err) {
@@ -31,4 +25,55 @@ const insertRow = async (req, res) => {
 
 }
 
-module.exports = {insertRow}
+
+const deleteRow = async (req, res) => {
+     const db_id = req?.params?.dbId;
+     const tableName = req?.params?.tableName;
+     const row_id = req?.params?.row_id;
+
+     try {
+          const data = await getById(db_id);
+          console.log(data);
+          
+          const ans = await rowService.deleteRowService(tableName,row_id,data)
+          try {
+               return res.status(200).json(prepareSuccessResponse({ message: `'${tableName}'row delete successfully` }))
+          }
+          catch (err) {
+               return res.status(400).json(prepareErrorResponse({ message: `Error deleting row ${err.message}` }));
+          }
+     }
+     catch (err) {
+          return res.status(400).json(prepareErrorResponse({ message: `Error deleting row ${err.message}` }));
+     }
+ 
+ }
+
+
+
+const updateRow = async (req, res) => {
+     const db_id = req?.params?.dbId;
+     const tableName = req?.params?.tableName;
+     const row_id = req?.params?.row_id;
+     const columAndData = req?.body;
+
+     try {
+          const data = await getById(db_id);
+          console.log(data);
+          
+          const ans = await rowService.updateRowService(tableName,row_id,columAndData,data)
+          try {
+               return res.status(200).json(prepareSuccessResponse({ message: `'${tableName}'row updated successfully` }))
+          }
+          catch (err) {
+               return res.status(400).json(prepareErrorResponse({ message: `Error updating row ${err.message}` }));
+          }
+     }
+     catch (err) {
+          return res.status(400).json(prepareErrorResponse({ message: `Error updating row ${err.message}` }));
+     }
+ 
+ }
+
+
+module.exports = {insertRow,deleteRow,updateRow}

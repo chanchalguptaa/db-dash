@@ -2,6 +2,7 @@ const { prepareErrorResponse, prepareSuccessResponse } = require("../services/ut
 const {getById} = require("../db_services/masterDbService")
 const {addField,deletefield,updatefield} = require("../db_services/fieldDbService")
 const fieldService = require("../sql_db_services/fieldService.js")
+const {updateView} = require("../db_services/viewDbService")
 const db=require("../models/dbModel")
 
 const createField = async (req, res) => {
@@ -19,6 +20,7 @@ const createField = async (req, res) => {
                  const tmp=data?.tables?.[tableName].fields?.[fieldName]||null;
                  if(!tmp)  
                  {  const data1=await addField(db_id,tableName,fieldName,fieldType);
+
                }
                else
                { return res.status(404).json(prepareErrorResponse({ message: `Field ${fieldName}  not exits in  table ${tableName}` }))
@@ -73,12 +75,21 @@ const updateField = async (req, res) => {
     const newFieldType = req?.body?.newFieldType;
     try {
          const data = await getById(db_id);
-         console.log("data in create table ", data);
+         const tableNames = Object.keys(data.tables);
+         console.log(tableNames); 
          const ans = await fieldService.updateFieldService(tableName, fieldName,newFieldName,newFieldType,data)
+         console.log(ans);
+         if(tableName &&(fieldName || newFieldType)){
+             try {
+               const data1 =  await updatefield(db_id, tableName, fieldName, newFieldName, newFieldType)
+               tableNames.forEach(async (view) => {
+                    await updateView(db_id, tableName, fieldName, newFieldName, newFieldType,view)
+                  });
+             } catch (error) {
+               return res.status(400).json(prepareErrorResponse({ message: `Error updating field ${error.message}` }));
+          }
+         }
          try {
-          if(!tmp)  
-          {  const data1=await fieldService.updatefield(db_id,tableName,fieldName,newFieldName,fieldType);
-        }
               return res.status(200).json(prepareSuccessResponse({ message: `Field '${fieldName}' updated successfully` }))
          }
          catch (err) {
@@ -90,4 +101,4 @@ const updateField = async (req, res) => {
     }
 
 }
-module.exports = { createField,deleteField,updateField }
+module.exports = { createField,deleteField,updateField}

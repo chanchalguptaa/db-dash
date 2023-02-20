@@ -31,7 +31,8 @@ const getTable = async (req, res) => {
           
            try {              
                const ans = await tableService.getTableService(tableName,data);
-               console.log(ans)
+               console.log("AAA "+ans)
+               return res.send(ans)
                return res.status(200).json(prepareSuccessResponse({ message: `Table '${tableName}' get successfully`}))
            }
            catch (err) {
