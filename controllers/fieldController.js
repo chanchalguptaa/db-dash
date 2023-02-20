@@ -1,6 +1,6 @@
 const { prepareErrorResponse, prepareSuccessResponse } = require("../services/utilityService.js");
-const {addField,deletefield} = require("../db_services/fieldDbService")
 const {getById} = require("../db_services/masterDbService")
+const {addField,deletefield,updatefield} = require("../db_services/fieldDbService")
 const fieldService = require("../sql_db_services/fieldService.js")
 const db=require("../models/dbModel")
 
@@ -75,9 +75,10 @@ const updateField = async (req, res) => {
          const data = await getById(db_id);
          console.log("data in create table ", data);
          const ans = await fieldService.updateFieldService(tableName, fieldName,newFieldName,newFieldType,data)
-         console.log('third')
          try {
-            //   const data1 = await addTable(db_id, tableName)
+          if(!tmp)  
+          {  const data1=await fieldService.updatefield(db_id,tableName,fieldName,newFieldName,fieldType);
+        }
               return res.status(200).json(prepareSuccessResponse({ message: `Field '${fieldName}' updated successfully` }))
          }
          catch (err) {
