@@ -72,7 +72,19 @@ async function saveView(id, tableName, view, fieldData) {
     }
 
   }
+
+  async function renameView(id,viewName,newViewName,table){
+
+    await db.updateOne(
+        { _id: id, [`tables.${table}.view.${viewName}`]: { $exists: true }},
+        {
+            $rename: {
+                [`tables.${table}.view.${viewName}`]:`tables.${table}.view.${newViewName}`
+            }
+        }
+    )
+  }
   
 
 
-module.exports = {getField,deleteView,deleteFieldInView,saveView,updateView}
+module.exports = {getField,deleteView,deleteFieldInView,saveView,updateView,renameView}
