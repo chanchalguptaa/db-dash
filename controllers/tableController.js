@@ -2,6 +2,7 @@ const { prepareErrorResponse, prepareSuccessResponse } = require("../services/ut
 const {addTable,updateTableInDb,deleteTableInDb} = require("../db_services/tableDbService");
 const tableService = require("../sql_db_services/tableService.js")
 const {getById} = require("../db_services/masterDbService")
+const {renameView} = require("../db_services/viewDbService")
 const createTable = async (req, res) => {
      const db_id = req?.params?.dbId;
      const tableName = req?.body?.tableName;
@@ -49,11 +50,16 @@ const updateTable = async (req, res) => {
      const db_id = req?.params?.dbId
      const newTableName = req?.body?.newTableName;
      const tableName = req?.body?.tableName;
+     const data = await getById(db_id);
+     const views = Object.keys(data.tables);
      try {
           const data = await getById(db_id);
           try {
                const ans = await tableService.updateTableService(tableName,newTableName,data);
                await updateTableInDb(db_id,newTableName,tableName) ;
+               views.forEach(async (view) => {
+                    await renameView(db_id,tableName,newTableName,view)                  
+               });
                return res.status(200).json(prepareSuccessResponse({ message: `Table '${tableName}' updated successfully`}))
            }
            catch (err) {

@@ -9,6 +9,9 @@ const createView = async (req , res )=>{
         const id = req?.params?.dbId
         const fieldData = req?.body
         const tableName = req?.params?.tableName
+        if(tableName==fieldData.table_name) {
+            return res.status(400).json(prepareErrorResponse({message:"view can not be created  in with same table name"}))
+        }
         const data = await viewService.getField(id,fieldData)
         const view = data[0].tables[`${fieldData.table_name}`].fields[`${fieldData.field_name}`]
         const reData = await viewService.saveView(id,tableName,view,fieldData)
