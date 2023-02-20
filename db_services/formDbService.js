@@ -20,7 +20,6 @@ async function deleteFormByDbId(id){
 
 }
 async function addFieldInForm(field_name,id) {
-    console.log(field_name,id)
     const addField = await form.updateOne(
         { _id:id },
             { $push:  {fields:field_name}  }        

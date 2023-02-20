@@ -4,8 +4,7 @@ const {createForm,addField,removeField} = require("../controllers/formController
 
 
 router.route('/:dbId/table/:tablename/form').post(createForm)
-router.route('/:dbId/table/:tablename/form').patch(addField)
-
-router.route('/:dbId/table/form').patch(removeField)
+router.route('/:dbId/table/:tablename/form/addfield').patch(addField)
+router.route('/:dbId/table/:tablename/form/removefield').patch(removeField)
 
 module.exports=router;
