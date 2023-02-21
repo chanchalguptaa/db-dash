@@ -14,9 +14,7 @@ const createView = async (req , res )=>{
             return res.status(400).json(prepareErrorResponse({message:"view can not be created  in with same table name"}))
         }
         const data = await viewService.getField(id,fieldData)
-        // console.log("fields",data[0].tables)
         const fields = data[0]?.tables[fieldData?.table_name].fields;
-        // console.log("fields",fields)
         if(!(fields[field_name]))  
            return res.status(404).json(prepareErrorResponse({ message: "field doesnot exits in table"}));
         const view = data[0].tables[`${fieldData.table_name}`].fields[`${fieldData.field_name}`]

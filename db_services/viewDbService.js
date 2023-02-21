@@ -47,7 +47,6 @@ async function saveView(id, tableName, view, fieldData) {
   async function updateView(id, tableName, fieldName, newFieldName, newFieldType,view){
 
     if(newFieldType){
-        console.log("newFieldType");
         await db.updateOne(
             { _id: id },
             {
@@ -59,8 +58,6 @@ async function saveView(id, tableName, view, fieldData) {
     }
 
     if(newFieldName){
-        console.log("newFieldName");
-        console.log(`tables.${view}.view.${tableName}.fields.${fieldName}`);
         await db.updateOne(
             { _id: id, [`tables.${view}.view.${tableName}.fields.${fieldName}`]: { $exists: true }},
             {

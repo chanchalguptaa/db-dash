@@ -26,12 +26,10 @@ async function deletefield(id, tableName, fieldName) {
 
 async function updatefield(id, tableName, oldFieldName, newFieldName, newFieldType) {
 
-    console.log("inside updatefield in view db service");
-
     if (newFieldType) {
         const obj = await db.findOneAndUpdate(
             { _id: id },
-            { $set: { [`tables.${tableName}.fields.${oldFieldName}.fieldType`]: { "fieldType": newFieldType } } 
+            { $set: { [`tables.${tableName}.fields.${oldFieldName}.fieldType`]:  newFieldType  } 
         }
     );
     
