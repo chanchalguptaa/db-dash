@@ -23,6 +23,7 @@ app.use('/dbs',require("./routers/formRoute"))
 app.use('/dbs',require("./routers/fieldRoute"))
 app.use('/dbs',require("./routers/filterRoute"))
 app.use('/dbs',require("./routers/rowRoute"))
+app.use('/dbs',require("./routers/authKeyRoute"))
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '/frontend/build')))

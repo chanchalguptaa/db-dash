@@ -42,16 +42,18 @@ const createForm= async (req,res)=>{
      }
         const addField = async (req, res) => {
         const form_id = req?.body?.form_id
-        const db_id = req?.params?.dbId;
-        const table_name = req?.params?.tablename;
+        const db_id = req?.params?.db_id;
+        const table_name = req?.params?.table_name;
         const field_name = req?.body?.field_name;
         try{    
-            const dataOfDb = await getById(db_id); 
-            const fields = dataOfDb?.tables[table_name]?.fields;
-            if( !(fields[field_name]))
-                return res.status(404).json(prepareErrorResponse({ message: "field doesnot exits in table"}));
-        const data= await formService.addFieldInForm(field_name,form_id);    
-            return res.status(200).json(prepareSuccessResponse({  message: "successfully addField in form" }));
+        const data= await formService.addFieldInForm(field_name,form_id);
+          const dataOfDb = await getById(db_id); 
+         // const fieldName = Object.keys(dataOfDb.fields)
+                //    if(!dataOfDb?.tables[table_name].fields.fielName)
+                //   // if(!fielName)
+                //        return res.status(404).json(prepareErrorResponse({ message: "Incorrect  Table Name" }));    
+        
+         return res.status(200).json(prepareSuccessResponse({  message: "successfully addField in form" }));
         }
         
         catch(error){
