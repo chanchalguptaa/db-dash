@@ -38,6 +38,25 @@ catch (err)
 }
 }
 
+
+const getDatafromView = async(viewData,data)=>{
+  try {
+    const client = createClient(data);
+    await client.connect();
+    const viewRowData={}
+    for (const viewName in viewData) {
+      const fields = viewData[viewName];
+      const selectQuery = `SELECT ${fields.join(', ')} FROM ${viewName}`;
+      const ans = await client.query(selectQuery);
+      viewRowData[viewName] = ans.rows;
+    }
+    await client.end();
+    return viewRowData;
+  } catch (error) {
+    throw error ;
+  }
+}
+
 const updateTableService = async (tableName,newTableName,data)=>{
   try {
   const client = createClient(data);
@@ -66,4 +85,4 @@ catch (err)
 }
 }
 
-module.exports = {createTableService,getTableService,updateTableService,deleteTableService}
+module.exports = {createTableService,getTableService,updateTableService,deleteTableService,getDatafromView}
