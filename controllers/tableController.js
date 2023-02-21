@@ -49,7 +49,7 @@ const getTable = async (req, res) => {
 const updateTable = async (req, res) => {
      const db_id = req?.params?.dbId
      const newTableName = req?.body?.newTableName;
-     const tableName = req?.body?.tableName;
+     const tableName = req?.params?.tableName;
      const data = await getById(db_id);
      const views = Object.keys(data.tables);
      try {
@@ -73,7 +73,7 @@ const updateTable = async (req, res) => {
 }
 const deleteTable = async (req, res) => {
      const db_id = req?.params?.dbId
-     const tableName = req?.body?.tableName;
+     const tableName = req?.params?.tableName;
      try {
 
           const data = await getById(db_id);

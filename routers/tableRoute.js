@@ -4,7 +4,7 @@ const { createTable,updateTable,deleteTable,getTable } = require("../controllers
 
 router.route('/:dbId/table').post(createTable)
 router.route('/:dbId/:tableName/fetchtable').get(getTable)
-router.route('/:dbId/updatetable').patch(updateTable)
-router.route('/:dbId/deletetable').delete(deleteTable)
+router.route('/:dbId/:tableName/updatetable').patch(updateTable)
+router.route('/:dbId/:tableName/deletetable').delete(deleteTable)
 
 module.exports = router;
