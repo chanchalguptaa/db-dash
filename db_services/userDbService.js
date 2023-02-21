@@ -1,7 +1,7 @@
 const User = require("../models/userModel")
 
 async function getAllUser(){
-    return await User.find();
+    return await User.find().populate("dbs");
 }
 
 async function getUserById(id){
@@ -37,12 +37,13 @@ async function addDbIdInUSerSchema(user_id,dbId){
             _id:user_id
         },
         {
-            $push:{dbs:dbId}
+            $push:{dbs:dbId+""}
         })
     } catch (error) {
         console.log(error);
     }
 }
+
 
 
 async function deleteUserById(id){
