@@ -29,10 +29,13 @@ const getTable = async (req, res) => {
      try {
           const data = await getById(db_id);
           const view = data.tables[`${tableName}`].view;
+
+          console.log("VIEW "+view);
+
           let rowData={}
            try {              
                rowData['tableData'] = await tableService.getTableService(tableName,data);
-               if(view){
+               if("view" in data.tables[tableName]){
                     let viewData = {};
                     for (const viewName in view) {
                          const viewFields = Object.keys(view[viewName].fields);
