@@ -11,9 +11,7 @@ async function createFormInDb(id,tableName,formId){
     )
         return data;
 }
-async function deleteDbById(db_id){
-    return await form.findByIdAndDelete(db_id)
-}
+
 async function deleteFormByDbId(id){
       { _id:id }
     return await form.findByIdAndDelete(id)
@@ -35,4 +33,5 @@ async function removeFieldInForm(field_name,id){
         
     )
 }
-module.exports = {saveForm,createFormInDb,deleteDbById,deleteFormByDbId,addFieldInForm,removeFieldInForm}
+
+module.exports = {saveForm,createFormInDb,deleteFormByDbId,addFieldInForm,removeFieldInForm}
