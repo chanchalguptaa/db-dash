@@ -30,8 +30,6 @@ const getTable = async (req, res) => {
           const data = await getById(db_id);
           const view = data.tables[`${tableName}`].view;
 
-          console.log("VIEW "+view);
-
           let rowData={}
            try {              
                rowData['tableData'] = await tableService.getTableService(tableName,data);
@@ -67,6 +65,7 @@ const updateTable = async (req, res) => {
                const ans = await tableService.updateTableService(tableName,newTableName,data);
                await updateTableInDb(db_id,newTableName,tableName) ;
                views.forEach(async (view) => {
+                    if(data?.tables?.[view]?.view?.[tableName])
                     await renameView(db_id,tableName,newTableName,view)                  
                });
                return res.status(200).json(prepareSuccessResponse({ message: `Table '${tableName}' updated successfully`}))

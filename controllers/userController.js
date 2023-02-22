@@ -70,7 +70,6 @@ const deleteUser = async (req, res) => {
 }
 
 const findUserByEmail = async (req, res) => {
-   console.log("hell0 in finduserby email")
    try {
       const email = req?.params?.email
       const user = await userService.getUserByEmail(email)
