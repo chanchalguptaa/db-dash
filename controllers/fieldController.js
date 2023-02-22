@@ -40,8 +40,7 @@ const createField = async (req, res) => {
 const deleteField = async (req, res) => {
     const db_id = req?.params?.dbId;
     const tableName = req?.params?.tableName;
-    const fieldName = req?.body?.fieldName;
-    const fieldType =req?.body?.fieldType;
+    const fieldName = req?.params?.fieldName;
     try { 
          const data = await getById(db_id);
          const ans = await fieldService.deleteFieldService(tableName, fieldName,data)
@@ -70,20 +69,22 @@ const deleteField = async (req, res) => {
 const updateField = async (req, res) => {
     const db_id = req?.params?.dbId;
     const tableName = req?.params?.tableName;
-    const fieldName = req?.body?.fieldName;
+    const fieldName = req?.params?.fieldName;
     const newFieldName = req?.body?.newFieldName;
     const newFieldType = req?.body?.newFieldType;
     try {
          const data = await getById(db_id);
          const tableNames = Object.keys(data.tables);
-         console.log(tableNames); 
          const ans = await fieldService.updateFieldService(tableName, fieldName,newFieldName,newFieldType,data)
-         console.log(ans);
          if(tableName &&(fieldName || newFieldType)){
              try {
                const data1 =  await updatefield(db_id, tableName, fieldName, newFieldName, newFieldType)
                tableNames.forEach(async (view) => {
-                    await updateView(db_id, tableName, fieldName, newFieldName, newFieldType,view)
+                         
+                    if(data?.tables?.[view]?.view?.[tableName])
+                    {
+                         await updateView(db_id, tableName, fieldName, newFieldName, newFieldType,view)
+                    }
                   });
              } catch (error) {
                return res.status(400).json(prepareErrorResponse({ message: `Error updating field ${error.message}` }));

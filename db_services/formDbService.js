@@ -18,13 +18,10 @@ async function deleteFormByFormId(form_id){
 
 }
 async function deleteFormInDb(id,tableName,formId){
-    // formId = "ObjectId('"+formId+"')"
-    console.log(formId);
     const data =  await db.updateOne(
         { _id: id },    
         { $pull: {  [`tables.${tableName}.forms`]:formId } }
     )
-    console.log(data);
         return data ;
 
 }

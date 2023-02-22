@@ -35,7 +35,6 @@ const deleteAuthKey = async (req, res) => {
     const authKey =  req?.params?.authkey;
     try {
          const data = await getById(db_id);
-         console.log(data);
          const data1 = await deleteAuthKeyInDb(db_id,authKey)
          try {
               return res.status(200).json(prepareSuccessResponse({ message: `delete authkey successfully` }))

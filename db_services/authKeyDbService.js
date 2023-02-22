@@ -2,8 +2,6 @@ const db = require("../models/dbModel")
 let  {nanoid}  = require("nanoid");
 
 async function insertAuthKey(id, access) {
-
-    console.log('access',access)
     const authkey = "AU"+nanoid(6);
     var authKeyObject=""
     if(access==1){
@@ -38,7 +36,6 @@ async function deleteAuthKeyInDb(id, authKey) {
 
 
 async function updateAuthKeyInDb(id,authKey, access) {
-    console.log(id,authKey,access)
     return await db.findOneAndUpdate(
         { _id: id },
         {
