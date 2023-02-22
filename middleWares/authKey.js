@@ -6,13 +6,14 @@ const checkAuthKey = async (req,res,next)=>{
     const db_id = req.params.dbId
     const tableName = req.params.tableName
     const data = await getById(db_id)
-    const authKeys = Object.keys(data.authKeys);
     try {
             if(data.authKeys[`${authkey}`]){
             if(data.authKeys[`${authkey}`].access==1){
                 next();
             } else{
-                const tables = Object.keys(data.authKeys[`${authkey}`].access);
+                if(req.method == 'POST'){
+                    return res.status(400).json(prepareErrorResponse({ message: "Invalid token"}));
+                }
                 if(data.authKeys[`${authkey}`].access[`${tableName}`]==1){
                    next();
                 } else{
