@@ -70,7 +70,7 @@ const deleteDb = async (req, res) => {
         const id = req?.params?.id
         const db = await dbService.deleteDb(id)
         if (!db) {
-            return res.status(404).json(prepareErrorResponse({ message: "db not found with id", data: { error } }));
+            return res.status(404).json(prepareErrorResponse({ message: "db not found with id" }));
 
         }
         const sqlDbName = db?.name + "_" + db?.org_id
@@ -78,6 +78,7 @@ const deleteDb = async (req, res) => {
         return res.status(201).json(prepareSuccessResponse({ data: db, message: "Successfully delete db" }));
 
     } catch (error) {
+        console.log(error)
         return res.status(400).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
     }
 }

@@ -26,6 +26,7 @@ async function deleteDb(id) {
     return await db.findByIdAndDelete(id)
 }
 
+
 async function renameDb(id, newDb) {
     return await db.findByIdAndUpdate(id, newDb)
 }
