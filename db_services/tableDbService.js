@@ -4,7 +4,7 @@ async function addTable(id, tableName) {
     const data = await db.findOneAndUpdate(
         { _id: id },
         {
-            $set: { [`tables.${tableName}`]: {} },
+            $set: { [`tables.${tableName}.fields`]: {} },
         }
     )
     return data;
