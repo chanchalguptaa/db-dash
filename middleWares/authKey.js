@@ -5,7 +5,6 @@ const checkAuthKey = async (req,res,next)=>{
     const authkey =  req.headers['key']; 
     const db_id = req?.params?.dbId
     const tableName = req?.params?.tableName
-    console.log("URL "+req.url);
     const data = await getById(db_id)
     try {
             if(!(data.authKeys[`${authkey}`]))
