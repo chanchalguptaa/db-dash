@@ -46,7 +46,6 @@ const getDbById = async (req, res) => {
     try {
         const dbId = req.params.dbId
         const db = await dbService.getDbById(dbId)
-        console.log("SS "+db);
         return res.status(201).json(prepareSuccessResponse({ data: db, message: "Successfully get db" }));
 
     } catch (error) {

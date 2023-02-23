@@ -51,7 +51,7 @@ async function deleteUserById(id){
 }
 
 async function getUserByEmail(email) {
-    const user= await User.findOne({email: email});
+    const user= await User.findOne({email: email}).populate("dbs");
     return user;
 }
 
