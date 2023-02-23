@@ -9,7 +9,6 @@ const insertRow = async (req, res) => {
     
     try {
          const data = await getById(db_id);
-         console.log(data);
          
          const ans = await rowService.inserRowService(tableName,columAndData,data)
          try {
@@ -33,7 +32,6 @@ const deleteRow = async (req, res) => {
 
      try {
           const data = await getById(db_id);
-          console.log(data);
           
           const ans = await rowService.deleteRowService(tableName,row_id,data)
           try {
@@ -59,7 +57,6 @@ const updateRow = async (req, res) => {
 
      try {
           const data = await getById(db_id);
-          console.log(data);
           
           const ans = await rowService.updateRowService(tableName,row_id,columAndData,data)
           try {
