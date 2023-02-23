@@ -6,7 +6,7 @@ const {checkAuthKey} = require("../middleWares/authKey")
 router.route('/:dbId/table/:tablename/form').post(checkAuthKey,createForm)
 router.route('/:dbId/table/:tablename/form/addfield').patch(checkAuthKey,addField)
 router.route('/:dbId/table/:tablename/form/removefield').patch(checkAuthKey,removeField)
-router.route('/:dbId/table/:tablename/form/deleteform').delete(checkAuthKey,dcheckAuthKey,eleteForm)
+router.route('/:dbId/table/:tablename/form/deleteform').delete(checkAuthKey,deleteForm)
 
 
 module.exports=router;
