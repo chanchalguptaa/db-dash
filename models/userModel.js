@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
 const db = require("./dbModel")
+const Organization = require("./organizationModel")
 const userSchema = new mongoose.Schema({
 
     first_name: {
@@ -18,7 +19,15 @@ const userSchema = new mongoose.Schema({
           throw new Error("Invalid Email");
         }
       }
-    },
+    }
+    ,
+    orgs :
+    [ 
+        {
+         type : mongoose.Schema.Types.ObjectId ,
+          ref : 'Organization'
+        } 
+    ],
     dbs :
     [ 
         {
