@@ -1,9 +1,11 @@
 const Org = require('../models/organizationModel')
+const Db = require("../models/dbModel")
 const { prepareErrorResponse, prepareSuccessResponse } = require("../services/utilityService.js");
 const orgService = require("../Db_Services/organizationDbService");
 const userService = require("../db_services/userDbService")
 const { isEmpty } = require('lodash');
-
+const sqlDbService = require("../sql_db_services/databaseService")
+const dbService = require("../db_services/masterDbService")
 const getAllOrgs = async (req, res) => {
    try {
       const org = await orgService.getAllOrgs()
@@ -40,7 +42,7 @@ const createOrg = async (req, res) => {
       const org = req?.body?.name;
       const user_id = req?.body?.user_id;
       
-      if (!(req?.body?.name) ||req?.body?.name?.length<2)
+      if (!(req?.body?.name) ||req?.body?.name?.length<2 )
       {
          return res.status(404).json(prepareErrorResponse({ message: "invalid orgname " }));
       }
@@ -49,12 +51,14 @@ const createOrg = async (req, res) => {
          if(ifUser != null)
          {
            const orgData =  await orgService.saveOrg(org,user_id);
-            return res.status(200).json(prepareSuccessResponse({ data: orgData, message: "successfully add user" }));
+           await addDefaultdbInOrg (orgData._id,"untitled Db",user_id);
+            return res.status(200).json(prepareSuccessResponse({ data: orgData, message: "successfully created organization" }));
          }
          else
          {
-            return res.status(403).json(prepareErrorResponse({ message: "some error on server"}));
+            return res.status(403).json(prepareErrorResponse({ message: "user does not exist" }));
          }
+        
       }catch(error){
          console.log(error)
          return res.status(403).json(prepareErrorResponse({ message: "some error on server", data: { error } }));
@@ -131,6 +135,31 @@ const deleteOrg = async (req, res) => {
    }
 }
 
+const addDefaultdbInOrg = async (orgId,dbName,userId)=>{
+   try {
+      const db = new Db()
+      db.name=dbName;
+      const org_id = orgId;
+      const sqlDbName = db?.name + "_" + org_id
+      const user_id = userId
+      db.org_id = orgId
+      const conUrl = await sqlDbService.createDatabase(sqlDbName)
+      try {
+   
+          db.con_url = conUrl
+          const data = await dbService.saveDb(db);
+          const dbId = data?._id + ""
+          const result = await userService.addDbIdInUSerSchema(user_id, dbId)
+          return ;
 
+      } catch (error) {
+          await sqlDbService.dropDatabase(sqlDbName)
+          throw error ;
+
+      }
+  } catch (error) {
+      throw error ;
+  }
+}
 
 module.exports = { getAllOrgs, createOrg,getOrgById, updateOrg, deleteOrg, addUserInOrg,removeUserInOrg }

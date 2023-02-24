@@ -4,14 +4,28 @@ const { insertAuthKey, deleteAuthKeyInDb, updateAuthKeyInDb } = require("../db_s
 
 const createAuthKey = async (req, res) => {
     const db_id = req?.params?.dbId;
-    const access = req?.body?.access
+    var access = req?.body?.access
+  
     try {
          const data = await getById(db_id);
          if(access!=1)
          {
-              const tableName = data?.tables[access];
-               if(!tableName)
-                    return res.status(404).json(prepareErrorResponse({ message: `Table doesnot exits in db` }));
+               if( !(Array.isArray(access)))
+               return  res.status(404).json(prepareErrorResponse({ message: `Table name should be in array format` }));
+              var allTablesAccess = {};
+              var error= "false"
+              access?.map(element => {
+                    const tableName = data?.tables[element];
+                    if(!tableName)
+                    {
+                         error= "true";
+                         return ;
+                    }
+                    Object.assign(allTablesAccess, {[element]:{}});
+              });
+              if(error === "true")
+               return res.status(404).json(prepareErrorResponse({ message: `Table doesnot exits in db` }));
+                access = allTablesAccess;
          }
 
          try {
