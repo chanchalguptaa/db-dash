@@ -5,7 +5,7 @@ async function getAllUser(){
 }
 
 async function getUserById(id){
-    return await User.findById(id)
+    return await User.findById(id).populate("dbs").populate("orgs");
 }
 
 async function saveUser(user){
@@ -51,7 +51,7 @@ async function deleteUserById(id){
 }
 
 async function getUserByEmail(email) {
-    const user= await User.findOne({email: email}).populate("dbs");
+    const user= await User.findOne({email: email}).populate("dbs").populate("orgs");
     return user;
 }
 
