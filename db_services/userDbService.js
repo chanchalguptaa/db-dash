@@ -50,8 +50,14 @@ async function deleteUserById(id){
     return await User.findByIdAndDelete(id)
 }
 
-async function getUserByEmail(email) {
-    const user= await User.findOne({email: email}).populate("dbs").populate("orgs");
+async function getUserByEmail(email) { 
+    const user= await User.findOne({email: email}) .populate({
+        path: "dbs",
+        populate: {
+            path: "org_id",
+            model: "Organization"
+        }
+    });
     return user;
 }
 
