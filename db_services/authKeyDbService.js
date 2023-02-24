@@ -8,8 +8,8 @@ async function insertAuthKey(id, access) {
         authKeyObject = `auth_keys.${authkey}.access`;
     }
     else{
-        authKeyObject = `auth_keys.${authkey}.access.${access}`;
-        access ={};
+       
+        authKeyObject = `auth_keys.${authkey}.access`;
     }
     const obj = await db.findOneAndUpdate(
 
