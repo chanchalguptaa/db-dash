@@ -19,15 +19,7 @@ const userSchema = new mongoose.Schema({
           throw new Error("Invalid Email");
         }
       }
-    }
-    ,
-    orgs :
-    [ 
-        {
-         type : mongoose.Schema.Types.ObjectId ,
-          ref : 'Organization'
-        } 
-    ],
+    },
     dbs :
     [ 
         {
