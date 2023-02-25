@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
 const db = require("./dbModel")
+const Organization = require("./organizationModel")
 const userSchema = new mongoose.Schema({
 
     first_name: {

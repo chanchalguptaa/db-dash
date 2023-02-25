@@ -5,7 +5,7 @@ async function saveDb(dbData) {
 }
 
 async function getDbs() {
-    return await db.find()
+    return await db.find().populate('org_id')
 }
 
 async function getDbById(id) {
