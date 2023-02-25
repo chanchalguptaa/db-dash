@@ -6,6 +6,8 @@ const userService = require("../db_services/userDbService")
 const { isEmpty } = require('lodash');
 const sqlDbService = require("../sql_db_services/databaseService")
 const dbService = require("../db_services/masterDbService")
+
+
 const getAllOrgs = async (req, res) => {
    try {
       const org = await orgService.getAllOrgs()
@@ -38,6 +40,8 @@ const addUserInOrg = async (req, res) => {
 }
 
 const createOrg = async (req, res) => {
+   console.log(req.body)
+
    try {
       const org = req?.body?.name;
       const user_id = req?.body?.user_id;
@@ -87,6 +91,7 @@ const getOrgById = async (req, res) => {
 }
 
 const updateOrg = async (req, res) => {
+   console.log(req.body)
    try {
       const id = req?.params?.id;
       const orgData = req?.body;
@@ -121,9 +126,10 @@ const removeUserInOrg = async (req,res) =>{
 
 const deleteOrg = async (req, res) => {
    try {
-
       const id = req?.params?.id
+      // console.log(id)
       const org = await orgService.deleteOrgById(id)
+      console.log(org)
       if (!org) {
          return res.status(404).json(prepareErrorResponse({ message: "id does not exixts", data: { error } }));
       }
