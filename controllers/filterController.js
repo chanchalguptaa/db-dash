@@ -55,12 +55,10 @@ const deleteFilter = async(req,res)=>{
               return res.status(200).json(prepareSuccessResponse({ message: `Table '${filterName}' deleted successfully`}))
           }
           catch (err) {
-            console.log(err)
               return res.status(400).json(prepareErrorResponse({ message: `Error delete filter ${err.message}` }));
           }
     }
     catch (err) {
-        console.log(err)
          return res.status(400).json(prepareErrorResponse({ message: `Error delete filter ${err.message}` }));
     }
 }
@@ -77,12 +75,10 @@ const updateQuery = async(req,res)=>{
               return res.status(200).json(prepareSuccessResponse({ message: `Query '${query}' deleted successfully`}))
           }
           catch (err) {
-            console.log(err)
               return res.status(400).json(prepareErrorResponse({ message: `Error update query ${err.message}` }));
           }
     }
     catch (err) {
-        console.log(err)
          return res.status(400).json(prepareErrorResponse({ message: `Error update query ${err.message}` }));
     }
 

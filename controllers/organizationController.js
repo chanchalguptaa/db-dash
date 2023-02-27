@@ -60,12 +60,10 @@ const createOrg = async (req, res) => {
          }
         
       }catch(error){
-         console.log(error)
          return res.status(403).json(prepareErrorResponse({ message: "some error on server", data: { error } }));
       }
    }  
     catch (error) {
-      console.log(error)
       return res.status(404).json(prepareErrorResponse({ message: "some error on server", data: { error } }));
 
    }

@@ -33,14 +33,12 @@ const createForm= async (req,res)=>{
             }
             catch (error) 
             {
-                console.log(error)
                 return res.status(404).json(prepareErrorResponse({ message: "Cannot create  form", data: { error } }));
         
             }
         }
          catch (error) 
          {
-            console.log(error)
            return res.status(404).json(prepareErrorResponse({ message: "some error on server", data: { error } }));
      
         }
@@ -57,7 +55,6 @@ const addField = async (req, res) => {
         }
         
         catch(error){
-            console.log(error)
         return res.status(403).json(prepareErrorResponse({ message: "some error on serverrrr"}));
         }
 }
@@ -73,7 +70,6 @@ try{
     }
     
     catch(error){
-        console.log(error)
     return res.status(403).json(prepareErrorResponse({ message: "some error on serverrrr"}));
     }
 }
@@ -89,8 +85,6 @@ const deleteForm = async (req, res) => {
        return res.status(200).json(prepareSuccessResponse({  message: "Delete form  successfully"}));
     }
     catch (error){
-    
-            console.log(error)
         return res.status(403).json(prepareErrorResponse({ message: "some error on serverrrr"}));
     }
 

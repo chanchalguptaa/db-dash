@@ -7,7 +7,6 @@ const getAllUsers = async (req, res) => {
       const user = await userService.getAllUser()
       return res.status(201).json(prepareSuccessResponse({ data: user, message: "Successfully get user" }));
    } catch (error) {
-      console.log(error)
       return res.status(400).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
    }
 }
@@ -19,7 +18,6 @@ const createUser = async (req, res) => {
       return res.status(201).json(prepareSuccessResponse({ data: user, message: "User created" }));
 
    } catch (error) {
-      console.log(error);
       return res.status(400).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
 
    }
@@ -73,7 +71,6 @@ const findUserByEmail = async (req, res) => {
    try {
       const email = req?.params?.email
       const user = await userService.getUserByEmail(email)
-      console.log("user",user)
       if (!user) {
          return res.status(404).json(prepareErrorResponse({ message: "user not found" }));
       }
@@ -81,7 +78,6 @@ const findUserByEmail = async (req, res) => {
       return res.status(201).json(prepareSuccessResponse({ data: user, message: "User find successfully" }));
 
    } catch (error) {
-      console.log("error", error);
       return res.status(400).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
    }
 }

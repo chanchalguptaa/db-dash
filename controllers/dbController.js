@@ -67,7 +67,9 @@ const getDbByOrgId = async (req, res) => {
 const deleteDb = async (req, res) => {
     try {
 
-        const id = req?.params?.id
+        const id = req?.params?.id;
+        const dbId = [id];
+        const deleteDbFromUser = await userService.deleteDbInUser(dbId);
         const db = await dbService.deleteDb(id)
         if (!db) {
             return res.status(404).json(prepareErrorResponse({ message: "db not found with id" }));
@@ -78,7 +80,6 @@ const deleteDb = async (req, res) => {
         return res.status(201).json(prepareSuccessResponse({ data: db, message: "Successfully delete db" }));
 
     } catch (error) {
-        console.log(error)
         return res.status(400).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
     }
 }

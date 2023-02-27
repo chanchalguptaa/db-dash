@@ -52,7 +52,6 @@ const deleteRowService = async (tableName,row_id,data)=>{
 }
 catch (err)
 {
-  console.log(err)
   throw err ;
 }
 }

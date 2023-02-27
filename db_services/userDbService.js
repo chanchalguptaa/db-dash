@@ -19,7 +19,6 @@ async function deleteDbInUser(dbId) {
         user.dbs.pull(...dbId);
         user.save();
       });
-      console.log(`${dbId.length} dbIds deleted from users`);
     } catch (error) {
       console.error(error);
       return error;

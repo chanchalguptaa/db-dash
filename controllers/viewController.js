@@ -26,7 +26,6 @@ const createView = async (req , res )=>{
         }
         return res.status(201).json(prepareSuccessResponse({ data: reData, message: "View created" }));
     } catch (error) {
-        console.log(error);
        return res.status(400).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
  
     }
@@ -58,7 +57,6 @@ const deleteFieldInView = async (req , res )=>{
         const reData = await viewService.deleteFieldInView(id,tableName,viewData)
         return res.status(201).json(prepareSuccessResponse({ data: reData, message: "View Updated" }));
     } catch (error) {
-        console.log(error);
        return res.status(400).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
  
     }
