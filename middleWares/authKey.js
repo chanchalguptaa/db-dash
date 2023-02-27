@@ -1,11 +1,11 @@
-const {getById} = require("../db_services/masterDbService")
+const {getDbById} = require("../db_services/masterDbService")
 const { prepareErrorResponse, prepareSuccessResponse } = require("../services/utilityService.js");
 const checkAuthKey = async (req,res,next)=>{
   try {
     const authkey =  req.headers['key']; 
     const db_id = req?.params?.dbId
     const tableName = req?.params?.tableName
-    const data = await getById(db_id)
+    const data = await getDbById(db_id)
     try {
             if(!(data.authKeys[`${authkey}`]))
             {

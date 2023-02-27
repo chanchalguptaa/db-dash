@@ -8,11 +8,6 @@ async function getDbs() {
     return await db.find().populate('org_id')
 }
 
-async function getDbById(id) {
-    return await db.find({
-        _id: id
-    })
-}
 
 async function getDbByOrgId(org_id) {
     return await db.find({ org_id: org_id })
@@ -24,8 +19,8 @@ async function deleteDbByOrgId(org_id){
     })
 }
 
-async function getById(id) {
-    return await db.findById(id)
+async function getDbById(id) {
+    return await db.findById(id).lean()
 }
 
 async function deleteDb(id) {
@@ -37,9 +32,7 @@ async function renameDb(id, newDb) {
     return await db.findByIdAndUpdate(id, newDb)
 }
 
-async function renameDb(id, newDb) {
-    return await db.findByIdAndUpdate(id, newDb)
-}
 
 
-module.exports = { saveDb, getDbs,deleteDbByOrgId, deleteDb, renameDb, getById, getDbByOrgId, getDbById }
+
+module.exports = { saveDb, getDbs,deleteDbByOrgId, deleteDb, renameDb, getDbByOrgId, getDbById }

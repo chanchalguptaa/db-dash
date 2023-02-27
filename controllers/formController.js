@@ -1,7 +1,7 @@
 const dbService = require("../db_services/formDbService")
 const { prepareErrorResponse, prepareSuccessResponse } = require("../services/utilityService.js");
 const Form = require('../models/formModel')
-const {getById} = require('../db_services/masterDbService')
+const {getDbById} = require('../db_services/masterDbService')
 const formService = require("../Db_Services/formDbService");
 
 
@@ -17,7 +17,7 @@ const createForm= async (req,res)=>{
             form.table_name=table_name;
            
             try{
-                  const dataOfDb = await getById(db_id);
+                  const dataOfDb = await getDbById(db_id);
                  
                   if(!dataOfDb?.tables[table_name])
                       return res.status(404).json(prepareErrorResponse({ message: "Incorrect Db id or Table Name" }));  
@@ -52,7 +52,7 @@ const addField = async (req, res) => {
         const field_name = req?.body?.field_name;
         try{    
         const data= await formService.addFieldInForm(field_name,form_id);
-          const dataOfDb = await getById(db_id);     
+          const dataOfDb = await getDbById(db_id);     
          return res.status(200).json(prepareSuccessResponse({  message: "successfully addField in form" }));
         }
         

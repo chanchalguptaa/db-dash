@@ -1,5 +1,5 @@
 const { prepareErrorResponse, prepareSuccessResponse } = require("../services/utilityService.js");
-const { getById } = require("../db_services/masterDbService");
+const { getDbById } = require("../db_services/masterDbService");
 const { insertAuthKey, deleteAuthKeyInDb, updateAuthKeyInDb } = require("../db_services/authKeyDbService")
 
 const createAuthKey = async (req, res) => {
@@ -7,7 +7,7 @@ const createAuthKey = async (req, res) => {
     var access = req?.body?.access
   
     try {
-         const data = await getById(db_id);
+         const data = await getDbById(db_id);
          if(access!=1)
          {
                if( !(Array.isArray(access)))
@@ -48,7 +48,7 @@ const deleteAuthKey = async (req, res) => {
     const db_id = req?.params?.dbId;
     const authKey =  req?.params?.authkey;
     try {
-         const data = await getById(db_id);
+         const data = await getDbById(db_id);
          const data1 = await deleteAuthKeyInDb(db_id,authKey)
          try {
               return res.status(200).json(prepareSuccessResponse({ message: `delete authkey successfully` }))
@@ -68,7 +68,7 @@ const updateAuthKey = async (req, res) => {
      const authKey =  req?.params?.authkey;
      const access = req?.body?.access
      try {
-          const data = await getById(db_id);
+          const data = await getDbById(db_id);
           if(access!=1)
           {
                const tableName = data?.tables[access];

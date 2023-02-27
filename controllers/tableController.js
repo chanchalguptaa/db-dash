@@ -1,14 +1,14 @@
 const { prepareErrorResponse, prepareSuccessResponse } = require("../services/utilityService.js");
 const {addTable,updateTableInDb,deleteTableInDb} = require("../db_services/tableDbService");
 const tableService = require("../sql_db_services/tableService.js")
-const {getById} = require("../db_services/masterDbService")
+const {getDbById} = require("../db_services/masterDbService")
 const {renameView} = require("../db_services/viewDbService")
 const createTable = async (req, res) => {
      const db_id = req?.params?.dbId;
      const tableName = req?.body?.tableName;
 
      try {
-          const data = await getById(db_id);
+          const data = await getDbById(db_id);
           const ans = await tableService.createTableService(tableName, data)
           try {
                const data1 = await addTable(db_id, tableName)
@@ -27,7 +27,7 @@ const getTable = async (req, res) => {
      const db_id = req?.params?.dbId
      const tableName = req?.params?.tableName;
      try {
-          const data = await getById(db_id);
+          const data = await getDbById(db_id);
           const view = data.tables[`${tableName}`].view;
 
           let rowData={}
@@ -57,10 +57,10 @@ const updateTable = async (req, res) => {
      const db_id = req?.params?.dbId
      const newTableName = req?.body?.newTableName;
      const tableName = req?.params?.tableName;
-     const data = await getById(db_id);
+     const data = await getDbById(db_id);
      const views = Object.keys(data.tables);
      try {
-          const data = await getById(db_id);
+          const data = await getDbById(db_id);
           try {
                const ans = await tableService.updateTableService(tableName,newTableName,data);
                await updateTableInDb(db_id,newTableName,tableName) ;
@@ -84,7 +84,7 @@ const deleteTable = async (req, res) => {
      const tableName = req?.params?.tableName;
      try {
 
-          const data = await getById(db_id);
+          const data = await getDbById(db_id);
           
            try {              
                const ans = await tableService.deleteTableService(tableName,data);

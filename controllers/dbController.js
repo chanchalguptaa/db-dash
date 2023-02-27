@@ -87,7 +87,7 @@ const renameDb = async (req, res) => {
     try {
         const id = req?.params?.id
         const newDB = req?.body
-        const db = await dbService.getById(id)
+        const db = await dbService.getDbById(id)
         if (!db) {
             return res.status(404).json(prepareErrorResponse({ message: "rename cancelled", data: { error } }));
 

@@ -1,5 +1,5 @@
 const { prepareErrorResponse, prepareSuccessResponse } = require("../services/utilityService.js");
-const { getById } = require("../db_services/masterDbService");
+const { getDbById } = require("../db_services/masterDbService");
 const rowService = require("../sql_db_services/rowService.js")
 
 const insertRow = async (req, res) => {
@@ -8,7 +8,7 @@ const insertRow = async (req, res) => {
     const columAndData = req?.body;
     
     try {
-         const data = await getById(db_id);
+         const data = await getDbById(db_id);
          
          const ans = await rowService.inserRowService(tableName,columAndData,data)
          try {
@@ -31,7 +31,7 @@ const deleteRow = async (req, res) => {
      const row_id = req?.params?.row_id;
 
      try {
-          const data = await getById(db_id);
+          const data = await getDbById(db_id);
           
           const ans = await rowService.deleteRowService(tableName,row_id,data)
           try {
@@ -56,7 +56,7 @@ const updateRow = async (req, res) => {
      const columAndData = req?.body;
 
      try {
-          const data = await getById(db_id);
+          const data = await getDbById(db_id);
           
           const ans = await rowService.updateRowService(tableName,row_id,columAndData,data)
           try {

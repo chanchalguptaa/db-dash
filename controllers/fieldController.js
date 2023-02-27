@@ -1,5 +1,5 @@
 const { prepareErrorResponse, prepareSuccessResponse } = require("../services/utilityService.js");
-const {getById} = require("../db_services/masterDbService")
+const {getDbById} = require("../db_services/masterDbService")
 const {addField,deletefield,updatefield} = require("../db_services/fieldDbService")
 const fieldService = require("../sql_db_services/fieldService.js")
 const {updateView} = require("../db_services/viewDbService")
@@ -11,7 +11,7 @@ const createField = async (req, res) => {
     const fieldName = req?.body?.fieldName;
     const fieldType = req?.body?.fieldType;
     try {
-         const data = await getById(db_id);
+         const data = await getDbById(db_id);
          
          const ans = await fieldService.createFieldService(tableName, fieldName,fieldType,data)
          try { 
@@ -42,7 +42,7 @@ const deleteField = async (req, res) => {
     const tableName = req?.params?.tableName;
     const fieldName = req?.params?.fieldName;
     try { 
-         const data = await getById(db_id);
+         const data = await getDbById(db_id);
          const ans = await fieldService.deleteFieldService(tableName, fieldName,data)
          try {
             
@@ -73,7 +73,7 @@ const updateField = async (req, res) => {
     const newFieldName = req?.body?.newFieldName;
     const newFieldType = req?.body?.newFieldType;
     try {
-         const data = await getById(db_id);
+         const data = await getDbById(db_id);
          const tableNames = Object.keys(data.tables);
          const ans = await fieldService.updateFieldService(tableName, fieldName,newFieldName,newFieldType,data)
          if(tableName &&(fieldName || newFieldType)){

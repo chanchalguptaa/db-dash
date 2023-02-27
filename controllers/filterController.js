@@ -9,7 +9,7 @@ const createFilter = async (req, res) =>{
         const tableName = req?.params?.tableName;
         const query = req?.body?.query;
         const filterName = req?.body?.filterName;
-        const data = await dbService.getById(dbId);
+        const data = await dbService.getDbById(dbId);
         const ans = await filterService.runQuery(query,data);
        try {
            const data1 = await filterDbService.addQuery(dbId,query,filterName,tableName)
