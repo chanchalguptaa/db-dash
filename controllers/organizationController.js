@@ -129,10 +129,9 @@ const deleteOrg = async (req, res) => {
       for(const item of orgIdInDb)
       {
          dbId.push(item._id);
-      }
-      console.log("dbID",dbId);   
+      }  
       const deleteDBs = await dbService.deleteDbByOrgId(id);
-      console.log("deleteDBs",deleteDBs);
+      const deleteDB = await userService.deleteDbInUser(dbId);
       const org = await orgService.deleteOrgById(id)
       if (!org) {
          return res.status(404).json(prepareErrorResponse({ message: "id does not exixts", data: { error } }));

@@ -12,6 +12,20 @@ async function saveUser(user){
     await user.save()
 }
 
+async function deleteDbInUser(dbId) {
+    try {
+      const users = await User.find({ dbs: { $in: dbId } });
+      users.forEach((user) => {
+        user.dbs.pull(...dbId);
+        user.save();
+      });
+      console.log(`${dbId.length} dbIds deleted from users`);
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
 async function updateUser(first_name,last_name,id,db){ 
 
     try {
@@ -63,4 +77,4 @@ async function getUserByEmail(email) {
     return user;
 }
 
-module.exports={getAllUser,getUserById,saveUser,updateUser,deleteUserById,getUserByEmail,addDbIdInUSerSchema}
+module.exports={getAllUser,getUserById,saveUser,updateUser,deleteDbInUser,deleteUserById,getUserByEmail,addDbIdInUSerSchema}
