@@ -9,6 +9,7 @@ const dbSchema = new mongoose.Schema({
     org_id : {
         type : mongoose.Schema.Types.ObjectId , 
         ref : 'Organization',
+        cascade:true
         //required:true
     },
     users : {

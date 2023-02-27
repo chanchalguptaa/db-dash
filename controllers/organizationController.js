@@ -104,7 +104,7 @@ const updateOrg = async (req, res) => {
 const removeUserInOrg = async (req,res) =>{
    try{
       const org_id = req?.params?.id;
-   const user_id = req?.body?.user_id;
+      const user_id = req?.body?.user_id;
      if(!user_id)
      return res.status(404).json(prepareErrorResponse({ message: "User not found", data: { error } }));
     try{
@@ -123,6 +123,16 @@ const deleteOrg = async (req, res) => {
    try {
 
       const id = req?.params?.id
+      const orgIdInDb = await dbService.getDbByOrgId(id);
+      const dbId = [];
+
+      for(const item of orgIdInDb)
+      {
+         dbId.push(item._id);
+      }
+      console.log("dbID",dbId);   
+      const deleteDBs = await dbService.deleteDbByOrgId(id);
+      console.log("deleteDBs",deleteDBs);
       const org = await orgService.deleteOrgById(id)
       if (!org) {
          return res.status(404).json(prepareErrorResponse({ message: "id does not exixts", data: { error } }));

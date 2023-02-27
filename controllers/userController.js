@@ -73,6 +73,7 @@ const findUserByEmail = async (req, res) => {
    try {
       const email = req?.params?.email
       const user = await userService.getUserByEmail(email)
+      console.log("user",user)
       if (!user) {
          return res.status(404).json(prepareErrorResponse({ message: "user not found" }));
       }
