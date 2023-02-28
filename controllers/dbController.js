@@ -93,15 +93,20 @@ const renameDb = async (req, res) => {
             return res.status(404).json(prepareErrorResponse({ message: "rename cancelled", data: { error } }));
 
         }
+
         const newDbName = newDB?.name + "_" + db?.org_id
         const oldDbName = db?.name + "_" + db?.org_id;
         Object.assign(db, newDB);
+        
         const conUrl = await sqlDbService.renameDatabase(oldDbName, newDbName);
+
         db.con_url = conUrl;
-        await dbService.saveDb(db)
+        const data = await dbService.renameDb(id,newDB);
+    
         return res.status(201).json(prepareSuccessResponse({ data: db, message: "Successfully rename db" }));
 
     } catch (error) {
+        
         return res.status(404).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
 
     }
