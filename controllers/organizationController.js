@@ -52,9 +52,10 @@ const createOrg = async (req, res) => {
       }
       try {
          const ifUser = await userService.getUserById(user_id);
-         if (ifUser != null) {
-            const orgData = await orgService.saveOrg(org, user_id);
-            await addDefaultdbInOrg(orgData._id, "untitled Db", user_id);
+         if(ifUser != null)
+         {
+           const orgData =  await orgService.saveOrg(org,user_id);
+           await addDefaultdbInOrg (orgData._id,"untitled Db",user_id);
             return res.status(200).json(prepareSuccessResponse({ data: orgData, message: "successfully created organization" }));
          }
          else {
@@ -140,34 +141,35 @@ const deleteOrg = async (req, res) => {
       const adminId = req?.params?.adminId
       const userRole = await orgService.userRole(id, adminId)
       if (userRole === 'admin') {
-
-         for (const item of orgIdInDb) {
-            dbId.push(item._id);
-         }
-         const deleteDBs = await dbService.deleteDbByOrgId(id);
-         const deleteDB = await userService.deleteDbInUser(dbId);
-         const org = await orgService.deleteOrgById(id)
-         if (!org) {
-            return res.status(404).json(prepareErrorResponse({ message: "id does not exixts", data: { error } }));
-         }
-         return res.status(200).json(prepareSuccessResponse({ data: org, message: "Org deleted successfully" }));
-      } else {
-         return res.status(401).json(prepareErrorResponse({ message: "unauthorized user only admin can delete Org" }));
+         for(const item of orgIdInDb)
+      {
+         dbId.push(item._id);
+      }  
+      const deleteDBs = await dbService.deleteDbByOrgId(id);
+      const deleteDB = await userService.deleteDbInUser(dbId);
+      const org = await orgService.deleteOrgById(id)
+      if (!org) {
+         return res.status(404).json(prepareErrorResponse({ message: "id does not exixts", data: { error } }));
       }
+      return res.status(200).json(prepareSuccessResponse({ data: org, message: "Org deleted successfully" }));
+      }else{
+         return res.status(401).json(prepareErrorResponse({ message: "unauthorized user only admin Delete Org" }));
+      }
+
    } catch (error) {
       return res.status(400).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
 
    }
 }
 
-const addDefaultdbInOrg = async (orgId, dbName, userId) => {
+const addDefaultdbInOrg = async (orgId,dbName,userId)=>{
    try {
       const db = new Db()
-      db.name = dbName;
+      db.name=dbName;
       const org_id = orgId;
       const sqlDbName = db?.name + "_" + org_id
       const user_id = userId
-      db.org_id = orgId
+      db.org_id = org_id
       const conUrl = await sqlDbService.createDatabase(sqlDbName)
       try {
 
@@ -178,13 +180,13 @@ const addDefaultdbInOrg = async (orgId, dbName, userId) => {
          return;
 
       } catch (error) {
-         await sqlDbService.dropDatabase(sqlDbName)
-         throw error;
+          await sqlDbService.dropDatabase(sqlDbName)
+          throw error ;
 
       }
-   } catch (error) {
-      throw error;
-   }
+  } catch (error) {
+      throw error ;
+  }
 }
 
 module.exports = { getAllOrgs, createOrg, getOrgById, updateOrg, deleteOrg, addUserInOrg, removeUserInOrg }
