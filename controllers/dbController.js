@@ -46,6 +46,9 @@ const getDbById = async (req, res) => {
     try {
         const dbId = req.params.dbId
         const db = await dbService.getDbById(dbId)
+        if(db==null){
+            return res.status(404).json(prepareErrorResponse({message:"db is not exist with id "+dbId ,data:Db}))
+        }
         return res.status(201).json(prepareSuccessResponse({ data: db, message: "Successfully get db" }));
 
     } catch (error) {
