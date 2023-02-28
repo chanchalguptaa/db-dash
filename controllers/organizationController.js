@@ -51,7 +51,7 @@ const createOrg = async (req, res) => {
          if(ifUser != null)
          {
            const orgData =  await orgService.saveOrg(org,user_id);
-           await addDefaultdbInOrg (orgData._id,"untitled Db",user_id);
+           await addDefaultdbInOrg (orgData._id,"untitledDb",user_id);
             return res.status(200).json(prepareSuccessResponse({ data: orgData, message: "successfully created organization" }));
          }
          else
@@ -143,14 +143,17 @@ const deleteOrg = async (req, res) => {
 }
 
 const addDefaultdbInOrg = async (orgId,dbName,userId)=>{
+  
    try {
       const db = new Db()
       db.name=dbName;
-      const org_id = orgId;
+      const org_id = orgId+"";
       const sqlDbName = db?.name + "_" + org_id
       const user_id = userId
-      db.org_id = orgId
+      db.org_id = org_id
+      // console.log()
       const conUrl = await sqlDbService.createDatabase(sqlDbName)
+      console.log("conUrl",conUrl);
       try {
    
           db.con_url = conUrl
@@ -160,11 +163,14 @@ const addDefaultdbInOrg = async (orgId,dbName,userId)=>{
           return ;
 
       } catch (error) {
+         console.log(error)
+
           await sqlDbService.dropDatabase(sqlDbName)
           throw error ;
 
       }
   } catch (error) {
+   console.log(error)
       throw error ;
   }
 }
