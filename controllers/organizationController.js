@@ -16,24 +16,22 @@ const getAllOrgs = async (req, res) => {
    }
 }
 const addUserInOrg = async (req, res) => {
-      const org_id = req?.params?.id;
-      const user_id = req?.body?.user_id;
-      const user_type = "user";
-    try{
+   const org_id = req?.params?.id;
+   const user_id = req?.body?.user_id;
+   const user_type = "user";
+   try {
       const ifUser = await userService.getUserById(user_id);
-      if(ifUser != null)
-      {
-         const response = await orgService.addUserInOrg(org_id,{user_id,user_type});
+      if (ifUser != null) {
+         const response = await orgService.addUserInOrg(org_id, { user_id, user_type });
          return res.status(200).json(prepareSuccessResponse({ data: response, message: "successfully add user" }));
       }
-      else
-      {
-         return res.status(403).json(prepareErrorResponse({ message: "some error on server"}));
+      else {
+         return res.status(403).json(prepareErrorResponse({ message: "some error on server" }));
       }
-   }catch(error){
+   } catch (error) {
       return res.status(403).json(prepareErrorResponse({ message: "some error on server", data: { error } }));
    }
-   
+
 
 }
 
@@ -41,29 +39,26 @@ const createOrg = async (req, res) => {
    try {
       const org = req?.body?.name;
       const user_id = req?.body?.user_id;
-      
-      if (!(req?.body?.name) ||req?.body?.name?.length<2 )
-      {
+
+      if (!(req?.body?.name) || req?.body?.name?.length < 2) {
          return res.status(404).json(prepareErrorResponse({ message: "invalid orgname " }));
       }
-      try{
+      try {
          const ifUser = await userService.getUserById(user_id);
-         if(ifUser != null)
-         {
-           const orgData =  await orgService.saveOrg(org,user_id);
-           await addDefaultdbInOrg (orgData._id,"untitled Db",user_id);
+         if (ifUser != null) {
+            const orgData = await orgService.saveOrg(org, user_id);
+            await addDefaultdbInOrg(orgData._id, "untitled Db", user_id);
             return res.status(200).json(prepareSuccessResponse({ data: orgData, message: "successfully created organization" }));
          }
-         else
-         {
+         else {
             return res.status(403).json(prepareErrorResponse({ message: "user does not exist" }));
          }
-        
-      }catch(error){
+
+      } catch (error) {
          return res.status(403).json(prepareErrorResponse({ message: "some error on server", data: { error } }));
       }
-   }  
-    catch (error) {
+   }
+   catch (error) {
       return res.status(404).json(prepareErrorResponse({ message: "some error on server", data: { error } }));
 
    }
@@ -74,7 +69,7 @@ const getOrgById = async (req, res) => {
       const id = req?.params?.id;
       const org = await orgService.getOrgById(id)
       if (!org) {
-      return res.status(404).json(prepareErrorResponse({ message: "org not found with id", data: { error } }));       
+         return res.status(404).json(prepareErrorResponse({ message: "org not found with id", data: { error } }));
       }
       return res.status(200).json(prepareSuccessResponse({ data: org, message: "successfully get org" }));
 
@@ -99,23 +94,23 @@ const updateOrg = async (req, res) => {
    }
 }
 
-const removeUserInOrg = async (req,res) =>{
-   try{
+const removeUserInOrg = async (req, res) => {
+   try {
       const org_id = req?.params?.id;
       const user_id = req?.body?.user_id;
-     if(!user_id)
-     return res.status(404).json(prepareErrorResponse({ message: "User not found", data: { error } }));
-    try{
-        const reponse = await orgService.removeUserInOrg(org_id,user_id);
-        return res.status(200).json(prepareSuccessResponse({message:"successfully user removed" }));
-    }catch(err){
-        return res.status(403).json(prepareSuccessResponse({error:"some error on server"}));
-    }
-   }catch(error){
+      if (!user_id)
+         return res.status(404).json(prepareErrorResponse({ message: "User not found", data: { error } }));
+      try {
+         const reponse = await orgService.removeUserInOrg(org_id, user_id);
+         return res.status(200).json(prepareSuccessResponse({ message: "successfully user removed" }));
+      } catch (err) {
+         return res.status(403).json(prepareSuccessResponse({ error: "some error on server" }));
+      }
+   } catch (error) {
       return res.status(404).json(prepareErrorResponse({ message: "some error on server", data: { error } }));
    }
-   
- }
+
+}
 
 const deleteOrg = async (req, res) => {
    try {
@@ -123,50 +118,54 @@ const deleteOrg = async (req, res) => {
       const id = req?.params?.id
       const orgIdInDb = await dbService.getDbByOrgId(id);
       const dbId = [];
+      const userId = req?.body?.userId
+      const userRole = await orgService.userRole(id, userId)
+      if (userRole === 'admin') {
 
-      for(const item of orgIdInDb)
-      {
-         dbId.push(item._id);
-      }  
-      const deleteDBs = await dbService.deleteDbByOrgId(id);
-      const deleteDB = await userService.deleteDbInUser(dbId);
-      const org = await orgService.deleteOrgById(id)
-      if (!org) {
-         return res.status(404).json(prepareErrorResponse({ message: "id does not exixts", data: { error } }));
+         for (const item of orgIdInDb) {
+            dbId.push(item._id);
+         }
+         const deleteDBs = await dbService.deleteDbByOrgId(id);
+         const deleteDB = await userService.deleteDbInUser(dbId);
+         const org = await orgService.deleteOrgById(id)
+         if (!org) {
+            return res.status(404).json(prepareErrorResponse({ message: "id does not exixts", data: { error } }));
+         }
+         return res.status(200).json(prepareSuccessResponse({ data: org, message: "Org deleted successfully" }));
+      }else{
+         return res.status(401).json(prepareErrorResponse({ message: "unauthorized user only admin can delete Org"}));
       }
-      return res.status(200).json(prepareSuccessResponse({ data: org, message: "Org deleted successfully" }));
-
    } catch (error) {
       return res.status(400).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
 
    }
 }
 
-const addDefaultdbInOrg = async (orgId,dbName,userId)=>{
+const addDefaultdbInOrg = async (orgId, dbName, userId) => {
    try {
       const db = new Db()
-      db.name=dbName;
+      db.name = dbName;
       const org_id = orgId;
       const sqlDbName = db?.name + "_" + org_id
       const user_id = userId
       db.org_id = orgId
       const conUrl = await sqlDbService.createDatabase(sqlDbName)
       try {
-   
-          db.con_url = conUrl
-          const data = await dbService.saveDb(db);
-          const dbId = data?._id + ""
-          const result = await userService.addDbIdInUSerSchema(user_id, dbId)
-          return ;
+
+         db.con_url = conUrl
+         const data = await dbService.saveDb(db);
+         const dbId = data?._id + ""
+         const result = await userService.addDbIdInUSerSchema(user_id, dbId)
+         return;
 
       } catch (error) {
-          await sqlDbService.dropDatabase(sqlDbName)
-          throw error ;
+         await sqlDbService.dropDatabase(sqlDbName)
+         throw error;
 
       }
-  } catch (error) {
-      throw error ;
-  }
+   } catch (error) {
+      throw error;
+   }
 }
 
-module.exports = { getAllOrgs, createOrg,getOrgById, updateOrg, deleteOrg, addUserInOrg,removeUserInOrg }
+module.exports = { getAllOrgs, createOrg, getOrgById, updateOrg, deleteOrg, addUserInOrg, removeUserInOrg }
