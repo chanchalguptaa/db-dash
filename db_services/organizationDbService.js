@@ -29,7 +29,7 @@ async function updateOrgTitle(id, org) {
 async function userRole(orgId, userId) {
     const orgDoc = await Org.findOne({ _id: orgId });
     const user = orgDoc.users.find(u => u.user_id._id==userId);
-    return user ? user.user_type : null;
+    return  user?.user_type;
  
   }
 

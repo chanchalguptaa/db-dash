@@ -18,16 +18,23 @@ const getAllOrgs = async (req, res) => {
 const addUserInOrg = async (req, res) => {
    const org_id = req?.params?.id;
    const user_id = req?.body?.user_id;
+   const adminId = req?.params?.adminId
    const user_type = "user";
    try {
-      const ifUser = await userService.getUserById(user_id);
-      if (ifUser != null) {
-         const response = await orgService.addUserInOrg(org_id, { user_id, user_type });
-         return res.status(200).json(prepareSuccessResponse({ data: response, message: "successfully add user" }));
+      const userRole = await orgService.userRole(id, adminId)
+      if (userRole === 'admin') {
+         const ifUser = await userService.getUserById(user_id);
+         if (ifUser != null) {
+            const response = await orgService.addUserInOrg(org_id, { user_id, user_type });
+            return res.status(200).json(prepareSuccessResponse({ data: response, message: "successfully add user" }));
+         }
+         else {
+            return res.status(403).json(prepareErrorResponse({ message: "some error on server" }));
+         }
+      } else {
+         return res.status(401).json(prepareErrorResponse({ message: "unauthorized user only admin can add user in Org" }));
       }
-      else {
-         return res.status(403).json(prepareErrorResponse({ message: "some error on server" }));
-      }
+
    } catch (error) {
       return res.status(403).json(prepareErrorResponse({ message: "some error on server", data: { error } }));
    }
@@ -83,11 +90,17 @@ const updateOrg = async (req, res) => {
    try {
       const id = req?.params?.id;
       const orgData = req?.body;
-      const data = await orgService.updateOrgTitle(id, orgData);
+      const adminId = req?.params?.adminId
+      const userRole = await orgService.userRole(id, adminId)
+      if (userRole === 'admin') {
+         const data = await orgService.updateOrgTitle(id, orgData);
       if (data)
          return res.status(200).json(prepareSuccessResponse({ data: data, message: "Org updated successfully" }));
       else
          return res.status(404).json(prepareErrorResponse({ message: "id does not exixts", data: { error } }));
+      }else{
+         return res.status(401).json(prepareErrorResponse({ message: "unauthorized user only admin can Update Org" }));
+      }
 
    } catch (error) {
       res.status(500).send({ error: 'Failed to update org' });
@@ -98,13 +111,19 @@ const removeUserInOrg = async (req, res) => {
    try {
       const org_id = req?.params?.id;
       const user_id = req?.body?.user_id;
-      if (!user_id)
-         return res.status(404).json(prepareErrorResponse({ message: "User not found", data: { error } }));
-      try {
-         const reponse = await orgService.removeUserInOrg(org_id, user_id);
-         return res.status(200).json(prepareSuccessResponse({ message: "successfully user removed" }));
-      } catch (err) {
-         return res.status(403).json(prepareSuccessResponse({ error: "some error on server" }));
+      const adminId = req?.params?.adminId
+      const userRole = await orgService.userRole(id, adminId)
+      if (userRole === 'admin') {
+         if (!user_id)
+            return res.status(404).json(prepareErrorResponse({ message: "User not found", data: { error } }));
+         try {
+            const reponse = await orgService.removeUserInOrg(org_id, user_id);
+            return res.status(200).json(prepareSuccessResponse({ message: "successfully user removed" }));
+         } catch (err) {
+            return res.status(403).json(prepareSuccessResponse({ error: "some error on server" }));
+         }
+      } else {
+         return res.status(401).json(prepareErrorResponse({ message: "unauthorized user only admin can remove user in Org" }));
       }
    } catch (error) {
       return res.status(404).json(prepareErrorResponse({ message: "some error on server", data: { error } }));
@@ -118,8 +137,8 @@ const deleteOrg = async (req, res) => {
       const id = req?.params?.id
       const orgIdInDb = await dbService.getDbByOrgId(id);
       const dbId = [];
-      const userId = req?.body?.userId
-      const userRole = await orgService.userRole(id, userId)
+      const adminId = req?.params?.adminId
+      const userRole = await orgService.userRole(id, adminId)
       if (userRole === 'admin') {
 
          for (const item of orgIdInDb) {
@@ -132,8 +151,8 @@ const deleteOrg = async (req, res) => {
             return res.status(404).json(prepareErrorResponse({ message: "id does not exixts", data: { error } }));
          }
          return res.status(200).json(prepareSuccessResponse({ data: org, message: "Org deleted successfully" }));
-      }else{
-         return res.status(401).json(prepareErrorResponse({ message: "unauthorized user only admin can delete Org"}));
+      } else {
+         return res.status(401).json(prepareErrorResponse({ message: "unauthorized user only admin can delete Org" }));
       }
    } catch (error) {
       return res.status(400).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
