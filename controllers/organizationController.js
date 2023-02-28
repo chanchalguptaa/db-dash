@@ -126,11 +126,15 @@ const deleteOrg = async (req, res) => {
 
       for(const item of orgIdInDb)
       {
+         const dbName = item?.name + "_" + id;
          dbId.push(item._id);
+         await sqlDbService.dropDatabase(dbName)
+         //to deletein postgres
       }  
-      const deleteDBs = await dbService.deleteDbByOrgId(id);
-      const deleteDB = await userService.deleteDbInUser(dbId);
-      const org = await orgService.deleteOrgById(id)
+      const deleteDBs = await dbService.deleteDbByOrgId(id); //delete in mongoose in  db model
+      const deleteDB = await userService.deleteDbInUser(dbId);//delete in mongoose in usermodel 
+      const org = await orgService.deleteOrgById(id);
+
       if (!org) {
          return res.status(404).json(prepareErrorResponse({ message: "id does not exixts", data: { error } }));
       }
@@ -151,9 +155,7 @@ const addDefaultdbInOrg = async (orgId,dbName,userId)=>{
       const sqlDbName = db?.name + "_" + org_id
       const user_id = userId
       db.org_id = org_id
-      // console.log()
       const conUrl = await sqlDbService.createDatabase(sqlDbName)
-      console.log("conUrl",conUrl);
       try {
    
           db.con_url = conUrl
