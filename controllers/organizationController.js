@@ -55,7 +55,7 @@ const createOrg = async (req, res) => {
          if(ifUser != null)
          {
            const orgData =  await orgService.saveOrg(org,user_id);
-           await addDefaultdbInOrg (orgData._id,"untitled Db",user_id);
+           await addDefaultdbInOrg (orgData._id,"untitledDb",user_id);
             return res.status(200).json(prepareSuccessResponse({ data: orgData, message: "successfully created organization" }));
          }
          else {
