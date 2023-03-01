@@ -72,15 +72,21 @@ const deleteDb = async (req, res) => {
 
         const id = req?.params?.id;
         const dbId = [id];
-        const deleteDbFromUser = await userService.deleteDbInUser(dbId);
-        const db = await dbService.deleteDb(id)
-        if (!db) {
-            return res.status(404).json(prepareErrorResponse({ message: "db not found with id" }));
-
+        const orgId = req?.params?.orgId;
+        const orgCount= await dbService.getDbCountByOrgId(orgId)
+        if(orgCount>=2){
+            const deleteDbFromUser = await userService.deleteDbInUser(dbId);
+            const db = await dbService.deleteDb(id)
+            if (!db) {
+                return res.status(404).json(prepareErrorResponse({ message: "db not found with id" }));
+    
+            }
+            const sqlDbName = db?.name + "_" + db?.org_id
+            await sqlDbService.dropDatabase(sqlDbName)
+            return res.status(201).json(prepareSuccessResponse({ data: db, message: "Successfully delete db" }));
+        } else{
+            return res.status(404).json(prepareErrorResponse({ message: "Can't Delete DB becuase this Org have only one DB"}));
         }
-        const sqlDbName = db?.name + "_" + db?.org_id
-        await sqlDbService.dropDatabase(sqlDbName)
-        return res.status(201).json(prepareSuccessResponse({ data: db, message: "Successfully delete db" }));
 
     } catch (error) {
         return res.status(400).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
