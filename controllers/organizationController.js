@@ -47,6 +47,8 @@ const createOrg = async (req, res) => {
       const org = req?.body?.name;
       const user_id = req?.body?.user_id;
 
+      console.log("Org: ",org, " User_id : ",user_id);
+
       if (!(req?.body?.name) || req?.body?.name?.length < 2) {
          return res.status(404).json(prepareErrorResponse({ message: "invalid orgname " }));
       }
@@ -55,7 +57,7 @@ const createOrg = async (req, res) => {
          if(ifUser != null)
          {
            const orgData =  await orgService.saveOrg(org,user_id);
-           await addDefaultdbInOrg (orgData._id,"untitled Db",user_id);
+           await addDefaultdbInOrg (orgData._id,"untitled_Db",user_id);
             return res.status(200).json(prepareSuccessResponse({ data: orgData, message: "successfully created organization" }));
          }
          else {
