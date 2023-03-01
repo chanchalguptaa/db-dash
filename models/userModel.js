@@ -19,7 +19,8 @@ const userSchema = new mongoose.Schema({
           throw new Error("Invalid Email");
         }
       }
-    },
+    }
+    ,
     dbs :
     [ 
         {
