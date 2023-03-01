@@ -1,13 +1,15 @@
 const { Client } = require('pg');
 
 const createClient = (data) => {
-  return new Client({
-    host: 'localhost',
-    user: 'postgres',
-    password: 'root',
-    database: data?.name+"_"+data?.org_id
-  });
-};
+    const db_name = data?.name.toLowerCase();
+    return new Client({
+      host: 'localhost',
+      user: 'postgres',
+      password: 'root',
+      database: db_name+"_"+data?.org_id
+    });
+  };
+  
 
 const createFieldService = async (tableName,fieldName,fieldType,data)=>{
     try {
