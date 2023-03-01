@@ -13,7 +13,7 @@ async function getOrgById(id) {
 async function saveOrg(orgname, user_id) {
     return await Org.create({
         name: orgname,
-        users: { user_id: user_id, user_type: "user" }
+        users: { user_id: user_id, user_type: "admin" }
     });
 }
 async function updateOrgTitle(id, org) {
