@@ -1,16 +1,12 @@
 const userDbService = require('../db_services/userDbService');
 const jwt = require("jsonwebtoken");
 
-exports.decodeToken =async  (req, res,next) => {
-  const authHeader = req.get("Authorization");
+const decodeToken =async  (req, res,next) => {
+  const authHeader = req?.get("Authorization");
   if (!authHeader) {
-    res.status(401).json({message:"invalid token"});
+    return res.status(401).json({message:"invalid token"});
   }
   const token = authHeader;
-
-  console.log(token);
-  
-
   let decodedToken;
   try {
     decodedToken = jwt.verify(token, process.env.TOKEN_SECRET_KEY);
@@ -30,3 +26,5 @@ exports.decodeToken =async  (req, res,next) => {
     return res.status(404).json({message:"data not found"});
   }
 };
+
+module.exports ={decodeToken}
