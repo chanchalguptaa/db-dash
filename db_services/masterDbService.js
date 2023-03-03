@@ -13,6 +13,10 @@ async function getDbByOrgId(org_id) {
     return await db.find({ org_id: org_id })
 }
 
+async function getDbCountByOrgId(org_id){
+    return await db.countDocuments({org_id:org_id})
+}
+
 async function deleteDbByOrgId(org_id){
     return await db.deleteMany({
         org_id: org_id 
@@ -35,4 +39,4 @@ async function renameDb(id, newDb) {
 
 
 
-module.exports = { saveDb, getDbs,deleteDbByOrgId, deleteDb, renameDb, getDbByOrgId, getDbById }
+module.exports = { saveDb, getDbs,deleteDbByOrgId, deleteDb, renameDb, getDbByOrgId, getDbById ,getDbCountByOrgId}
