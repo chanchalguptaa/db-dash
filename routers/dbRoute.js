@@ -4,7 +4,7 @@ const {createDb,getAllDb,deleteDb,renameDb,getDbByOrgId,getDbById} = require("..
 
 router.route('/').get(getAllDb)
 router.route('/:orgId/dbs').post(createDb)
-router.route('/:orgId/dbs/:dbId').get(getDbById);
+router.route('/dbs/:dbId').get(getDbById);
 router.route('/:orgId/dbs/:id').delete(deleteDb)
 router.route('/:orgId/dbs/:id').patch(renameDb)
 router.route('/:org_id/alldbs').get(getDbByOrgId)
