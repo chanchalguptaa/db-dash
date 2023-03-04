@@ -46,7 +46,6 @@ const createOrg = async (req, res) => {
    try {
       const org = req?.body?.name;
       const user_id = req?.body?.user_id;
-
       if (!(req?.body?.name) || req?.body?.name?.length < 2) {
          return res.status(404).json(prepareErrorResponse({ message: "invalid orgname " }));
       }

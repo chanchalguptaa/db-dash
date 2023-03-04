@@ -56,13 +56,12 @@ async function addDbIdInUSerSchema(user_id,dbId){
         console.log(error);
     }
 }
-
-
-
 async function deleteUserById(id){
     return await User.findByIdAndDelete(id)
 }
-
+async function getUser(email){
+    return await User.findOne({email: email});
+}
 async function getUserByEmail(email) { 
     const user= await User.findOne({email: email}) .populate({
         path: "dbs",
@@ -76,4 +75,4 @@ async function getUserByEmail(email) {
     return user;
 }
 
-module.exports={getAllUser,getUserById,saveUser,updateUser,deleteDbInUser,deleteUserById,getUserByEmail,addDbIdInUSerSchema}
+module.exports={getAllUser,getUserById,saveUser,updateUser,deleteDbInUser,deleteUserById,getUser,getUserByEmail,addDbIdInUSerSchema}
