@@ -1,6 +1,8 @@
 const users = require('../models/userModel')
 const { prepareErrorResponse, prepareSuccessResponse } = require("../services/utilityService.js");
 const userService = require("../Db_Services/userDbService")
+const jwt = require("jsonwebtoken")
+require('dotenv').config()
 
 const getAllUsers = async (req, res) => {
    try {
@@ -11,11 +13,21 @@ const getAllUsers = async (req, res) => {
    }
 }
 
+const generateToken = (email)=>{
+   const  token = jwt.sign(
+      {userEmail:email},
+      process.env.TOKEN_SECRET_KEY,
+      {expiresIn:"48h"}
+   )
+   return token;
+}
+
 const createUser = async (req, res) => {
    try {
       const user = new users(req?.body);
       await userService.saveUser(user)
-      return res.status(201).json(prepareSuccessResponse({ data: user, message: "User created" }));
+      const token = generateToken(user.email)
+      return res.status(201).json(prepareSuccessResponse({ data: token, message: "User created" }));
 
    } catch (error) {
       return res.status(400).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
@@ -23,6 +35,27 @@ const createUser = async (req, res) => {
    }
 }
 
+const loginUser = async (req, res) => {
+   const email = req?.body?.email;
+   try {
+     const token = generateToken(email);
+
+     res
+       .status(201)
+       .send(
+         prepareSuccessResponse({
+           data: token,
+           message: "logged in successfully",
+         })
+       );
+   } catch (error) {
+     console.log(error);
+     res
+       .status(400)
+       .send(prepareErrorResponse({ message: "login action unsuccessful" }));
+   }
+ };
+ 
 const getUserById = async (req, res) => {
    try {
       const id = req?.params?.id;
@@ -66,7 +99,14 @@ const deleteUser = async (req, res) => {
 
    }
 }
-
+async function getUserProfile(req, res) {
+   const profile = req?.profile;
+   try {
+     res.status(201).json(prepareSuccessResponse({data:profile,message:"Current user loaded successfully"}));
+   } catch (e) {
+     return res.status(401).json(prepareErrorResponse({ message: e.message }));
+   }
+ }
 const findUserByEmail = async (req, res) => {
    try {
       const email = req?.params?.email
@@ -82,4 +122,4 @@ const findUserByEmail = async (req, res) => {
    }
 }
 
-module.exports = { getAllUsers, createUser, getUserById, updateUser, deleteUser, findUserByEmail }
+module.exports = { getAllUsers, createUser, getUserById, updateUser, deleteUser, findUserByEmail,loginUser,getUserProfile}
