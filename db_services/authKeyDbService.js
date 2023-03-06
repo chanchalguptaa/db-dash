@@ -1,28 +1,24 @@
-const db = require("../models/dbModel")
-let  {nanoid}  = require("nanoid");
+const db = require("../models/dbModel");
+const { nanoid } = require("nanoid");
 
-async function insertAuthKey(id, access) {
-    const authkey = "AU"+nanoid(6);
-    var authKeyObject=""
-    if(access==1){
-        authKeyObject = `auth_keys.${authkey}.access`;
-    }
-    else{
-       
-        authKeyObject = `auth_keys.${authkey}.access`;
-    }
-    const obj = await db.findOneAndUpdate(
+async function insertAuthKey(id, authObj) {
+  const authKey = "AU" + nanoid(6);
+  const authKeyObject = `auth_keys.${authKey}`;
+   console.log("authKeyObj : ",authKeyObject)
+   console.log("auth Obj : ",authObj)
+  try {
+    const updatedDoc = await db.updateOne(
+      {_id:id},
+      { $set: { [authKeyObject]: authObj } }
+    );
 
-        { _id: id },
-
-        {
-            $set: { [authKeyObject]: access }
-        }
-
-    )
-    return obj
-    }
-    
+    console.log(`Updated document: ${updatedDoc}`);
+    return updatedDoc;
+  } catch (error) {
+    console.error(`Error while updating document: ${error}`);
+    throw error;
+  }
+}
 
 
 async function deleteAuthKeyInDb(id, authKey) {
