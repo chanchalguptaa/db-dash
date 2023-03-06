@@ -15,7 +15,7 @@ const inserRowService = async (tableName,columnAndData,data)=>{
     try {
     const client = createClient(data);
     const s = data?.tables?.[tableName]?.fields;
-  
+      console.log("columnAndData",columnAndData)
     var columnStr="";
     var valuesStr="";
     for (const key of Object.keys(columnAndData)) {

@@ -29,7 +29,6 @@ const getTable = async (req, res) => {
      try {
           const data = await getDbById(db_id);
           const view = data.tables[`${tableName}`].view;
-
           let rowData={}
            try {              
                rowData['tableData'] = await tableService.getTableService(tableName,data);
