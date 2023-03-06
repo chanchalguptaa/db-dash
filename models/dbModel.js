@@ -50,7 +50,7 @@ const dbSchema = new mongoose.Schema({
     //     }
     //     }
     },
-    authKeys : {
+    auth_keys : {
         type:Object
         // auth_id:{
         //     acess: {Object type}     "1" || Object
