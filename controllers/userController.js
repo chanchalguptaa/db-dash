@@ -107,6 +107,7 @@ async function getUserProfile(req, res) {
      return res.status(401).json(prepareErrorResponse({ message: e.message }));
    }
  }
+ 
 const findUserByEmail = async (req, res) => {
    try {
       const email = req?.params?.email
