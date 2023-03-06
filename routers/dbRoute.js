@@ -1,6 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const {createDb,getAllDb,deleteDb,renameDb,getDbByOrgId,getDbById} = require("../controllers/dbController")
+const {decodeToken} = require("../middleWares/auth")
 
 router.route('/').get(getAllDb)
 router.route('/:orgId/dbs').post(createDb)
