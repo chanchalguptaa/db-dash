@@ -64,7 +64,27 @@ const deleteField = async (req, res) => {
     }
 
 }
+const getAllField =async (req, res) => {
+     const db_id = req?.params?.dbId;
+    const tableName = req?.params?.tableName;
+    try { 
+         const data = await getDbById(db_id);
+         try {
+              if(data.tables[tableName])  
+              return res.status(200).json(prepareSuccessResponse({ data : data.tables[tableName] ,  message: `Field '${tableName}' get successfully` }))
+               else
+               return res.status(404).json(prepareErrorResponse({ message: `table ${tableName}  not exits in  db ` }))
 
+
+         }
+         catch (err) {
+              return res.status(400).json(prepareErrorResponse({ message: `Error getting field ${err.message}` }));
+         }
+    }
+    catch (err) {
+         return res.status(400).json(prepareErrorResponse({ message: `Error getting field ${err.message}` }));
+    } 
+}
 
 const updateField = async (req, res) => {
     const db_id = req?.params?.dbId;
@@ -102,4 +122,4 @@ const updateField = async (req, res) => {
     }
 
 }
-module.exports = { createField,deleteField,updateField}
+module.exports = { createField,deleteField,updateField,getAllField}
