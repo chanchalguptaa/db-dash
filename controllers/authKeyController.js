@@ -4,8 +4,9 @@ const { insertAuthKey, deleteAuthKeyInDb, updateAuthKeyInDb } = require("../db_s
 
 const createAuthKey = async (req, res) => {
     const db_id = req?.params?.dbId;
+    const adminId = req?.params?.adminId
     var access = req?.body?.access
-  
+    var authObj={}
     try {
          const data = await getDbById(db_id);
          if(access!=1)
@@ -27,17 +28,29 @@ const createAuthKey = async (req, res) => {
                return res.status(404).json(prepareErrorResponse({ message: `Table doesnot exits in db` }));
                 access = allTablesAccess;
          }
+         authObj.access=access;
+         authObj.user=req?.body?.userId
+         authObj.scope = req?.body?.scope
+         authObj.createBy = adminId
+         authObj.createDate = new Date()
+
+         console.log("Auth Obj : ",authObj);
 
          try {
-               const data1 = await insertAuthKey(db_id,access)
+               const data1 = await insertAuthKey(db_id,authObj)
+              
+               console.log("DATA : ",data1);
+
               return res.status(200).json(prepareSuccessResponse({ message: `insert authkey successfully` }))
          }
          catch (err) {
 
+              console.log("Error 1 : ",err);
               return res.status(400).json(prepareErrorResponse({ message: `Error creating authkey ${err.message}` }));
          }
     }
     catch (err) {
+          console.log("Error 2 : ",err);
          return res.status(400).json(prepareErrorResponse({ message: `Error creating authkey ${err.message}` }));
     }
 
