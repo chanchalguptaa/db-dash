@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const {createView,deleteView,deleteFieldInView} = require("../controllers/viewController")
-const {commonAuth} = require("../middleWares/commanAuth")
+const {commonAuth} = require("../middleWares/commonAuth")
 
 
 

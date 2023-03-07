@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {createFilter,updateFilterName,deleteFilter,updateQuery} = require("../controllers/filterController")
-const {commonAuth} = require("../middleWares/commanAuth")
+const {commonAuth} = require("../middleWares/commonAuth")
 
 
 router.route('/:dbId/:tableName/filter').post(commonAuth,createFilter);

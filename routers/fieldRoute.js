@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const { createField,deleteField,updateField,getAllField } = require("../controllers/fieldController")
-const {commonAuth} = require("../middleWares/commanAuth")
+const {commonAuth} = require("../middleWares/commonAuth")
 
 
 router.route('/:dbId/:tableName/field').post(createField)

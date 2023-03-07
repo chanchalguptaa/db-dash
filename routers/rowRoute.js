@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const { insertRow,deleteRow,updateRow } = require("../controllers/rowController")
-const {commonAuth} = require("../middleWares/commanAuth")
+const {commonAuth} = require("../middleWares/commonAuth")
 
 
 router.route('/:dbId/:tableName/row').post(commonAuth,insertRow)

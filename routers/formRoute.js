@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express('Router')
 const {createForm,addField,removeField,deleteForm} = require("../controllers/formController");
-const {commonAuth} = require("../middleWares/commanAuth")
+const {commonAuth} = require("../middleWares/commonAuth")
 
 
 
