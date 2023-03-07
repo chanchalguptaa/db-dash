@@ -1,4 +1,4 @@
-    const express = require('express');
+const express = require('express');
 const router = express.Router();
 const {getAllUsers,createUser,getUserById,updateUser,deleteUser,findUserByEmail,loginUser,getUserProfile} = require('../Controllers/userController')
 const {decodeToken} = require("../middleWares/auth")

@@ -42,7 +42,8 @@ const addUserInOrg = async (req, res) => {
 
 }
 
-const createOrg = async (req, res) => {
+const 
+createOrg = async (req, res) => {
    try {
       const org = req?.body?.name;
       const user_id = req?.body?.user_id;

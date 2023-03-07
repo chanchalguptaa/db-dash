@@ -42,6 +42,53 @@ catch (err)
     throw err ;
 }
 }
+const getRowService = async (tableName,query,data)=>{
+  console.log("query",query)
+  var pgQuery  = 'SELECT '
+  if(query.fields){
+    pgQuery = pgQuery + query.fields  + ' from ' + tableName
+    console.log(pgQuery)
+  }
+  else{
+    pgQuery = pgQuery + '*' + ' from ' + tableName
+  }
+  if(query.filter){
+    pgQuery = pgQuery + ' WHERE ' + query.filter ;
+  }
+  var sort  = '';
+  if(query.sort){
+    if(Array.isArray(query.sort)){
+    query.sort.forEach(element => {
+      var s = element.split(',')
+      sort = sort + ' ' + s[0]+ ' ' + s[1] + ',';
+    });
+    sort = sort.substring(0,sort.length-1);
+  }else{
+    sort = query.sort.replaceAll(','," ");
+  }
+    pgQuery = pgQuery + ' ORDER BY ' + sort;
+  }
+  if(query.page  || query.limit){
+    const page = query.page || 1 ;
+    const limit = query.limit || 10; 
+    const offset = (page - 1)*limit ;
+    pgQuery = pgQuery + ' LIMIT ' + limit + ' OFFSET '+ offset;
+    console.log(pgQuery)
+  }
+ 
+  try {
+  const client = createClient(data);
+  await client.connect();
+  // console.log(pgQuery)
+  const ans = await client.query( pgQuery);
+  await client.end();
+  return ans.rows;
+}
+catch (err)
+{
+  throw err ;
+}
+}
 
 
 const deleteRowService = async (tableName,row_id,data)=>{
@@ -91,4 +138,4 @@ catch (err)
 }
 }
 
-module.exports = {inserRowService,deleteRowService,updateRowService}
+module.exports = {inserRowService,getRowService,deleteRowService,updateRowService}
