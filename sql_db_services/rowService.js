@@ -47,6 +47,7 @@ const getRowService = async (tableName,query,data)=>{
   var pgQuery  = 'SELECT '
   if(query.fields){
     pgQuery = pgQuery + query.fields  + ' from ' + tableName
+    console.log(pgQuery)
   }
   else{
     pgQuery = pgQuery + '*' + ' from ' + tableName
@@ -60,13 +61,19 @@ const getRowService = async (tableName,query,data)=>{
     query.sort.forEach(element => {
       var s = element.split(',')
       sort = sort + ' ' + s[0]+ ' ' + s[1] + ',';
-      
     });
     sort = sort.substring(0,sort.length-1);
   }else{
     sort = query.sort.replaceAll(','," ");
   }
     pgQuery = pgQuery + ' ORDER BY ' + sort;
+  }
+  if(query.page  || query.limit){
+    const page = query.page || 1 ;
+    const limit = query.limit || 10; 
+    const offset = (page - 1)*limit ;
+    pgQuery = pgQuery + ' LIMIT ' + limit + ' OFFSET '+ offset;
+    console.log(pgQuery)
   }
  
   try {
