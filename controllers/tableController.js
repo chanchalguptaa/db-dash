@@ -12,9 +12,11 @@ const createTable = async (req, res) => {
           const ans = await tableService.createTableService(tableName, data)
           try {
                const data1 = await addTable(db_id, tableName)
+               console.log("data1",data1)
                return res.status(200).json(prepareSuccessResponse({ message: `Table '${tableName}' created successfully` }))
           }
           catch (err) {
+               console.log(err)
                return res.status(400).json(prepareErrorResponse({ message: `Error creating table ${err.message}` }));
           }
      }

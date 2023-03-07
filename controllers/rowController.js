@@ -24,6 +24,28 @@ const insertRow = async (req, res) => {
 
 }
 
+const getRow = async (req, res) => {
+     const db_id = req?.params?.dbId
+     const tableName = req?.params?.tableName;
+     const query = req.query;
+
+     try {
+          const data = await getDbById(db_id);
+          
+          const ans = await rowService.getRowService(tableName,query,data)
+          try {
+               return res.status(200).json(prepareSuccessResponse({ data : ans, message: `'${tableName}'sort row successfully` }))
+          }
+          catch (err) {
+               return res.status(400).json(prepareErrorResponse({ message: `Error sorting row ${err.message}` }));
+          }
+     }
+     catch (err) {
+          return res.status(400).json(prepareErrorResponse({ message: `Error sorting row ${err.message}` }));
+     }
+
+}
+
 
 const deleteRow = async (req, res) => {
      const db_id = req?.params?.dbId;
@@ -73,4 +95,4 @@ const updateRow = async (req, res) => {
  }
 
 
-module.exports = {insertRow,deleteRow,updateRow}
+module.exports = {insertRow,getRow,deleteRow,updateRow}
