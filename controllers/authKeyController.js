@@ -22,7 +22,7 @@ const createAuthKey = async (req, res) => {
                     }
                     Object.assign(allTablesAccess, { [element]: {} });
                });
-               if (error === "true")
+               if (error === "true")    
                     return res.status(404).json(prepareErrorResponse({ message: `Table doesnot exits in db` }));
                access = allTablesAccess;
           }
@@ -45,6 +45,24 @@ const createAuthKey = async (req, res) => {
 
 }
 
+
+const getAuthKeys = async (req,res) =>{
+     const db_id = req?.params?.dbId;
+     try {
+          const db = await getDbById(db_id);
+          if (db) {
+          const authKeys = db.auth_keys;
+          return res.status(200).json(prepareSuccessResponse({ message: `get authkeys successfully`,data:authKeys}))
+          } else{
+               return res.status(404).json(prepareErrorResponse({ message: `db is not exists` }));
+          }
+     } catch (error) {
+          console.log(error)
+          return res.status(400).json(prepareErrorResponse({ message: `server error ${error.message}` }));
+     }
+     
+}
+
 const deleteAuthKey = async (req, res) => {
      const db_id = req?.params?.dbId;
      const authKey = req?.params?.authkey;
@@ -58,7 +76,7 @@ const deleteAuthKey = async (req, res) => {
                     const data1 = await deleteAuthKeyInDb(db_id, authKey)
                     return res.status(200).json(prepareSuccessResponse({ message: `delete authkey successfully` }))
 
-                    
+
                }
                else {
                     return res.status(404).json(prepareErrorResponse({ message: `unauthorized user only admin can delete Auth key` }));
@@ -100,4 +118,4 @@ const updateAuthKey = async (req, res) => {
 }
 
 
-module.exports = { createAuthKey, deleteAuthKey, updateAuthKey }
+module.exports = { createAuthKey, deleteAuthKey, updateAuthKey ,getAuthKeys}
