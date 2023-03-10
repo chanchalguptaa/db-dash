@@ -9,7 +9,6 @@ const insertRow = async (req, res) => {
     
     try {
          const data = await getDbById(db_id);
-         
          const ans = await rowService.inserRowService(tableName,columAndData,data)
          try {
               return res.status(200).json(prepareSuccessResponse({ message: `'${tableName}'row created successfully` }))

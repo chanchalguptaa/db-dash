@@ -15,7 +15,6 @@ const inserRowService = async (tableName,columnAndData,data)=>{
     try {
     const client = createClient(data);
     const s = data?.tables?.[tableName]?.fields;
-      console.log("columnAndData",columnAndData)
     var columnStr="";
     var valuesStr="";
     for (const key of Object.keys(columnAndData)) {
@@ -33,12 +32,17 @@ const inserRowService = async (tableName,columnAndData,data)=>{
     valuesStr = valuesStr.substr(0,valuesStr.length-1);
   
     await client.connect(); 
-    const ans = await client.query(`INSERT INTO ${tableName}(${columnStr}) VALUES(${valuesStr});`);
+    var ans = ""
+    if(columnStr.length >1 )
+     ans = await client.query(`INSERT INTO ${tableName}(${columnStr}) VALUES(${valuesStr});`);
+    else
+      ans = await client.query(`INSERT INTO ${tableName} DEFAULT VALUES `);
     await client.end();
     return ans;
 }
 catch (err)
 {
+  console.log(err);
     throw err ;
 }
 }
