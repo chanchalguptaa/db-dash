@@ -29,7 +29,7 @@ const getTableService = async (tableName,data)=>{
   try {
   const client = createClient(data);
   await client.connect();
-  const ans = await client.query(`SELECT * FROM ${tableName}`);
+  const ans = await client.query(`SELECT * FROM ${tableName} order by id `);
   await client.end();
   return ans.rows;
 }
