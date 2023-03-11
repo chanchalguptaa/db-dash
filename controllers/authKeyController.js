@@ -112,32 +112,6 @@
 
      }
 
-     // const updateAuthKey = async (req, res) => {  
-     //      const db_id = req?.params?.dbId;
-     //      const authKey = req?.params?.authkey;
-     //      const access = req?.body?.access
-     //      try {
-     //           const data = await getDbById(db_id);
-     //           if (access != 1) {
-     //                const tableName = data?.tables[access];
-     //                if (!tableName)
-     //                     return res.status(404).json(prepareErrorResponse({ message: `Table doesnot exits in db` }));
-     //           }
-     //           const data1 = await updateAuthKeyInDb(db_id, authKey, access)
-     //           try {
-     //                return res.status(200).json(prepareSuccessResponse({ message: `insert authkey successfully` }))
-     //           }
-     //           catch (err) {
-     //                return res.status(400).json(prepareErrorResponse({ message: `Error creating authkey ${err.message}` }));
-     //           }
-     //      }
-     //      catch (err) {
-     //           return res.status(400).json(prepareErrorResponse({ message: `Error creating authkey ${err.message}` }));
-     //      }
-
-     // }
-
-
      const updateAuthKey = async (req, res) => {
           const db_id = req?.params?.dbId;
           const authKey = req?.params?.authkey;
@@ -148,8 +122,6 @@
                if(access===undefined) access=data?.auth_keys?.[authKey]?.access;
                else{
                if (access != 1) {
-                    console.log(typeof(access));
-                    console.log(Array.isArray(access))
                     if (!(Array.isArray(access)))
                          return res.status(404).json(prepareErrorResponse({ message: `Table name should be in array format` }));
                     var allTablesAccess = [];
@@ -160,15 +132,8 @@
                               error = "true";
                               return;
                          }
-                         allTablesAccess.push(element)
+                         allTablesAccess.push(element);
                     });
-
-
-
-
-
-
-
                     if (error === "true")
                          return res.status(404).json(prepareErrorResponse({ message: `Table doesnot exits in db` }));
                     access = allTablesAccess;
@@ -190,14 +155,11 @@
                     return res.status(200).json(prepareSuccessResponse({ message: `update authkey successfully` }))
                }
                catch (err) {
-                    console.log("G Error: ",err);
                     return res.status(400).json(prepareErrorResponse({ message: `Error updating authkey ${err.message}` }));
                }
           }
           catch (err) {
-               console.log("H Error : ",err);
                return res.status(400).json(prepareErrorResponse({ message: `Error updating authkey ${err.message}` }));
           }
      }
-
      module.exports = { createAuthKey, deleteAuthKey, updateAuthKey ,getAuthKeys,getSingleAuthKey}
