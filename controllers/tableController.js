@@ -7,12 +7,12 @@ const { nanoid } = require("nanoid");
 const createTable = async (req, res) => {
      const db_id = req?.params?.dbId;
      const tableName = req?.body?.tableName;
-     const fieldId = "tbl" + nanoid(6);
+     const tableId = "tbl" + nanoid(6);
      try {
           const data = await getDbById(db_id);
-          const ans = await tableService.createTableService(fieldId, data)
+          const ans = await tableService.createTableService(tableId, data)
           try {
-               const data1 = await addTable(db_id, tableName,fieldId)
+               const data1 = await addTable(db_id, tableName,tableId)
                console.log("data1",data1)
                return res.status(200).json(prepareSuccessResponse({ message: `Table '${tableName}' created successfully` }))
           }
@@ -64,7 +64,7 @@ const updateTable = async (req, res) => {
      try {
           const data = await getDbById(db_id);
           try {
-               const ans = await tableService.updateTableService(tableName,newTableName,data);
+               // const ans = await tableService.updateTableService(tableName,newTableName,data);
                await updateTableInDb(db_id,newTableName,tableName) ;
                views.forEach(async (view) => {
                     if(data?.tables?.[view]?.view?.[tableName])
