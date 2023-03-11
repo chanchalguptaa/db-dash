@@ -1,10 +1,14 @@
 const db = require("../models/dbModel")
 
-async function addTable(id, tableName) {
+async function addTable(id, tableName,fieldId) {
+    var obj = {
+        "tableName":tableName,
+        "fields":{}
+    }
     const data = await db.findOneAndUpdate(
         { _id: id },
         {
-            $set: { [`tables.${tableName}.fields`]: {} },
+            $set: { [`tables.${fieldId}`]: obj },
         }
     )
     return data;
@@ -15,7 +19,7 @@ async function updateTableInDb(id, newTableName, oldTableName) {
     return await db.findOneAndUpdate(
         { _id: id },
         {
-            $rename: { [`tables.${oldTableName}`]: `tables.${newTableName}` }
+            $set: { [`tables.${oldTableName}.tableName`]:  newTableName }
         }
     )
 }
