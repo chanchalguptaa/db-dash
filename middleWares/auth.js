@@ -1,10 +1,12 @@
 const userDbService = require('../db_services/userDbService');
 const jwt = require("jsonwebtoken");
+const { prepareErrorResponse, prepareSuccessResponse } = require("../services/utilityService.js");
 
 const decodeToken =async  (req, res,next) => {
   const authHeader = req?.get("Authorization");
   if (!authHeader) {
-    return res.status(401).json({message:"invalid token"});
+    console.log("inside decodeToken");
+    return next(new Error("Token decoding failed"));
   }
   const token = authHeader;
   let decodedToken;
@@ -12,10 +14,10 @@ const decodeToken =async  (req, res,next) => {
     decodedToken = jwt.verify(token, process.env.TOKEN_SECRET_KEY);
   } catch (err) {
     console.log(err)
-  return res.status(401).json({message:"unauthorized user"});
+    return next(new Error("unauthorized user"));
   }
   if (!decodedToken) {
-    return res.status(401).json({message:"data not found"});
+    return next(new Error("data not found"));
   }
 const userFromDb = await userDbService.getUser(decodedToken?.userEmail);
   if(userFromDb){
@@ -23,7 +25,7 @@ const userFromDb = await userDbService.getUser(decodedToken?.userEmail);
     return next();
   }
   else{
-    return res.status(404).json({message:"data not found"});
+     return next(new Error("data not found"));
   }
 };
 
