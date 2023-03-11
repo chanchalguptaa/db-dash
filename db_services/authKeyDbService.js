@@ -30,13 +30,12 @@ async function deleteAuthKeyInDb(id, authKey) {
 }
 
 
-async function updateAuthKeyInDb(id,authKey, access) {
-    return await db.findOneAndUpdate(
-        { _id: id },
-        {
-            $set: { [ `auth_keys.${authKey}.access.${access}`]: {} }
-        }
-    )
+async function updateAuthKeyInDb(id,authKey, authObj) {
+  return await db.findOneAndUpdate(
+      { _id: id },
+      {
+          $set: { [ `auth_keys.${authKey}`]: authObj }
+      }
+  )
 }
-
 module.exports = {insertAuthKey,deleteAuthKeyInDb,updateAuthKeyInDb}
