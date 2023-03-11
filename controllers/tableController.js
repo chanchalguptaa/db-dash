@@ -2,16 +2,17 @@ const { prepareErrorResponse, prepareSuccessResponse } = require("../services/ut
 const {addTable,updateTableInDb,deleteTableInDb} = require("../db_services/tableDbService");
 const tableService = require("../sql_db_services/tableService.js")
 const {getDbById} = require("../db_services/masterDbService")
-const {renameView} = require("../db_services/viewDbService")
+const {renameView} = require("../db_services/viewDbService");
+const { nanoid } = require("nanoid");
 const createTable = async (req, res) => {
      const db_id = req?.params?.dbId;
      const tableName = req?.body?.tableName;
-
+     const tableId = "tbl" + nanoid(6);
      try {
           const data = await getDbById(db_id);
-          const ans = await tableService.createTableService(tableName, data)
+          const ans = await tableService.createTableService(tableId, data)
           try {
-               const data1 = await addTable(db_id, tableName)
+               const data1 = await addTable(db_id, tableName,tableId)
                console.log("data1",data1)
                return res.status(200).json(prepareSuccessResponse({ message: `Table '${tableName}' created successfully` }))
           }
@@ -63,7 +64,7 @@ const updateTable = async (req, res) => {
      try {
           const data = await getDbById(db_id);
           try {
-               const ans = await tableService.updateTableService(tableName,newTableName,data);
+               // const ans = await tableService.updateTableService(tableName,newTableName,data);
                await updateTableInDb(db_id,newTableName,tableName) ;
                views.forEach(async (view) => {
                     if(data?.tables?.[view]?.view?.[tableName])

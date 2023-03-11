@@ -8,5 +8,5 @@ const {commonAuth} = require("../middleWares/commanAuth")
 router.route('/:dbId/:tableName').get(getRow)
 router.route('/:dbId/:tableName/row').post(commonAuth,insertRow)
 router.route('/:dbId/:tableName/:row_id/rowupdate').patch(commonAuth,updateRow)
-router.route('/:dbId/:tableName/:row_id/deleterow').delete(commonAuth,deleteRow)
+router.route('/:dbId/:tableName/deleterow').patch(commonAuth,deleteRow)
 module.exports = router;

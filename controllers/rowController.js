@@ -49,7 +49,7 @@ const getRow = async (req, res) => {
 const deleteRow = async (req, res) => {
      const db_id = req?.params?.dbId;
      const tableName = req?.params?.tableName;
-     const row_id = req?.params?.row_id;
+     const row_id = req?.body?.row_id;
 
      try {
           const data = await getDbById(db_id);
