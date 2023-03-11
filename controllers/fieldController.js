@@ -4,21 +4,23 @@ const {addField,deletefield,updatefield} = require("../db_services/fieldDbServic
 const fieldService = require("../sql_db_services/fieldService.js")
 const {updateView} = require("../db_services/viewDbService")
 const db=require("../models/dbModel")
-
+const { nanoid } = require("nanoid");
 const createField = async (req, res) => {
     const db_id = req?.params?.dbId;
     const tableName = req?.params?.tableName;
     const fieldName = req?.body?.fieldName;
     const fieldType = req?.body?.fieldType;
+    const fieldId = "fld" + nanoid(6);
+    //field name is no more id ..  however previous fieldname will be there id 
     try {
          const data = await getDbById(db_id);
          
-         const ans = await fieldService.createFieldService(tableName, fieldName,fieldType,data)
+         const ans = await fieldService.createFieldService(tableName, fieldName,fieldType,data,fieldId)
          try { 
                  const tmp=data?.tables?.[tableName].fields?.[fieldName]||null;
                  if(!tmp)  
                {  
-                    const data1=await addField(db_id,tableName,fieldName,fieldType);
+                    const data1=await addField(db_id,tableName,fieldName,fieldType,fieldId);
                }
                else
               { 
@@ -89,7 +91,7 @@ const getAllField =async (req, res) => {
 const updateField = async (req, res) => {
     const db_id = req?.params?.dbId;
     const tableName = req?.params?.tableName;
-    const fieldName = req?.params?.fieldName;
+    const fieldName = req?.params?.fieldName; //fieldName refers to field id 
     const newFieldName = req?.body?.newFieldName;
     const newFieldType = req?.body?.newFieldType;
     try {

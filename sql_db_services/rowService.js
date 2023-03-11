@@ -92,9 +92,20 @@ const deleteRowService = async (tableName, row_id, data) => {
   try {
     const client = createClient(data);
     await client.connect();
-    const ans = await client.query(
-      `DELETE FROM ${tableName} WHERE id = ${row_id};`
-    );
+    var rows =  "" ;
+    var ans ;
+    if(Array.isArray(row_id))
+    {
+      row_id.forEach(row => {
+        rows = rows + row  + ","
+      });
+      rows = rows.substr(0, rows.length - 1);
+       ans = await client.query(`DELETE FROM ${tableName} WHERE id IN ( ${ rows} );`);
+    }
+    else
+   {
+      ans = await client.query(`DELETE FROM ${tableName} WHERE id = ${row_id};`);
+     }
     await client.end();
     return ans;
   } catch (err) {
