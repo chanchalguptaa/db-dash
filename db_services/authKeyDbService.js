@@ -9,7 +9,11 @@ async function insertAuthKey(id, authObj) {
       {_id:id},
       { $set: { [authKeyObject]: authObj } }
     );
-    return updatedDoc;
+    return data={
+      updatedDoc:updatedDoc,
+      authKey:authKey
+    }
+
   } catch (error) {
     throw error;
   }
