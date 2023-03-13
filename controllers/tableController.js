@@ -3,7 +3,7 @@ const {addTable,updateTableInDb,deleteTableInDb} = require("../db_services/table
 const tableService = require("../sql_db_services/tableService.js")
 const {getDbById} = require("../db_services/masterDbService")
 const {renameView} = require("../db_services/viewDbService");
-constcreateTable = async (req, res) => {
+const createTable = async (req, res) => {
      const db_id = req?.params?.dbId;
      const tableName = req?.body?.tableName;
      const tableId = "tbl" +  generateIdentifier(6);
