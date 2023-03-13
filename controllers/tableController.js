@@ -1,14 +1,12 @@
-const { prepareErrorResponse, prepareSuccessResponse } = require("../services/utilityService.js");
+const { prepareErrorResponse, prepareSuccessResponse,generateIdentifier } = require("../services/utilityService.js");
 const {addTable,updateTableInDb,deleteTableInDb} = require("../db_services/tableDbService");
 const tableService = require("../sql_db_services/tableService.js")
 const {getDbById} = require("../db_services/masterDbService")
 const {renameView} = require("../db_services/viewDbService");
-const { nanoid } = require("nanoid");
-
-const createTable = async (req, res) => {
+constcreateTable = async (req, res) => {
      const db_id = req?.params?.dbId;
      const tableName = req?.body?.tableName;
-     const tableId = "tbl" + nanoid(6);
+     const tableId = "tbl" +  generateIdentifier(6);
      try {
           const data = await getDbById(db_id);
           const ans = await tableService.createTableService(tableId, data)
