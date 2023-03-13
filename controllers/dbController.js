@@ -3,6 +3,12 @@ const { prepareErrorResponse, prepareSuccessResponse } = require("../services/ut
 const sqlDbService = require("../sql_db_services/databaseService")
 const Db = require("../models/dbModel")
 const userService = require("../db_services/userDbService")
+const {addTable} = require("../db_services/tableDbService");
+
+const tableService = require("../sql_db_services/tableService")
+const { nanoid } = require("nanoid");
+
+
 
 const createDb = async (req, res) => {
     try {
@@ -17,9 +23,11 @@ const createDb = async (req, res) => {
             db.con_url = conUrl
             const data = await dbService.saveDb(db);
             const dbId = data?._id + ""
-            const result = await userService.addDbIdInUSerSchema(user_id, dbId)
+            const tableId = "tbl" + nanoid(6);
+            const result = await userService.addDbIdInUSerSchema(user_id, dbId)             
+            const ans = await tableService.createTableService(tableId, data)
+            const data1 = await addTable(data?._id,"untittled",tableId)
             return res.status(201).json(prepareSuccessResponse({ data: db, message: "Successfully create db" }));
-
         } catch (error) {
             await sqlDbService.dropDatabase(sqlDbName)
             return res.status(400).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
