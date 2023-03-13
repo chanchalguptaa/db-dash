@@ -34,7 +34,8 @@ const createAuthKey = async (req, res) => {
           authObj.createDate = new Date()
           try {
                const data1 = await insertAuthKey(db_id, authObj)
-               return res.status(200).json(prepareSuccessResponse({ message: `insert authkey successfully` }))
+               console.log("data1",data1)
+               return res.status(200).json(prepareSuccessResponse({data:data1.authKey, message: `insert authkey successfully` }))
           }
           catch (err) {
                return res.status(400).json(prepareErrorResponse({ message: `Error creating authkey ${err.message}` }));
