@@ -115,7 +115,6 @@ const renameDb = async (req, res) => {
         return res.status(201).json(prepareSuccessResponse({ data: db, message: "Successfully rename db" }));
 
     } catch (error) {
-        
         return res.status(404).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
 
     }
