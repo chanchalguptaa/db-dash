@@ -1,5 +1,5 @@
 const _ = require("lodash");
-let { nanoid } = require("nanoid");
+let { nanoid, customAlphabet } = require("nanoid");
 const alphabetSet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 function generateIdentifier(length=6) {
   if (alphabetSet) {
