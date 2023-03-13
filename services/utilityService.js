@@ -31,5 +31,6 @@ const prepareSuccessResponse = ({ data, message ,isCached}) => {
 
   module.exports = {
     prepareSuccessResponse,
-    prepareErrorResponse
+    prepareErrorResponse,
+    generateIdentifier
   };
