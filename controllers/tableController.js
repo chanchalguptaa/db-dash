@@ -3,6 +3,8 @@ const {addTable,updateTableInDb,deleteTableInDb} = require("../db_services/table
 const tableService = require("../sql_db_services/tableService.js")
 const {getDbById} = require("../db_services/masterDbService")
 const {renameView} = require("../db_services/viewDbService");
+const { nanoid } = require("nanoid");
+
 const createTable = async (req, res) => {
      const db_id = req?.params?.dbId;
      const tableName = req?.body?.tableName;
@@ -23,8 +25,9 @@ const createTable = async (req, res) => {
      catch (err) {
           return res.status(400).json(prepareErrorResponse({ message: `Error creating table ${err.message}` }));
      }
-
 }
+
+
 const getTable = async (req, res) => {
      const db_id = req?.params?.dbId
      const tableName = req?.params?.tableName;
