@@ -3,11 +3,6 @@ const {addTable,updateTableInDb,deleteTableInDb} = require("../db_services/table
 const tableService = require("../sql_db_services/tableService.js")
 const {getDbById} = require("../db_services/masterDbService")
 const {renameView} = require("../db_services/viewDbService");
-<<<<<<< HEAD
-const { nanoid } = require("nanoid");
-
-=======
->>>>>>> 811d5be0f3605bb598f2730d6bd53324155b2c53
 const createTable = async (req, res) => {
      const db_id = req?.params?.dbId;
      const tableName = req?.body?.tableName;
