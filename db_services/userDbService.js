@@ -5,7 +5,7 @@ async function getAllUser(){
 }
 
 async function getUserById(id){
-    return await User.findById(id).populate("dbs");
+    return await User.findById(id).populate("dbs");    
 }
 
 async function saveUser(user){
