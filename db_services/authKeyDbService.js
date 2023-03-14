@@ -2,7 +2,7 @@ const db = require("../models/dbModel");
 const { nanoid } = require("nanoid");
 
 async function insertAuthKey(id, authObj) {
-  const authKey = "AU" + nanoid(6);
+  const authKey = "key" + nanoid(12);
   const authKeyObject = `auth_keys.${authKey}`;
   try {
     const updatedDoc = await db.updateOne(

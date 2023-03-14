@@ -43,7 +43,6 @@ const inserRowService = async (tableName, columnAndData, data) => {
   }
 };
 const getRowService = async (tableName, query, data) => {
-  console.log("query", query);
   var pgQuery = "SELECT ";
   if (query.fields) {
     pgQuery = pgQuery + query.fields + " from " + tableName;

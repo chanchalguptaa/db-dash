@@ -1,16 +1,17 @@
-const { prepareErrorResponse, prepareSuccessResponse } = require("../services/utilityService.js");
+const { prepareErrorResponse,generateIdentifier, prepareSuccessResponse } = require("../services/utilityService.js");
 const {getDbById} = require("../db_services/masterDbService")
 const {addField,deletefield,updatefield} = require("../db_services/fieldDbService")
 const fieldService = require("../sql_db_services/fieldService.js")
 const {updateView} = require("../db_services/viewDbService")
 const db=require("../models/dbModel")
-const { nanoid } = require("nanoid");
+
+
 const createField = async (req, res) => {
     const db_id = req?.params?.dbId;
     const tableName = req?.params?.tableName;
     const fieldName = req?.body?.fieldName;
     const fieldType = req?.body?.fieldType;
-    const fieldId = "fld" + nanoid(6);
+    const fieldId = "fld" + generateIdentifier(6);
     //field name is no more id ..  however previous fieldname will be there id 
     try {
          const data = await getDbById(db_id);
