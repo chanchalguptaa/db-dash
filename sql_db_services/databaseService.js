@@ -1,9 +1,9 @@
 const { Client } = require('pg');
 const createClient = () => {
   return new Client({
-    host: 'localhost',
-    user: 'postgres',
-    password: 'root'
+    host: process.env.PGHOST,
+    user: process.env.USER,
+    password: process.env.PASSWORD
   });
 };
 
