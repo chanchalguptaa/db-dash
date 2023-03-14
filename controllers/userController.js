@@ -49,7 +49,6 @@ const loginUser = async (req, res) => {
          })
        );
    } catch (error) {
-     console.log(error);
      res
        .status(400)
        .send(prepareErrorResponse({ message: "login action unsuccessful" }));
@@ -63,7 +62,6 @@ const getUserById = async (req, res) => {
       if (!user) {
          return res.status(400).json(prepareErrorResponse({ message: "user not found", data: { error } }));
       }
-      res.send(user)
       return res.status(201).json(prepareSuccessResponse({ data: user, message: "User found" }));
 
    } catch (error) {

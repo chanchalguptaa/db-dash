@@ -1,15 +1,14 @@
 const { Client } = require('pg');
 const createClient = () => {
   return new Client({
-    host: 'localhost',
-    user: 'postgres',
-    password: 'root'
+    host: process.env.PGHOST,
+    user: process.env.USER,
+    password: process.env.PASSWORD
   });
 };
 
 async function createDatabase(dbName) {
   try {
-    console.log(dbName)
     const client = createClient();
     await client.connect();
     const sql = `CREATE DATABASE ${dbName}`;

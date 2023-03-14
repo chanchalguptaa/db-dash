@@ -1,6 +1,5 @@
 const userDbService = require('../db_services/userDbService');
 const jwt = require("jsonwebtoken");
-const { prepareErrorResponse, prepareSuccessResponse } = require("../services/utilityService.js");
 
 const decodeToken =async  (req, res,next) => {
   const authHeader = req?.get("Authorization");
@@ -12,6 +11,11 @@ const decodeToken =async  (req, res,next) => {
   let decodedToken;
   try {
     decodedToken = jwt.verify(token, process.env.TOKEN_SECRET_KEY);
+    const currentTime = Math.floor(Date.now() / 1000);
+    if (decodedToken.exp < currentTime) {
+      return next(new Error("unauthorized user"));
+
+    }
   } catch (err) {
     console.log(err)
     return next(new Error("unauthorized user"));

@@ -43,7 +43,6 @@ const deleteView = async (req , res )=>{
         }
         return res.status(201).json(prepareSuccessResponse({ data: reData, message: "View Deleted" }));
     } catch (error) {
-        console.log(error);
        return res.status(400).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
  
     }
