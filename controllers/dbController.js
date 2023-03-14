@@ -1,12 +1,11 @@
 const dbService = require("../db_services/masterDbService")
-const { prepareErrorResponse, prepareSuccessResponse } = require("../services/utilityService.js");
+const { prepareErrorResponse, prepareSuccessResponse, generateIdentifier } = require("../services/utilityService.js");
 const sqlDbService = require("../sql_db_services/databaseService")
 const Db = require("../models/dbModel")
 const userService = require("../db_services/userDbService")
 const {addTable} = require("../db_services/tableDbService");
-
 const tableService = require("../sql_db_services/tableService")
-const { nanoid } = require("nanoid");
+
 
 
 
@@ -23,7 +22,7 @@ const createDb = async (req, res) => {
             db.con_url = conUrl
             const data = await dbService.saveDb(db);
             const dbId = data?._id + ""
-            const tableId = "tbl" + nanoid(6);
+            const tableId = "tbl" + generateIdentifier(6);
             const result = await userService.addDbIdInUSerSchema(user_id, dbId)             
             const ans = await tableService.createTableService(tableId, data)    
             const data1 = await addTable(data?._id,"untittled",tableId)
