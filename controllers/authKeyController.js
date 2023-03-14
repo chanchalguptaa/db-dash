@@ -58,7 +58,6 @@
                     return res.status(404).json(prepareErrorResponse({ message: `db is not exists` }));
                }
           } catch (error) {
-               console.log(error)
                return res.status(400).json(prepareErrorResponse({ message: `server error ${error.message}` }));
           }
           
@@ -71,13 +70,11 @@
                const db = await getDbById(db_id);
                if (db) {
                const resultAuthKey = db.auth_keys[`${authKey}`];
-               console.log("GGG :",resultAuthKey);
                return res.status(200).json(prepareSuccessResponse({ message: `get authkeys successfully`,data:resultAuthKey}))
                } else{
                     return res.status(404).json(prepareErrorResponse({ message: `db is not exists` }));
                }
           } catch (error) {
-               console.log(error)
                return res.status(400).json(prepareErrorResponse({ message: `server error ${error.message}` }));
           }
           
@@ -90,8 +87,6 @@
           try {
                const db = await getDbById(db_id);
                if (db) {
-                    console.log("`auth_keys.${authKey}.admin` : ", db.auth_keys[`${authKey}`].createBy);
-                    console.log("AdminId : ", adminId);
                     if (db.auth_keys[`${authKey}`].createBy == adminId) {
                          const data1 = await deleteAuthKeyInDb(db_id, authKey)
                          return res.status(200).json(prepareSuccessResponse({ message: `delete authkey successfully` }))
@@ -151,7 +146,6 @@
                     authObj.createDate = new Date();
                try {
                     const data1 = await updateAuthKeyInDb(db_id,authKey, authObj);
-                    console.log(data1);
                     return res.status(200).json(prepareSuccessResponse({ message: `update authkey successfully` }))
                }
                catch (err) {

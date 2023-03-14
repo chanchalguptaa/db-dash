@@ -6,7 +6,6 @@ const commonAuth = (req, res, next) => {
     
   decodeToken(req, res, (err) => {
     if (err) {
-      console.log("inside err in commonAth");
       return checkAuthKey(req, res, next);
     }
     next();

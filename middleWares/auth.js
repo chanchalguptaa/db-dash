@@ -6,7 +6,6 @@ const decodeToken =async  (req, res,next) => {
   try{
     const authHeader = req?.get("Authorization");
     if (!authHeader) {
-      console.log("inside decodeToken");
       return next(new Error("Token decoding failed"));
     }
     const token = authHeader;
@@ -14,7 +13,6 @@ const decodeToken =async  (req, res,next) => {
     try {
       decodedToken = jwt.verify(token, process.env.TOKEN_SECRET_KEY);
     } catch (err) {
-      console.log(err)
       return next(new Error("unauthorized user"));
     }
     if (!decodedToken) {

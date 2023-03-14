@@ -38,7 +38,6 @@ const inserRowService = async (tableName, columnAndData, data) => {
     await client.end();
     return ans;
   } catch (err) {
-    console.log(err);
     throw err;
   }
 };
@@ -46,7 +45,6 @@ const getRowService = async (tableName, query, data) => {
   var pgQuery = "SELECT ";
   if (query.fields) {
     pgQuery = pgQuery + query.fields + " from " + tableName;
-    console.log(pgQuery);
   } else {
     pgQuery = pgQuery + "*" + " from " + tableName;
   }
@@ -72,13 +70,11 @@ const getRowService = async (tableName, query, data) => {
     const limit = query.limit || 10;
     const offset = (page - 1) * limit;
     pgQuery = pgQuery + " LIMIT " + limit + " OFFSET " + offset;
-    console.log(pgQuery);
   }
 
   try {
     const client = createClient(data);
     await client.connect();
-    // console.log(pgQuery)
     const ans = await client.query(pgQuery);
     await client.end();
     return ans.rows;

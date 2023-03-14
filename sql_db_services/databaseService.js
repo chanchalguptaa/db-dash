@@ -9,7 +9,6 @@ const createClient = () => {
 
 async function createDatabase(dbName) {
   try {
-    console.log(dbName)
     const client = createClient();
     await client.connect();
     const sql = `CREATE DATABASE ${dbName}`;

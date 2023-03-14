@@ -21,7 +21,7 @@ async function updateOrgTitle(id, org) {
     try {
         return await Org.findByIdAndUpdate(id, org, options)
     } catch (error) {
-        console.log(error);
+        throw error;
     }
 }
 
@@ -33,7 +33,6 @@ async function userRole(orgId, userId) {
         return  user?.user_type;
     }catch(error)
     {
-        console.log(error)
         throw error;
     }
  
