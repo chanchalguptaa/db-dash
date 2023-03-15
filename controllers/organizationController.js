@@ -15,7 +15,7 @@ const getAllOrgs = async (req, res) => {
       const org = await orgService.getAllOrgs()
       return res.status(201).json(prepareSuccessResponse({ data: org, message: "Successfully get org" }));
    } catch (error) {
-      return res.status(401).json(prepareErrorResponse({ message: "Unauthorized user", data: { error } }));
+      return res.status(403).json(prepareErrorResponse({ message: "Unauthorized user", data: { error } }));
 
    }
 }
@@ -36,7 +36,7 @@ const addUserInOrg = async (req, res) => {
             return res.status(403).json(prepareErrorResponse({ message: "some error on server" }));
          }
       } else {
-         return res.status(401).json(prepareErrorResponse({ message: "unauthorized user only admin can add user in Org" }));
+         return res.status(403).json(prepareErrorResponse({ message: "unauthorized user only admin can add user in Org" }));
       }
 
    } catch (error) {
@@ -104,7 +104,7 @@ const updateOrg = async (req, res) => {
       else
          return res.status(404).json(prepareErrorResponse({ message: "id does not exixts", data: { error } }));
       }else{
-         return res.status(401).json(prepareErrorResponse({ message: "unauthorized user only admin can Update Org" }));
+         return res.status(403).json(prepareErrorResponse({ message: "unauthorized user only admin can Update Org" }));
       }
 
    } catch (error) {
@@ -128,7 +128,7 @@ const removeUserInOrg = async (req, res) => {
             return res.status(403).json(prepareSuccessResponse({ error: "some error on server" }));
          }
       } else {
-         return res.status(401).json(prepareErrorResponse({ message: "unauthorized user only admin can remove user in Org" }));
+         return res.status(403).json(prepareErrorResponse({ message: "unauthorized user only admin can remove user in Org" }));
       }
    } catch (error) {
       return res.status(404).json(prepareErrorResponse({ message: "some error on server", data: { error } }));
@@ -157,7 +157,7 @@ const deleteOrg = async (req, res) => {
       }
       return res.status(200).json(prepareSuccessResponse({ data: org, message: "Org deleted successfully" }));
       }else{
-         return res.status(401).json(prepareErrorResponse({ message: "unauthorized user only admin Delete Org" }));
+         return res.status(403).json(prepareErrorResponse({ message: "unauthorized user only admin Delete Org" }));
       }
 
    } catch (error) {

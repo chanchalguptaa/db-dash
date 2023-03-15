@@ -1,3 +1,10 @@
+/*
+author : vipin sharma 
+Email : vipin@walkover.in
+cratedAt : 
+purpose : This controller is used to insert raw data in database.
+*/
+
 const { prepareErrorResponse, prepareSuccessResponse } = require("../services/utilityService.js");
 const { getDbById } = require("../db_services/masterDbService");
 const rowService = require("../sql_db_services/rowService.js")
@@ -22,6 +29,7 @@ const insertRow = async (req, res) => {
     }
 
 }
+
 
 const getRow = async (req, res) => {
      const db_id = req?.params?.dbId
