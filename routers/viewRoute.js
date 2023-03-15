@@ -1,10 +1,12 @@
 const express = require("express")
 const router = express.Router()
 const {createView,deleteView,deleteFieldInView} = require("../controllers/viewController")
-const {checkAuthKey} = require("../middleWares/authKey")
+const {commonAuth} = require("../middleWares/commanAuth")
 
-router.route('/:dbId/view/:tableName').post(checkAuthKey,createView)
-router.route('/:dbId/deleteview/:tableName').patch(checkAuthKey,deleteView)
-router.route('/:dbId/deletefieldinview/:tableName').patch(checkAuthKey,deleteFieldInView)
+
+
+router.route('/:dbId/view/:tableName').post(commonAuth,createView)
+router.route('/:dbId/deleteview/:tableName').patch(commonAuth,deleteView)
+router.route('/:dbId/deletefieldinview/:tableName').patch(commonAuth,deleteFieldInView)
 
 module.exports = router;

@@ -5,7 +5,7 @@ async function getAllUser(){
 }
 
 async function getUserById(id){
-    return await User.findById(id).populate("dbs");
+    return await User.findById(id).populate("dbs");    
 }
 
 async function saveUser(user){
@@ -20,7 +20,6 @@ async function deleteDbInUser(dbId) {
         user.save();
       });
     } catch (error) {
-      console.error(error);
       return error;
     }
   }
@@ -40,7 +39,7 @@ async function updateUser(first_name,last_name,id,db){
             $push:{dbs:db}
         })
     } catch (error) {
-        console.log(error);
+        throw error
     }
 }
 
@@ -53,16 +52,15 @@ async function addDbIdInUSerSchema(user_id,dbId){
             $push:{dbs:dbId+""}
         })
     } catch (error) {
-        console.log(error);
+        throw error;
     }
 }
-
-
-
 async function deleteUserById(id){
     return await User.findByIdAndDelete(id)
 }
-
+async function getUser(email){
+    return await User.findOne({email: email});
+}
 async function getUserByEmail(email) { 
     const user= await User.findOne({email: email}) .populate({
         path: "dbs",
@@ -76,4 +74,4 @@ async function getUserByEmail(email) {
     return user;
 }
 
-module.exports={getAllUser,getUserById,saveUser,updateUser,deleteDbInUser,deleteUserById,getUserByEmail,addDbIdInUSerSchema}
+module.exports={getAllUser,getUserById,saveUser,updateUser,deleteDbInUser,deleteUserById,getUser,getUserByEmail,addDbIdInUSerSchema}

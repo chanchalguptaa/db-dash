@@ -55,7 +55,7 @@ const addField = async (req, res) => {
         }
         
         catch(error){
-        return res.status(403).json(prepareErrorResponse({ message: "some error on serverrrr"}));
+        return res.status(400).json(prepareErrorResponse({ message: "some error on serverrrr"}));
         }
 }
 const removeField = async (req, res) => {
@@ -70,7 +70,7 @@ try{
     }
     
     catch(error){
-    return res.status(403).json(prepareErrorResponse({ message: "some error on serverrrr"}));
+    return res.status(400).json(prepareErrorResponse({ message: "some error on serverrrr"}));
     }
 }
 
@@ -85,7 +85,7 @@ const deleteForm = async (req, res) => {
        return res.status(200).json(prepareSuccessResponse({  message: "Delete form  successfully"}));
     }
     catch (error){
-        return res.status(403).json(prepareErrorResponse({ message: "some error on serverrrr"}));
+        return res.status(400).json(prepareErrorResponse({ message: "some error on serverrrr"}));
     }
 
 }

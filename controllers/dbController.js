@@ -1,8 +1,13 @@
 const dbService = require("../db_services/masterDbService")
-const { prepareErrorResponse, prepareSuccessResponse } = require("../services/utilityService.js");
+const { prepareErrorResponse, prepareSuccessResponse, generateIdentifier } = require("../services/utilityService.js");
 const sqlDbService = require("../sql_db_services/databaseService")
 const Db = require("../models/dbModel")
 const userService = require("../db_services/userDbService")
+const {addTable} = require("../db_services/tableDbService");
+const tableService = require("../sql_db_services/tableService")
+
+
+
 
 const createDb = async (req, res) => {
     try {
@@ -17,9 +22,11 @@ const createDb = async (req, res) => {
             db.con_url = conUrl
             const data = await dbService.saveDb(db);
             const dbId = data?._id + ""
-            const result = await userService.addDbIdInUSerSchema(user_id, dbId)
+            const tableId = "tbl" + generateIdentifier(6);
+            const result = await userService.addDbIdInUSerSchema(user_id, dbId)             
+            const ans = await tableService.createTableService(tableId, data)    
+            const data1 = await addTable(data?._id,"untittled",tableId)
             return res.status(201).json(prepareSuccessResponse({ data: db, message: "Successfully create db" }));
-
         } catch (error) {
             await sqlDbService.dropDatabase(sqlDbName)
             return res.status(400).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
@@ -37,7 +44,7 @@ const getAllDb = async (req, res) => {
         return res.status(201).json(prepareSuccessResponse({ data: db, message: "Successfully get db" }));
 
     } catch (error) {
-        return res.status(401).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
+        return res.status(400).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
 
     }
 }
@@ -52,7 +59,7 @@ const getDbById = async (req, res) => {
         return res.status(201).json(prepareSuccessResponse({ data: db, message: "Successfully get db" }));
 
     } catch (error) {
-        return res.status(401).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
+        return res.status(400).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
 
     }
 }
@@ -63,7 +70,7 @@ const getDbByOrgId = async (req, res) => {
         const db = await dbService.getDbByOrgId(org_id);
         return res.status(201).json(prepareSuccessResponse({ data: db, message: "Successfully get db" }));
     } catch (error) {
-        return res.status(401).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
+        return res.status(400).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
     }
 }
 
@@ -115,7 +122,6 @@ const renameDb = async (req, res) => {
         return res.status(201).json(prepareSuccessResponse({ data: db, message: "Successfully rename db" }));
 
     } catch (error) {
-        
         return res.status(404).json(prepareErrorResponse({ message: "Some error on server", data: { error } }));
 
     }

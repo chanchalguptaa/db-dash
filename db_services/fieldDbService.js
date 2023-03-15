@@ -1,12 +1,16 @@
 const db = require("../models/dbModel")
 
-async function addField(id, tableName, fieldName, fieldType) {
+async function addField(id, tableName, fieldName, fieldType,fieldId) {
+    var json =  {
+        "fieldType":fieldType,
+        "fieldName": fieldName
+    }
     const obj = await db.findOneAndUpdate(
 
         { _id: id },
 
         {
-            $set: { [`tables.${tableName}.fields.${fieldName}.fieldType`]: fieldType }
+            $set: { [`tables.${tableName}.fields.${fieldId}`]: json }
         }
 
     )
@@ -39,7 +43,7 @@ async function updatefield(id, tableName, oldFieldName, newFieldName, newFieldTy
         const obj = await db.findOneAndUpdate(
             { _id: id }
             , {
-                $rename: { [`tables.${tableName}.fields.${oldFieldName}`]: `tables.${tableName}.fields.${newFieldName}` }
+                $set: { [`tables.${tableName}.fields.${oldFieldName}.fieldName`]: newFieldName}
             }
         );
         return obj;

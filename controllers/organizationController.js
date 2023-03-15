@@ -1,17 +1,20 @@
 const Org = require('../models/organizationModel')
 const Db = require("../models/dbModel")
-const { prepareErrorResponse, prepareSuccessResponse } = require("../services/utilityService.js");
+const { prepareErrorResponse, prepareSuccessResponse, generateIdentifier } = require("../services/utilityService.js");
 const orgService = require("../Db_Services/organizationDbService");
 const userService = require("../db_services/userDbService")
 const { isEmpty } = require('lodash');
 const sqlDbService = require("../sql_db_services/databaseService")
 const dbService = require("../db_services/masterDbService")
+const {addTable} = require("../db_services/tableDbService");
+const tableService = require("../sql_db_services/tableService")
+
 const getAllOrgs = async (req, res) => {
    try {
       const org = await orgService.getAllOrgs()
       return res.status(201).json(prepareSuccessResponse({ data: org, message: "Successfully get org" }));
    } catch (error) {
-      return res.status(401).json(prepareErrorResponse({ message: "Unauthorized user", data: { error } }));
+      return res.status(403).json(prepareErrorResponse({ message: "Unauthorized user", data: { error } }));
 
    }
 }
@@ -32,7 +35,7 @@ const addUserInOrg = async (req, res) => {
             return res.status(403).json(prepareErrorResponse({ message: "some error on server" }));
          }
       } else {
-         return res.status(401).json(prepareErrorResponse({ message: "unauthorized user only admin can add user in Org" }));
+         return res.status(403).json(prepareErrorResponse({ message: "unauthorized user only admin can add user in Org" }));
       }
 
    } catch (error) {
@@ -46,9 +49,6 @@ const createOrg = async (req, res) => {
    try {
       const org = req?.body?.name;
       const user_id = req?.body?.user_id;
-
-      console.log("Org: ",org, " User_id : ",user_id);
-
       if (!(req?.body?.name) || req?.body?.name?.length < 2) {
          return res.status(404).json(prepareErrorResponse({ message: "invalid orgname " }));
       }
@@ -102,7 +102,7 @@ const updateOrg = async (req, res) => {
       else
          return res.status(404).json(prepareErrorResponse({ message: "id does not exixts", data: { error } }));
       }else{
-         return res.status(401).json(prepareErrorResponse({ message: "unauthorized user only admin can Update Org" }));
+         return res.status(403).json(prepareErrorResponse({ message: "unauthorized user only admin can Update Org" }));
       }
 
    } catch (error) {
@@ -126,7 +126,7 @@ const removeUserInOrg = async (req, res) => {
             return res.status(403).json(prepareSuccessResponse({ error: "some error on server" }));
          }
       } else {
-         return res.status(401).json(prepareErrorResponse({ message: "unauthorized user only admin can remove user in Org" }));
+         return res.status(403).json(prepareErrorResponse({ message: "unauthorized user only admin can remove user in Org" }));
       }
    } catch (error) {
       return res.status(404).json(prepareErrorResponse({ message: "some error on server", data: { error } }));
@@ -155,7 +155,7 @@ const deleteOrg = async (req, res) => {
       }
       return res.status(200).json(prepareSuccessResponse({ data: org, message: "Org deleted successfully" }));
       }else{
-         return res.status(401).json(prepareErrorResponse({ message: "unauthorized user only admin Delete Org" }));
+         return res.status(403).json(prepareErrorResponse({ message: "unauthorized user only admin Delete Org" }));
       }
 
    } catch (error) {
@@ -178,7 +178,10 @@ const addDefaultdbInOrg = async (orgId,dbName,userId)=>{
          db.con_url = conUrl
          const data = await dbService.saveDb(db);
          const dbId = data?._id + ""
+         const tableId = "tbl" + generateIdentifier(6);
          const result = await userService.addDbIdInUSerSchema(user_id, dbId)
+         const ans = await tableService.createTableService(tableId, data)
+         const data1 = await addTable(data?._id,"untittled",tableId)
          return;
 
       } catch (error) {

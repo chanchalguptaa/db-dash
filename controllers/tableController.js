@@ -1,17 +1,17 @@
-const { prepareErrorResponse, prepareSuccessResponse } = require("../services/utilityService.js");
+const { prepareErrorResponse, prepareSuccessResponse,generateIdentifier } = require("../services/utilityService.js");
 const {addTable,updateTableInDb,deleteTableInDb} = require("../db_services/tableDbService");
 const tableService = require("../sql_db_services/tableService.js")
 const {getDbById} = require("../db_services/masterDbService")
-const {renameView} = require("../db_services/viewDbService")
+const {renameView} = require("../db_services/viewDbService");
 const createTable = async (req, res) => {
      const db_id = req?.params?.dbId;
      const tableName = req?.body?.tableName;
-
+     const tableId = "tbl" +  generateIdentifier(6);
      try {
           const data = await getDbById(db_id);
-          const ans = await tableService.createTableService(tableName, data)
+          const ans = await tableService.createTableService(tableId, data)
           try {
-               const data1 = await addTable(db_id, tableName)
+               const data1 = await addTable(db_id, tableName,tableId)
                return res.status(200).json(prepareSuccessResponse({ message: `Table '${tableName}' created successfully` }))
           }
           catch (err) {
@@ -21,15 +21,15 @@ const createTable = async (req, res) => {
      catch (err) {
           return res.status(400).json(prepareErrorResponse({ message: `Error creating table ${err.message}` }));
      }
-
 }
+
+
 const getTable = async (req, res) => {
      const db_id = req?.params?.dbId
      const tableName = req?.params?.tableName;
      try {
           const data = await getDbById(db_id);
           const view = data.tables[`${tableName}`].view;
-
           let rowData={}
            try {              
                rowData['tableData'] = await tableService.getTableService(tableName,data);
@@ -59,10 +59,16 @@ const updateTable = async (req, res) => {
      const tableName = req?.params?.tableName;
      const data = await getDbById(db_id);
      const views = Object.keys(data.tables);
+     
      try {
-          const data = await getDbById(db_id);
+          if(!data.tables[tableName])
+          {
+               // console.log(tableName);
+               return res.status(404).json(prepareErrorResponse({ message: `table does not exists` }));
+          }
+          // const data = await getDbById(db_id);
           try {
-               const ans = await tableService.updateTableService(tableName,newTableName,data);
+               // const ans = await tableService.updateTableService(tableName,newTableName,data);
                await updateTableInDb(db_id,newTableName,tableName) ;
                views.forEach(async (view) => {
                     if(data?.tables?.[view]?.view?.[tableName])

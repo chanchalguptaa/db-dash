@@ -19,8 +19,6 @@ const generateToken = (email)=>{
       process.env.TOKEN_SECRET_KEY,
       {expiresIn:"48h"}
    )
-
-   console.log(token);
    return token;
 }
 
@@ -29,8 +27,6 @@ const createUser = async (req, res) => {
       const user = new users(req?.body);
       await userService.saveUser(user)
       const token = generateToken(user.email)
-
-      console.log("TOKEN Create User ",token);
       return res.status(201).json(prepareSuccessResponse({ data: token, message: "User created" }));
 
    } catch (error) {
@@ -44,7 +40,6 @@ const loginUser = async (req, res) => {
    try {
      const token = generateToken(email);
 
-     console.log("loginUser Token ",token);
      res
        .status(201)
        .send(
@@ -54,7 +49,6 @@ const loginUser = async (req, res) => {
          })
        );
    } catch (error) {
-     console.log(error);
      res
        .status(400)
        .send(prepareErrorResponse({ message: "login action unsuccessful" }));
@@ -68,7 +62,6 @@ const getUserById = async (req, res) => {
       if (!user) {
          return res.status(400).json(prepareErrorResponse({ message: "user not found", data: { error } }));
       }
-      res.send(user)
       return res.status(201).json(prepareSuccessResponse({ data: user, message: "User found" }));
 
    } catch (error) {
@@ -104,7 +97,15 @@ const deleteUser = async (req, res) => {
 
    }
 }
-
+async function getUserProfile(req, res) {
+   const profile = req?.profile;
+   try {
+     res.status(201).json(prepareSuccessResponse({data:profile,message:"Current user loaded successfully"}));
+   } catch (e) {
+     return res.status(401).json(prepareErrorResponse({ message: e.message }));
+   }
+ }
+ 
 const findUserByEmail = async (req, res) => {
    try {
       const email = req?.params?.email
@@ -120,4 +121,4 @@ const findUserByEmail = async (req, res) => {
    }
 }
 
-module.exports = { getAllUsers, createUser, getUserById, updateUser, deleteUser, findUserByEmail,loginUser}
+module.exports = { getAllUsers, createUser, getUserById, updateUser, deleteUser, findUserByEmail,loginUser,getUserProfile}

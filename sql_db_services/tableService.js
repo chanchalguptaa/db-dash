@@ -3,9 +3,9 @@ const { Client } = require('pg');
 const createClient = (data) => {
   const db_name = data?.name.toLowerCase();
   return new Client({
-    host: 'localhost',
-    user: 'postgres',
-    password: 'root',
+    host: process.env.PGHOST,
+    user: process.env.USER,
+    password: process.env.PASSWORD,
     database: db_name+"_"+data?.org_id
   });
 };
@@ -29,7 +29,7 @@ const getTableService = async (tableName,data)=>{
   try {
   const client = createClient(data);
   await client.connect();
-  const ans = await client.query(`SELECT * FROM ${tableName}`);
+  const ans = await client.query(`SELECT * FROM ${tableName} order by id `);
   await client.end();
   return ans.rows;
 }

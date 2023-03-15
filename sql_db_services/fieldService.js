@@ -3,19 +3,19 @@ const { Client } = require('pg');
 const createClient = (data) => {
     const db_name = data?.name.toLowerCase();
     return new Client({
-      host: 'localhost',
-      user: 'postgres',
-      password: 'root',
-      database: db_name+"_"+data?.org_id
+        host: process.env.PGHOST,
+        user: process.env.USER,
+        password: process.env.PASSWORD,
+        database: db_name+"_"+data?.org_id
     });
   };
   
 
-const createFieldService = async (tableName,fieldName,fieldType,data)=>{
+const createFieldService = async (tableName,fieldName,fieldType,data,fieldId)=>{
     try {
     const client = createClient(data);
     await client.connect();
-    const ans = await client.query(`ALTER TABLE ${tableName} ADD COLUMN ${fieldName} ${fieldType};`);
+    const ans = await client.query(`ALTER TABLE ${tableName} ADD COLUMN ${fieldId} ${fieldType};`);
     await client.end();
     return ans;
 }
@@ -48,10 +48,10 @@ const updateFieldService = async (tableName,fieldName,newFieldName,newFieldType,
     if(newFieldType) {
         const ans = await client.query(`ALTER TABLE ${tableName} ALTER COLUMN ${fieldName} TYPE ${newFieldType};`);
     }
-    if(newFieldName){
-        const ans = await client.query(`ALTER TABLE ${tableName} RENAME COLUMN ${fieldName} TO ${newFieldName};`);
+    // if(newFieldName){
+    //     const ans = await client.query(`ALTER TABLE ${tableName} RENAME COLUMN ${fieldName} TO ${newFieldName};`);
    
-    }
+    // }
     await client.end();
     return ;    
 }

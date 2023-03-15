@@ -1,24 +1,27 @@
-const { prepareErrorResponse, prepareSuccessResponse } = require("../services/utilityService.js");
+const { prepareErrorResponse,generateIdentifier, prepareSuccessResponse } = require("../services/utilityService.js");
 const {getDbById} = require("../db_services/masterDbService")
 const {addField,deletefield,updatefield} = require("../db_services/fieldDbService")
 const fieldService = require("../sql_db_services/fieldService.js")
 const {updateView} = require("../db_services/viewDbService")
 const db=require("../models/dbModel")
 
+
 const createField = async (req, res) => {
     const db_id = req?.params?.dbId;
     const tableName = req?.params?.tableName;
     const fieldName = req?.body?.fieldName;
     const fieldType = req?.body?.fieldType;
+    const fieldId = "fld" + generateIdentifier(6);
+    //field name is no more id ..  however previous fieldname will be there id 
     try {
          const data = await getDbById(db_id);
          
-         const ans = await fieldService.createFieldService(tableName, fieldName,fieldType,data)
+         const ans = await fieldService.createFieldService(tableName, fieldName,fieldType,data,fieldId)
          try { 
                  const tmp=data?.tables?.[tableName].fields?.[fieldName]||null;
                  if(!tmp)  
                {  
-                    const data1=await addField(db_id,tableName,fieldName,fieldType);
+                    const data1=await addField(db_id,tableName,fieldName,fieldType,fieldId);
                }
                else
               { 
@@ -64,12 +67,32 @@ const deleteField = async (req, res) => {
     }
 
 }
+const getAllField =async (req, res) => {
+     const db_id = req?.params?.dbId;
+    const tableName = req?.params?.tableName;
+    try { 
+         const data = await getDbById(db_id);
+         try {
+              if(data.tables[tableName])  
+              return res.status(200).json(prepareSuccessResponse({ data : data.tables[tableName] ,  message: `Field '${tableName}' get successfully` }))
+               else
+               return res.status(404).json(prepareErrorResponse({ message: `table ${tableName}  not exits in  db ` }))
 
+
+         }
+         catch (err) {
+              return res.status(400).json(prepareErrorResponse({ message: `Error getting field ${err.message}` }));
+         }
+    }
+    catch (err) {
+         return res.status(400).json(prepareErrorResponse({ message: `Error getting field ${err.message}` }));
+    } 
+}
 
 const updateField = async (req, res) => {
     const db_id = req?.params?.dbId;
     const tableName = req?.params?.tableName;
-    const fieldName = req?.params?.fieldName;
+    const fieldName = req?.params?.fieldName; //fieldName refers to field id 
     const newFieldName = req?.body?.newFieldName;
     const newFieldType = req?.body?.newFieldType;
     try {
@@ -102,4 +125,4 @@ const updateField = async (req, res) => {
     }
 
 }
-module.exports = { createField,deleteField,updateField}
+module.exports = { createField,deleteField,updateField,getAllField}
