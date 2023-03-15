@@ -59,8 +59,14 @@ const updateTable = async (req, res) => {
      const tableName = req?.params?.tableName;
      const data = await getDbById(db_id);
      const views = Object.keys(data.tables);
+     
      try {
-          const data = await getDbById(db_id);
+          if(!data.tables[tableName])
+          {
+               // console.log(tableName);
+               return res.status(404).json(prepareErrorResponse({ message: `table does not exists` }));
+          }
+          // const data = await getDbById(db_id);
           try {
                // const ans = await tableService.updateTableService(tableName,newTableName,data);
                await updateTableInDb(db_id,newTableName,tableName) ;
